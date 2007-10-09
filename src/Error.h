@@ -7,6 +7,7 @@ extern "C" {
 
 namespace PackageKit {
 
+//! Wraps the GError class, adding PkErrorCodeEnum
 class Error {
 
 public:
@@ -16,7 +17,8 @@ public:
 	int code();
 	QString message();
 	GError *toGError();
-
+	
+	//! Type of error (equivalent to PkErrorCodeEnum)
 	typedef enum {
 		Oom,
 		No_network,

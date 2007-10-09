@@ -6,6 +6,7 @@ extern "C" {
 
 namespace PackageKit {
 
+//! Wraps the PkNetwork class
 class Network : public QObject {
 
 	Q_OBJECT
@@ -19,7 +20,9 @@ public slots:
 	void __emit_online(bool);
 
 signals:
-	void online(bool);
+	//! Emitted when the host connects to/disconnects from a network
+	//! \param connected TRUE if the host is connected, FALSE else
+	void online(bool connected);
 
 private:
 	PkNetwork *network;

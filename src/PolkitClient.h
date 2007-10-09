@@ -8,6 +8,7 @@ namespace PackageKit {
 
 class Error;
 
+//! Wraps the PkPolkitClient class
 class PolkitClient : public QObject {
 
 	Q_OBJECT

@@ -4,8 +4,10 @@ extern "C" {
 #include <pk-enum.h>
 }
 
+//! This namespace contains all the PackageKit related functions and enums
 namespace PackageKit {
 
+//! Contains the Role enum (equivalent to PkRoleEnum)
 namespace Role {
 	/* what we asked to do */
 	typedef enum {
@@ -33,6 +35,7 @@ namespace Role {
 	static QString toString(RoleEnum status);
 };
 
+//! Contains the Status enum (equivalent to PkStatusEnum)
 namespace Status {
 	/* what we are actually doing */
 	typedef enum {
@@ -51,6 +54,7 @@ namespace Status {
 	static QString toString(StatusEnum status);
 };
 
+//! Contains the Exit enum (equivalent to PkExitEnum)
 namespace Exit {
 	typedef enum {
 		Success,
@@ -63,6 +67,7 @@ namespace Exit {
 	static QString toString(ExitEnum exit);
 };
 
+//! Contains the Filter enum (equivalent to PkFilterEnum)
 namespace Filter {
 	typedef enum {
 		Development,
@@ -75,6 +80,7 @@ namespace Filter {
 	static QString toString(FilterEnum filter);
 };
 
+//! Contains the Restart enum (equivalent to PkRestartEnum)
 namespace Restart {
 	typedef enum {
 		Restart_enum_none,
@@ -89,6 +95,7 @@ namespace Restart {
 
 // Enum ErrorCodeNum is in Error.h
 
+//! Contains the Role enum (equivalent to PkRoleEnum)
 namespace Group {
 	typedef enum {
 		Accessibility,
@@ -109,6 +116,7 @@ namespace Group {
 	static QString toString(GroupEnum group);
 };
 
+//! Contains the Frequence enum (equivalent to PkFreqEnum)
 namespace Frequence {
 	typedef enum {
 		Hourly,
@@ -122,6 +130,7 @@ namespace Frequence {
 	static QString toString(FreqEnum freq);
 };
 
+//! Contains the Update enum (equivalent to PkUpdateEnum)
 namespace Update {
 	typedef enum {
 		All,

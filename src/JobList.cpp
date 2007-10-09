@@ -2,18 +2,26 @@
 
 using namespace PackageKit;
 
+//! Creates a new JobList object (equivalent to pk_job_list_new)
+//! \param parent the parent object, or NULL
 JobList::JobList(QObject *parent) : QObject(parent) {
 	jobList = pk_job_list_new();
 }
 
+//! Refreshes the job list (equivalent to pk_job_list_refresh)
+//! \return TRUE if it succeded, FALSE else
 bool JobList::refresh() {
 	return pk_job_list_refresh(jobList);
 }
 
+//! Prints the job list (equivalent to pk_job_list_print)
+//! \return TRUE if it succeded, FALSE else
 bool JobList::print() {
 	return pk_job_list_print(jobList);
 }
 
+//! Gets the latest job list (equivalent to pk_job_list_get_latest)
+//! \return A list of strings, each string holding a job id
 QList<QString> JobList::get_latest() {
 	QList<QString> list;
 

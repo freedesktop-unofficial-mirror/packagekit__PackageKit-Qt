@@ -2,18 +2,26 @@
 
 using namespace PackageKit;
 
+//! Creates a new TaskList object (equivalent to pk_task_list_new)
+//! \param parent the parent object, or NULL
 TaskList::TaskList(QObject *parent) : QObject(parent) {
 	taskList = pk_task_list_new();
 }
 
+//! Refreshes the task list (equivalent to pk_task_list_refresh)
+//! \return TRUE if succeeded, FALSE else
 bool TaskList::refresh() {
 	return pk_task_list_refresh(taskList);
 }
 
+//! Prints the task list (equivalent to pk_task_list_print)
+//! \return TRUE if succeded, FALSE else
 bool TaskList::print() {
 	return pk_task_list_print(taskList);
 }
 
+//! Gets the latest task list (equivalent to pk_task_list_get_latest)
+//! \return A list of strings, each string holding a task id
 QList<void*> TaskList::get_latest() {
 	QList<void*> list;
 

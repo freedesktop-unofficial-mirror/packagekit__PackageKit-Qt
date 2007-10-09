@@ -6,6 +6,7 @@ extern "C" {
 
 namespace PackageKit {
 
+//! Wraps the PkTaskList class
 class TaskList : public QObject {
 
 	Q_OBJECT
@@ -23,9 +24,17 @@ public slots:
 	void __emit_error(unsigned int, QString);
 
 signals:
+	//! Emitted when the list changes
 	void changed();
-	void finished(unsigned int, QString, unsigned int);
-	void error(unsigned int, QString);
+	//! Emitted when a task is finished
+	//! \param role Is it an install/update/...
+	//! \param id The package id
+	//! \param runtime ...
+	void finished(unsigned int role, QString id, unsigned int runtime);
+	//! Emitted when an error happens
+	//! \param role Is it an install/update/...
+	//! \param id The package id
+	void error(unsigned int role, QString id);
 
 private:
 	PkTaskList *taskList;

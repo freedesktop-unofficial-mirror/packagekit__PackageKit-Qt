@@ -6,6 +6,7 @@ extern "C" {
 
 namespace PackageKit {
 
+//! Wraps the PkPackageId class
 class PackageId : public QObject {
 
 	Q_OBJECT

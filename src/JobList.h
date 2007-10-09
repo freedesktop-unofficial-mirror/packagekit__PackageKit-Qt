@@ -6,6 +6,7 @@ extern "C" {
 
 namespace PackageKit {
 
+//! Wraps the PkJobList class
 class JobList : public QObject {
 
 	Q_OBJECT
@@ -21,6 +22,7 @@ public slots:
 	void __emit_changed();
 
 signals:
+	//! Emitted when the list changes
 	void changed();
 
 private:
