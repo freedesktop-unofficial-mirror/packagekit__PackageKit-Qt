@@ -1,21 +1,17 @@
 #include <QApplication>
+#include <QtCore>
 
-#include "Connection.h"
+#include "QPackageKitInterface.h"
 
-using namespace PackageKit;
+#define PK_DBUS_SERVICE "org.freedesktop.PackageKit"
+#define PK_DBUS_PATH "/org/freedesktop/PackageKit"
 
 int main(int argc, char **argv) {
 	QApplication app(argc, argv);
 
-	// Init glib types system
-	g_type_init();
-
-	Connection *c = new Connection();
-	QObject::connect(c, SIGNAL(changed(bool)), &app, SLOT(aboutQt()));
-
-	qDebug() << "Valid connection : " << c->valid();
-
-
-
+	QPackageKitInterface iface(PK_DBUS_SERVICE, PK_DBUS_PATH, QDBusConnection::systemBus());
+	QDBusReply<QString> reply = iface.GetTid();
+	if(reply.isValid()) qDebug() << "Appel valide, valeur de retour " << reply.value();
+	else qDebug() << "invalide";
 	return app.exec();
 }

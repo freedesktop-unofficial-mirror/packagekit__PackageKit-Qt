@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>785</width>
-    <height>560</height>
+    <width>804</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -22,110 +22,173 @@
       <widget class="QWidget" name="" >
        <layout class="QVBoxLayout" >
         <item>
-         <layout class="QHBoxLayout" >
-          <item>
-           <widget class="QLineEdit" name="lineEdit" />
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton" >
-            <property name="text" >
-             <string>Find</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QGroupBox" name="groupBox_3" >
+          <property name="title" >
+           <string>Search</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <item>
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLineEdit" name="searchField" />
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonFind" >
+               <property name="text" >
+                <string>Find</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox" />
+           </item>
+          </layout>
+         </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox" />
+         <widget class="QGroupBox" name="groupBox_2" >
+          <property name="title" >
+           <string>Groups</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QListView" name="listView" />
+           </item>
+          </layout>
+         </widget>
         </item>
         <item>
-         <widget class="QListView" name="listView" />
+         <widget class="QGroupBox" name="groupBox" >
+          <property name="title" >
+           <string>Filters</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <item>
+            <layout class="QGridLayout" >
+             <item row="0" column="0" >
+              <widget class="QLabel" name="label_4" >
+               <property name="text" >
+                <string>Installed</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" >
+              <widget class="QComboBox" name="comboInstalled" >
+               <item>
+                <property name="text" >
+                 <string>All packages</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Installed</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Available</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <widget class="QLabel" name="label_5" >
+               <property name="text" >
+                <string>Development</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" >
+              <widget class="QComboBox" name="comboDevelopment" >
+               <item>
+                <property name="text" >
+                 <string>All packages</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Only development</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Non-development</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="2" column="0" >
+              <widget class="QLabel" name="label_6" >
+               <property name="text" >
+                <string>Graphical</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1" >
+              <widget class="QComboBox" name="comboGraphical" >
+               <item>
+                <property name="text" >
+                 <string>All packages</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Graphical</string>
+                </property>
+               </item>
+               <item>
+                <property name="text" >
+                 <string>Text</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </item>
         <item>
          <layout class="QGridLayout" >
           <item row="0" column="0" >
-           <widget class="QCheckBox" name="checkBox" >
-            <property name="text" >
-             <string>Installed</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" >
-           <widget class="QCheckBox" name="checkBox_4" >
-            <property name="text" >
-             <string>Available</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QCheckBox" name="checkBox_2" >
-            <property name="text" >
-             <string>Normal</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QCheckBox" name="checkBox_5" >
-            <property name="text" >
-             <string>Development</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QCheckBox" name="checkBox_3" >
-            <property name="text" >
-             <string>Graphical</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" >
-           <widget class="QCheckBox" name="checkBox_6" >
-            <property name="text" >
-             <string>Text</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <widget class="QPushButton" name="pushButton_2" >
+           <widget class="QPushButton" name="buttonInstall" >
             <property name="text" >
              <string>Install</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1" >
-           <widget class="QPushButton" name="pushButton_3" >
+           <widget class="QPushButton" name="buttonRemove" >
             <property name="text" >
              <string>Remove</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0" >
-           <widget class="QPushButton" name="pushButton_4" >
+           <widget class="QPushButton" name="buttonDepends" >
             <property name="text" >
              <string>Depends</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1" >
-           <widget class="QPushButton" name="pushButton_5" >
+           <widget class="QPushButton" name="buttonRequires" >
             <property name="text" >
              <string>Requires</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0" >
-           <widget class="QPushButton" name="pushButton_6" >
+           <widget class="QPushButton" name="buttonHelp" >
             <property name="text" >
              <string>Help</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1" >
-           <widget class="QPushButton" name="pushButton_7" >
+           <widget class="QPushButton" name="buttonHomepage" >
             <property name="text" >
              <string>Homepage</string>
             </property>
@@ -140,7 +203,7 @@
         <enum>Qt::Vertical</enum>
        </property>
        <widget class="QListView" name="listView_2" />
-       <widget class="QTabWidget" name="tabWidget" >
+       <widget class="QTabWidget" name="descriptionTabs" >
         <property name="currentIndex" >
          <number>0</number>
         </property>
@@ -201,5 +264,22 @@
   <widget class="QStatusBar" name="statusbar" />
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>searchField</sender>
+   <signal>returnPressed()</signal>
+   <receiver>buttonFind</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>195</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>255</x>
+     <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

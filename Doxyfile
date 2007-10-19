@@ -512,7 +512,7 @@ EXCLUDE_PATTERNS       =
 # a substring. Examples: ANamespace, AClass, AClass::ANamespace, ANamespace::*Test
 
 # Exlude signal wrappers
-EXCLUDE_SYMBOLS        = __PackageKit*
+EXCLUDE_SYMBOLS        = 
 EXCLUDE_SYMBOLS       += __emit*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or 

@@ -7,6 +7,8 @@ TARGET = qpackagekit
 DEPENDPATH += .
 INCLUDEPATH += .
 
+CONFIG += qdbus
+
 LIBS += ../lib/libqpackagekit.so.0.0.1
 
 # Input
