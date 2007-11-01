@@ -5,6 +5,7 @@
 #include <QtDBus>
 
 #include "QPackageKitInterface.h"
+#include "PkPackage.h"
 
 #define PK_DBUS_SERVICE "org.freedesktop.PackageKit"
 #define PK_DBUS_PATH "/org/freedesktop/PackageKit"
@@ -49,6 +50,7 @@ public:
 			Unknown
 		} RoleEnum;
 		static QString toString(RoleEnum e);
+		static RoleEnum fromString(QString s);
 
 	private:
 		static QMap<int, QString> stringValues;
@@ -71,6 +73,7 @@ public:
 			Unknown
 		} StatusEnum;
 		static QString toString(StatusEnum e);
+		static StatusEnum fromString(QString s);
 
 	private:
 		static QMap<int, QString> stringValues;
@@ -87,6 +90,7 @@ public:
 			Unknown
 		} ExitEnum;
 		static QString toString(ExitEnum e);
+		static ExitEnum fromString(QString s);
 
 	private:
 		static QMap<int, QString> stringValues;
@@ -106,6 +110,7 @@ public:
 			Unknown
 		} FilterEnum;
 		static QString toString(FilterEnum e);
+		static FilterEnum fromString(QString s);
 
 	private:
 		static QMap<int, QString> stringValues;
@@ -115,17 +120,47 @@ public:
 	//! QPackageKitClient constructor
 	QPackageKitClient(QObject *parent = 0);
 
+	//! Cancels the current transaction
+	void Cancel();
+
 	//! Searches for a package using its name
 	bool searchName(QString name, QList<Filter::FilterEnum> filters);
 
+	//! Orders the description of a package
+	bool getDescription(QString packageId);
+	bool getDescription(PkPackage *p);
+
+	//! Installs a package
+	bool installPackage(QString packageId);
+	bool installPackage(PkPackage *p);
+
 signals:
-	 void Package(const QString &info, const QString &package_id, const QString &summary);
-	 void Finished(QPackageKitClient::Exit::ExitEnum exitCode, uint runtime);
+	//! Emitted when the daemon sends us a package
+	void Package(const QString &info, const QString &package_id, const QString &summary);
+
+	//! Emitted when the current transaction is finished
+	void Finished(QPackageKitClient::Exit::ExitEnum exitCode, uint runtime);
+
+	//! Emitted when the current transaction's progress changes 
+        void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+
+	//! Emitted when we cannot track the progress of the current transaction
+	void NoProgressUpdates();
+	
+	//! Emitted when the daemon sends us a package description
+	void Description(const QString &package_id, const QString &licence, const QString &group,
+				const QString &detail, const QString &url, qulonglong size, const QString &file_list);
 	
 public slots:
-	void newPackage(const QString &thisTid, const QString &info, const QString &package_id, const QString &summary);
-	void transactionFinished(const QString &thisTid, const QString &status, uint runtime);
+	// All slots prefixed with proxy merely proxy signal from the QPackageKitInterface, stripping the tid after
+	// having ensured that the signal concerns our transaction
+	void proxy_Package(const QString &thisTid, const QString &info, const QString &package_id, const QString &summary);
+	void proxy_Finished(const QString &thisTid, const QString &status, uint runtime);
+        void proxy_ProgressChanged(const QString &thisTid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
+	void proxy_Description(const QString &thisTid, const QString &package_id, const QString &licence, const QString &group,
+					const QString &detail, const QString &url, qulonglong size, const QString &file_list);
 private:
+	// DBus proxy object to the packagekit daemon
 	QPackageKitInterface *iface;
 
 	// Utility functions
@@ -136,12 +171,12 @@ private:
 	// Connection variables
 
 	//! Holds the transaction id
-	QString tid;
+	QList<QString> tids;
 
 	// Transaction management
 
 	//! Allocates a transaction id
-	bool allocateTid();
+	QString allocateTid();
 
 };
 

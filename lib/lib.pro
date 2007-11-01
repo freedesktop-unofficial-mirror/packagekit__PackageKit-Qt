@@ -11,5 +11,5 @@ INCLUDEPATH += .
 CONFIG += qdbus
 
 # Input
-HEADERS += QPackageKitInterface.h QPackageKitClient.h 
-SOURCES += QPackageKitInterface.cpp QPackageKitClient.cpp enums.cpp
+HEADERS += QPackageKitInterface.h QPackageKitClient.h PkPackage.h
+SOURCES += QPackageKitInterface.cpp QPackageKitClient.cpp enums.cpp PkPackage.cpp

@@ -9,9 +9,11 @@ INCLUDEPATH += .
 
 CONFIG += qdbus
 
+INCLUDEPATH += ../lib
 LIBS += ../lib/libqpackagekit.so.0.0.1
 
 # Input
-HEADERS += MainWindow.h
+RESOURCES += resources.qrc
+HEADERS += MainWindow.h PackageModel.h 
 FORMS += mainwindow.ui
-SOURCES += main.cpp MainWindow.cpp
+SOURCES += main.cpp MainWindow.cpp PackageModel.cpp 

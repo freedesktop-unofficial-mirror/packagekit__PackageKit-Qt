@@ -31,6 +31,11 @@ QString QPackageKitClient::Role::toString(RoleEnum e) {
 	return stringValues[e];
 }
 
+QPackageKitClient::Role::RoleEnum QPackageKitClient::Role::fromString(QString s) {
+	if(stringValues.size() == 0) construct();
+	return (RoleEnum)stringValues.key(s);
+}
+
 QMap<int, QString> QPackageKitClient::Status::stringValues = QMap<int, QString>();
 void QPackageKitClient::Status::construct () {
 	//Status enum
@@ -50,6 +55,11 @@ QString QPackageKitClient::Status::toString(StatusEnum e) {
 	return stringValues[e];
 }
 
+QPackageKitClient::Status::StatusEnum QPackageKitClient::Status::fromString(QString s) {
+	if(stringValues.size() == 0) construct();
+	return (StatusEnum)stringValues.key(s);
+}
+
 QMap<int, QString> QPackageKitClient::Exit::stringValues = QMap<int, QString>();
 void QPackageKitClient::Exit::construct () {
 	stringValues[Success] = "success";
@@ -61,6 +71,11 @@ void QPackageKitClient::Exit::construct () {
 QString QPackageKitClient::Exit::toString(ExitEnum e) {
 	if(stringValues.size() == 0) construct();
 	return stringValues[e];
+}
+
+QPackageKitClient::Exit::ExitEnum QPackageKitClient::Exit::fromString(QString s) {
+	if(stringValues.size() == 0) construct();
+	return (ExitEnum)stringValues.key(s);
 }
 
 QMap<int, QString> QPackageKitClient::Filter::stringValues = QMap<int, QString>();
@@ -77,5 +92,10 @@ void QPackageKitClient::Filter::construct () {
 QString QPackageKitClient::Filter::toString(FilterEnum e) {
 	if(stringValues.size() == 0) construct();
 	return QPackageKitClient::Filter::stringValues[e];
+}
+
+QPackageKitClient::Filter::FilterEnum QPackageKitClient::Filter::fromString(QString s) {
+	if(stringValues.size() == 0) construct();
+	return (FilterEnum)stringValues.key(s);
 }
 

@@ -1,0 +1,28 @@
+#ifndef PACKAGE_H
+#define PACKAGE_H
+
+#include <QtCore>
+
+class PkPackage : public QObject {
+
+	Q_OBJECT
+
+public:
+	PkPackage(QObject *parent = 0);
+	PkPackage(QString pkid, QObject *parent = 0);
+
+	// Getters
+	QString name();
+	QString version();
+	QString arch();
+	QString data();
+
+	// Return the package's id
+	QString id();
+
+private:
+	QString p_name, p_version, p_arch, p_data;
+
+};
+
+#endif
