@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/" >
         <file>pixmaps/package.svg</file>
+        <file>pixmaps/ok.svg</file>
+        <file>pixmaps/depends.svg</file>
+        <file>pixmaps/help.svg</file>
+        <file>pixmaps/install.svg</file>
+        <file>pixmaps/requires.svg</file>
+        <file>pixmaps/uninstall.svg</file>
     </qresource>
 </RCC>

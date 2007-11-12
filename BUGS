@@ -1,0 +1,10 @@
+When asking for a description, is sometimes never appear (though the transaction finishes)
+  This bug is quite strange, because packagekitd DOES update the description signal (checked with pkmon),
+  but the lib doesn't catch it, though it catch some others... No idea from where it could come.
+
+After having installed a package, the program segfaults when I want to do a search
+  Another strange bug... Gdb says the function id() is the culprit, and the stack
+  says it's called with this == 0x01, which is an invalid address. I check that
+  I don't call any function on NULL, so I don't see why this does not work.
+
+This is an interactive file : add your own bug here

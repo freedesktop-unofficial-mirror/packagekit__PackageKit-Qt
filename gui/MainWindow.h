@@ -20,6 +20,9 @@ public slots:
 	// Install button clicked
 	void installPackage();
 
+	// Remove button clicked
+	void removePackage();
+
 	// The controller sent us a package
 	void newPackage(const QString& info, const QString& package_id, const QString& summary);
 
@@ -58,4 +61,17 @@ private:
 	// Pointer to the currently selected package
 	QString currentPackageId;
 
+	// Describe the current operation
+	typedef enum {
+		IDLE,
+		SEARCH,
+		DESCRIPTION,
+		INSTALL,
+		REMOVE
+	} CurrentOperation;
+	CurrentOperation currentOperation;
+
+	// Last search and filters, used to reload the view after an install
+	QString lastSearch;
+	QList<QPackageKitClient::Filter::FilterEnum> lastFilters;
 };

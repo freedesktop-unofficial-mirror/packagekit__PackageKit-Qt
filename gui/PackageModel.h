@@ -23,7 +23,11 @@ public:
 
 	// Add a package to the list
 	void addPackage(PkPackage *p);
-	void addPackage(QString package_id);
+	void addPackage(QString package_id, bool installed = false);
+
+	// Remove a package from the list
+	void removePackage(PkPackage *p);
+	void removePackage(QString package_id);
 
 	// Clear the model
 	void clear();
@@ -41,6 +45,7 @@ private:
 	QString formatPackage (PkPackage *p) const;
 
 	// Little package icon
+	QIcon installedIcon;
 	QIcon packageIcon;
 };
 

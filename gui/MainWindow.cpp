@@ -27,8 +27,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(comboDevelopment, SIGNAL(currentIndexChanged(int)), this, SLOT(doSearch()));
 	connect(comboGraphical, SIGNAL(currentIndexChanged(int)), this, SLOT(doSearch()));
 
-	// Connect the "Install button"
+	// Connect the "Install" button
 	connect(buttonInstall, SIGNAL(clicked()), this, SLOT(installPackage()));
+
+	// Connect the "Remove" button
+	connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removePackage()));
 
 	// Handle the packages sent by the controller
 	connect(pkController, SIGNAL(Package(const QString&, const QString&, const QString&)), this,
@@ -55,6 +58,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 	// Hide the details since we don't need them yet
 	descriptionTabs->hide();
+
+	// Wer're doing nothing
+	currentOperation = IDLE;
 }
 
 void MainWindow::doSearch() {
@@ -84,22 +90,37 @@ void MainWindow::doSearch() {
 	packageModel->clear();
 	buttonFind->setEnabled(false);
 	setCursor(Qt::WaitCursor);
+	currentOperation = SEARCH;
+
+	// Save the search to be able to reload the view
+	lastSearch = searchField->text();
+	lastFilters = filters;
 
 	// Launch the actual search
 	pkController->searchName(searchField->text(), filters);
 }
 
 void MainWindow::installPackage() {
+	currentOperation = INSTALL;
 	PkPackage *p = packageModel->packageAtIndex(packageListView->currentIndex());
 	pkController->installPackage(p);
 }
 
+void MainWindow::removePackage() {
+	currentOperation = REMOVE;
+	PkPackage *p = packageModel->packageAtIndex(packageListView->currentIndex());
+	pkController->removePackage(p);
+}
+
+
 void MainWindow::newPackage(const QString &info, const QString &package_id, const QString &summary) {
-	packageModel->addPackage(package_id);
+	if(currentOperation != SEARCH) return;
+	packageModel->addPackage(package_id, info == "installed" ? true : false);
 	packageModel->sort();
 }
 
 void MainWindow::transactionFinished(QPackageKitClient::Exit::ExitEnum exitCode, uint runtime) {
+	currentOperation = IDLE;
 	setCursor(Qt::ArrowCursor);
 	buttonFind->setEnabled(true);
 	statusbar->showMessage(QString("Transaction finished in %1 seconds with status %2").arg(runtime/1000).arg(QPackageKitClient::Exit::toString(exitCode)));
@@ -123,7 +144,8 @@ void MainWindow::updatePackageDetails(const QModelIndex& index) {
 	descriptionTabs->setEnabled(false);
 	PkPackage *p = packageModel->packageAtIndex(index);
 	// !p happens when the model gets cleared, because the view changes current
-	if(!p) return;
+	if(!p || p == (PkPackage*)0x1) return;
+	currentOperation = DESCRIPTION;
 	currentPackageId = p->id();
 	pkController->getDescription(p);
 }
@@ -134,8 +156,10 @@ void MainWindow::updateProgress(uint percentage, uint subpercentage, uint elapse
 
 void MainWindow::gotDescription(const QString &package_id, const QString &licence, const QString &group,
 			const QString &detail, const QString &url, qulonglong size, const QString &file_list) {
+	qDebug() << "Got a description for package " << package_id;
 	// If the description is not for the selected package, then we don't want it
 	if(currentPackageId != package_id) return;
+	if(currentOperation != DESCRIPTION) return;
 
 	detail_licence->setText(licence);
 	detail_group->setText(group);

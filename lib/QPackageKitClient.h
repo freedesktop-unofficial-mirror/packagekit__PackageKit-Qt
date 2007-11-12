@@ -134,6 +134,10 @@ public:
 	bool installPackage(QString packageId);
 	bool installPackage(PkPackage *p);
 
+	//! Removes a package
+	bool removePackage(QString packageId);
+	bool removePackage(PkPackage *p);
+
 signals:
 	//! Emitted when the daemon sends us a package
 	void Package(const QString &info, const QString &package_id, const QString &summary);
@@ -171,12 +175,12 @@ private:
 	// Connection variables
 
 	//! Holds the transaction id
-	QList<QString> tids;
+	QMap<QString, QString> tids;
 
 	// Transaction management
 
 	//! Allocates a transaction id
-	QString allocateTid();
+	QString allocateTid(QString type);
 
 };
 

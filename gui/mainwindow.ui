@@ -157,12 +157,18 @@
             <property name="text" >
              <string>Install</string>
             </property>
+            <property name="icon" >
+             <iconset resource="resources.qrc" >:/pixmaps/install.svg</iconset>
+            </property>
            </widget>
           </item>
           <item row="0" column="1" >
            <widget class="QPushButton" name="buttonRemove" >
             <property name="text" >
              <string>Remove</string>
+            </property>
+            <property name="icon" >
+             <iconset resource="resources.qrc" >:/pixmaps/uninstall.svg</iconset>
             </property>
            </widget>
           </item>
@@ -171,6 +177,9 @@
             <property name="text" >
              <string>Depends</string>
             </property>
+            <property name="icon" >
+             <iconset resource="resources.qrc" >:/pixmaps/depends.svg</iconset>
+            </property>
            </widget>
           </item>
           <item row="1" column="1" >
@@ -178,19 +187,18 @@
             <property name="text" >
              <string>Requires</string>
             </property>
+            <property name="icon" >
+             <iconset resource="resources.qrc" >:/pixmaps/requires.svg</iconset>
+            </property>
            </widget>
           </item>
-          <item row="2" column="0" >
+          <item row="2" column="0" colspan="2" >
            <widget class="QPushButton" name="buttonHelp" >
             <property name="text" >
              <string>Help</string>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="1" >
-           <widget class="QPushButton" name="buttonHomepage" >
-            <property name="text" >
-             <string>Homepage</string>
+            <property name="icon" >
+             <iconset resource="resources.qrc" >:/pixmaps/help.svg</iconset>
             </property>
            </widget>
           </item>
@@ -243,7 +251,7 @@
             <item>
              <widget class="QLabel" name="detail_url" >
               <property name="text" >
-               <string> </string>
+               <string/>
               </property>
               <property name="textFormat" >
                <enum>Qt::RichText</enum>
@@ -270,7 +278,7 @@
             <item>
              <widget class="QLabel" name="detail_group" >
               <property name="text" >
-               <string> </string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -288,7 +296,7 @@
             <item>
              <widget class="QLabel" name="detail_licence" >
               <property name="text" >
-               <string> </string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -306,7 +314,7 @@
             <item>
              <widget class="QLabel" name="detail_size" >
               <property name="text" >
-               <string> </string>
+               <string/>
               </property>
              </widget>
             </item>

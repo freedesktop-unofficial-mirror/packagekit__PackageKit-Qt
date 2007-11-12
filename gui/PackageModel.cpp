@@ -1,7 +1,8 @@
 #include "PackageModel.h"
 
 PackageModel::PackageModel(QObject *parent) : QAbstractListModel(parent) {
-	// Load the package icon
+	// Load the icons
+	installedIcon = QIcon(":/pixmaps/ok.svg");
 	packageIcon = QIcon(":/pixmaps/package.svg");
 }
 
@@ -16,7 +17,7 @@ QVariant PackageModel::data(const QModelIndex &index, int role) const {
 			return formatPackage(packages.at(index.row()));
 			break;
 		case Qt::DecorationRole:
-			return packageIcon;
+			return packages.at(index.row())->installed() ? installedIcon : packageIcon;
 			break;
 		default:
 			return QVariant();
@@ -46,12 +47,23 @@ void PackageModel::addPackage(PkPackage *p) {
 	endInsertRows();
 }
 
-void PackageModel::addPackage(QString package_id) {
-	addPackage(new PkPackage(package_id));
+void PackageModel::addPackage(QString package_id, bool installed) {
+	addPackage(new PkPackage(package_id, installed, this));
 }
 
+void PackageModel::removePackage(PkPackage *p) {
+	beginRemoveRows(QModelIndex(), packages.size() + 1, packages.size() + 1);
+	packages.removeAt(packages.indexOf(p));
+	endRemoveRows();
+}
+
+void PackageModel::removePackage(QString package_id) {
+	removePackage(new PkPackage(package_id, this));
+}
+
+
 void PackageModel::clear() {
-	beginRemoveRows(QModelIndex(), 0, packages.size());
+	beginRemoveRows(QModelIndex(), 0, packages.size()-1);
 	packages.clear();
 	endRemoveRows();
 }
@@ -61,6 +73,7 @@ QString PackageModel::formatPackage(PkPackage *p) const {
 }
 
 PkPackage* PackageModel::packageAtIndex(const QModelIndex &index) {
+	qDebug() << packages.size();
 	if(index.row() - 1 > packages.size()) return NULL;
 	return packages.at(index.row());
 }
