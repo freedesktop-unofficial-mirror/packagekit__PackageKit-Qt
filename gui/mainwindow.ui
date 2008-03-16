@@ -5,342 +5,387 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>804</width>
-    <height>602</height>
+    <width>810</width>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Add/Remove Software</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <layout class="QVBoxLayout" >
-    <item>
-     <widget class="QSplitter" name="splitter_2" >
-      <property name="orientation" >
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="QWidget" name="layoutWidget" >
-       <layout class="QVBoxLayout" >
+   <widget class="QTabWidget" name="tabWidget" >
+    <property name="geometry" >
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>751</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="currentIndex" >
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab_3" >
+     <attribute name="title" >
+      <string>Search for a package</string>
+     </attribute>
+     <layout class="QVBoxLayout" >
+      <item>
+       <layout class="QHBoxLayout" >
         <item>
-         <widget class="QGroupBox" name="groupBox_3" >
-          <property name="title" >
-           <string>Search</string>
+         <widget class="QLineEdit" name="searchField" />
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2" >
+          <property name="text" >
+           <string>in</string>
           </property>
-          <layout class="QVBoxLayout" >
-           <item>
-            <layout class="QHBoxLayout" >
-             <item>
-              <widget class="QLineEdit" name="searchField" />
-             </item>
-             <item>
-              <widget class="QPushButton" name="buttonFind" >
-               <property name="text" >
-                <string>Find</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox" />
-           </item>
-          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_2" >
-          <property name="title" >
-           <string>Groups</string>
-          </property>
-          <layout class="QVBoxLayout" >
-           <item>
-            <widget class="QListView" name="listView" />
-           </item>
-          </layout>
-         </widget>
+         <widget class="QComboBox" name="comboBox" />
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox" >
-          <property name="title" >
-           <string>Filters</string>
+         <widget class="QPushButton" name="buttonFind" >
+          <property name="text" >
+           <string>Find</string>
           </property>
-          <layout class="QVBoxLayout" >
-           <item>
-            <layout class="QGridLayout" >
-             <item row="0" column="0" >
-              <widget class="QLabel" name="label_4" >
-               <property name="text" >
-                <string>Installed</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1" >
-              <widget class="QComboBox" name="comboInstalled" >
-               <item>
-                <property name="text" >
-                 <string>All packages</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Installed</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Available</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="1" column="0" >
-              <widget class="QLabel" name="label_5" >
-               <property name="text" >
-                <string>Development</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" >
-              <widget class="QComboBox" name="comboDevelopment" >
-               <item>
-                <property name="text" >
-                 <string>All packages</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Only development</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Non-development</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="2" column="0" >
-              <widget class="QLabel" name="label_6" >
-               <property name="text" >
-                <string>Graphical</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1" >
-              <widget class="QComboBox" name="comboGraphical" >
-               <item>
-                <property name="text" >
-                 <string>All packages</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Graphical</string>
-                </property>
-               </item>
-               <item>
-                <property name="text" >
-                 <string>Text</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
          </widget>
-        </item>
-        <item>
-         <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <widget class="QPushButton" name="buttonInstall" >
-            <property name="text" >
-             <string>Install</string>
-            </property>
-            <property name="icon" >
-             <iconset resource="resources.qrc" >:/pixmaps/install.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" >
-           <widget class="QPushButton" name="buttonRemove" >
-            <property name="text" >
-             <string>Remove</string>
-            </property>
-            <property name="icon" >
-             <iconset resource="resources.qrc" >:/pixmaps/uninstall.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QPushButton" name="buttonDepends" >
-            <property name="text" >
-             <string>Depends</string>
-            </property>
-            <property name="icon" >
-             <iconset resource="resources.qrc" >:/pixmaps/depends.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="QPushButton" name="buttonRequires" >
-            <property name="text" >
-             <string>Requires</string>
-            </property>
-            <property name="icon" >
-             <iconset resource="resources.qrc" >:/pixmaps/requires.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2" >
-           <widget class="QPushButton" name="buttonHelp" >
-            <property name="text" >
-             <string>Help</string>
-            </property>
-            <property name="icon" >
-             <iconset resource="resources.qrc" >:/pixmaps/help.svg</iconset>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
        </layout>
-      </widget>
-      <widget class="QSplitter" name="splitter" >
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <widget class="QListView" name="packageListView" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-          <horstretch>0</horstretch>
-          <verstretch>2</verstretch>
-         </sizepolicy>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox" >
+        <property name="title" >
+         <string>Filters</string>
         </property>
-        <property name="alternatingRowColors" >
-         <bool>true</bool>
+        <layout class="QHBoxLayout" >
+         <item>
+          <layout class="QHBoxLayout" >
+           <item>
+            <widget class="QLabel" name="label_4" >
+             <property name="text" >
+              <string>Installed</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboInstalled" >
+             <item>
+              <property name="text" >
+               <string>All packages</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Installed</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Available</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <item>
+            <widget class="QLabel" name="label_6" >
+             <property name="text" >
+              <string>Graphical</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboGraphical" >
+             <item>
+              <property name="text" >
+               <string>All packages</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Graphical</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Text</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <item>
+            <widget class="QLabel" name="label_5" >
+             <property name="text" >
+              <string>Development</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboDevelopment" >
+             <item>
+              <property name="text" >
+               <string>All packages</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Only development</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Non-development</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="tab_4" >
+     <attribute name="title" >
+      <string>Browse packages</string>
+     </attribute>
+     <layout class="QHBoxLayout" >
+      <item>
+       <widget class="QGroupBox" name="groupBox_2" >
+        <property name="title" >
+         <string>Groups</string>
+        </property>
+        <layout class="QVBoxLayout" >
+         <item>
+          <widget class="QListView" name="groupsView" />
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QTabWidget" name="descriptionTabs" >
+    <property name="geometry" >
+     <rect>
+      <x>430</x>
+      <y>290</y>
+      <width>341</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="sizePolicy" >
+     <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+      <horstretch>0</horstretch>
+      <verstretch>1</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="currentIndex" >
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab" >
+     <attribute name="title" >
+      <string>Description</string>
+     </attribute>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QTextBrowser" name="detail_desc" />
+      </item>
+      <item>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_11" >
+          <property name="text" >
+           <string>Homepage:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLabel" name="detail_url" >
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="textFormat" >
+           <enum>Qt::RichText</enum>
+          </property>
+          <property name="openExternalLinks" >
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags" >
+           <set>Qt::LinksAccessibleByMouse</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_9" >
+          <property name="text" >
+           <string>Group:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QLabel" name="detail_group" >
+          <property name="text" >
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" >
+         <widget class="QLabel" name="label_7" >
+          <property name="text" >
+           <string>Licence:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" >
+         <widget class="QLabel" name="detail_licence" >
+          <property name="text" >
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" >
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Package size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" >
+         <widget class="QLabel" name="detail_size" >
+          <property name="text" >
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="tab_2" >
+     <attribute name="title" >
+      <string>File list</string>
+     </attribute>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QListView" name="detail_files" >
+        <property name="selectionMode" >
+         <enum>QAbstractItemView::NoSelection</enum>
         </property>
        </widget>
-       <widget class="QTabWidget" name="descriptionTabs" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="currentIndex" >
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="tab" >
-         <attribute name="title" >
-          <string>Description</string>
-         </attribute>
-         <layout class="QVBoxLayout" >
-          <item>
-           <widget class="QTextBrowser" name="detail_desc" />
-          </item>
-          <item>
-           <layout class="QHBoxLayout" >
-            <item>
-             <widget class="QLabel" name="label_11" >
-              <property name="text" >
-               <string>Homepage:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="detail_url" >
-              <property name="text" >
-               <string/>
-              </property>
-              <property name="textFormat" >
-               <enum>Qt::RichText</enum>
-              </property>
-              <property name="openExternalLinks" >
-               <bool>true</bool>
-              </property>
-              <property name="textInteractionFlags" >
-               <set>Qt::LinksAccessibleByMouse</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" >
-            <item>
-             <widget class="QLabel" name="label_9" >
-              <property name="text" >
-               <string>Group:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="detail_group" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" >
-            <item>
-             <widget class="QLabel" name="label_7" >
-              <property name="text" >
-               <string>Licence:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="detail_licence" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" >
-            <item>
-             <widget class="QLabel" name="label" >
-              <property name="text" >
-               <string>Package size:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="detail_size" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_2" >
-         <attribute name="title" >
-          <string>File list</string>
-         </attribute>
-         <layout class="QVBoxLayout" >
-          <item>
-           <widget class="QListView" name="detail_files" >
-            <property name="selectionMode" >
-             <enum>QAbstractItemView::NoSelection</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </widget>
-     </widget>
-    </item>
-   </layout>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QListView" name="packageListView" >
+    <property name="geometry" >
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>364</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="sizePolicy" >
+     <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+      <horstretch>0</horstretch>
+      <verstretch>2</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="alternatingRowColors" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonInstall" >
+    <property name="geometry" >
+     <rect>
+      <x>600</x>
+      <y>250</y>
+      <width>157</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Install</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/pixmaps/install.svg</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonRemove" >
+    <property name="geometry" >
+     <rect>
+      <x>400</x>
+      <y>200</y>
+      <width>156</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Remove</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/pixmaps/uninstall.svg</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonRequires" >
+    <property name="geometry" >
+     <rect>
+      <x>580</x>
+      <y>200</y>
+      <width>156</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Requires</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/pixmaps/requires.svg</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonDepends" >
+    <property name="geometry" >
+     <rect>
+      <x>410</x>
+      <y>240</y>
+      <width>157</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Depends</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/pixmaps/depends.svg</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonHelp" >
+    <property name="geometry" >
+     <rect>
+      <x>0</x>
+      <y>510</y>
+      <width>319</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Help</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/pixmaps/help.svg</iconset>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar" />
  </widget>

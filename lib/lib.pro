@@ -3,13 +3,13 @@
 ######################################################################
 
 TEMPLATE = lib
-VERSION = 0.0.1
+VERSION = 0.1
 TARGET = qpackagekit
 DEPENDPATH += .
 INCLUDEPATH += .
 
-CONFIG += qdbus
+QT += dbus
 
 # Input
-HEADERS += QPackageKitInterface.h QPackageKitClient.h PkPackage.h
-SOURCES += QPackageKitInterface.cpp QPackageKitClient.cpp enums.cpp PkPackage.cpp
+HEADERS += proxy.h Connection.h
+SOURCES += proxy.cpp Connection.cpp

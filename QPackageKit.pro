@@ -3,5 +3,5 @@
 ######################################################################
 
 TEMPLATE = subdirs
-SUBDIRS = lib gui
+SUBDIRS = lib gui pk-update-icon-qt
 
