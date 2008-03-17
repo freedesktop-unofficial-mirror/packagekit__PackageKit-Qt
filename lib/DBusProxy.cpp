@@ -1,4 +1,4 @@
-#include "proxy.h"
+#include "DBusProxy.h"
 
 namespace PackageKit {
 

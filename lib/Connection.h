@@ -1,5 +1,5 @@
 #include <QtDBus>
-#include "proxy.h"
+#include "DBusProxy.h"
 
 #define PK_PATH "/org/freedesktop/PackageKit"
 
