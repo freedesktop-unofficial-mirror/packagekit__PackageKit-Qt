@@ -1,7 +1,6 @@
 #include <QtDBus>
 #include "DBusProxy.h"
 
-#define PK_PATH "/org/freedesktop/PackageKit"
 
 namespace PackageKit {
 
@@ -16,7 +15,9 @@ public:
 	bool valid();
 
 signals:
-	// Changed can not be implemented, as Qt does not notify us of connections/disconnections...
+	void changed(bool connected);
+private slots:
+	void ownerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
 
 private:
 	DBusProxy *proxy;
