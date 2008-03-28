@@ -1,3 +1,6 @@
+#ifndef CONNECTION_H
+#define CONNECTION_H
+
 #include <QtDBus>
 #include "DBusProxy.h"
 
@@ -24,3 +27,5 @@ private:
 };
 
 } // End namespace PackageKit
+
+#endif
