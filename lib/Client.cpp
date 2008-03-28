@@ -13,16 +13,22 @@ Client::~Client() {
 
 }
 
-bool Client::setTid(QString newTid) {
-	_tid = newTid;
-}
-
 bool Client::setPromiscuous(bool enabled) {
 	if(_tid != QString()) { // The doc says we can only set promiscuous mode on a tid-less instance
 		return false;
 	}
 	_promiscuous = enabled;
 	return true;
+}
+
+// Tid related functions
+
+QString Client::getTid() {
+	return _tid = proxy->GetTid().value();
+}
+
+void Client::setTid(QString newTid) {
+	_tid = newTid;
 }
 
 const QString& Client::tid() {
@@ -32,4 +38,8 @@ const QString& Client::tid() {
 bool Client::allowCancel() {
 	if(_tid == QString()) return false;
 	return proxy->GetAllowCancel(_tid).value();
+}
+
+Status::Value Client::status() {
+	return (Status::Value)EnumFromString<Status>(proxy->GetStatus(_tid).value());
 }

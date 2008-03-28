@@ -4,6 +4,7 @@
 #include <QtCore>
 
 #include "DBusProxy.h"
+#include "Status.h"
 
 namespace PackageKit {
 
@@ -15,10 +16,12 @@ public:
 	Client(QObject *parent = 0);
 	~Client();
 
-	bool setTid(QString newTid);
 	bool setPromiscuous(bool enabled);
+	QString getTid();
+	void setTid(QString newTid);
 	const QString& tid();
 	bool allowCancel();
+	Status::Value status();
 
 private:
 	DBusProxy *proxy;

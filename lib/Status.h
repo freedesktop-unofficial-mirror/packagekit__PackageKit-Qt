@@ -13,7 +13,7 @@ class Status : public QObject {
 	Q_ENUMS(Value)
 
 public:
-	static const enum {
+	enum Value {
 		Setup,
 		Wait,
 		Query,
@@ -32,7 +32,7 @@ public:
 		Finished,
 		Cancel,
 		Unknown
-	} Value;
+	};
 };
 
 } // End namespace PackageKit
