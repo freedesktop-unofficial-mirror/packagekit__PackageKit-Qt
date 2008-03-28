@@ -43,3 +43,7 @@ bool Client::allowCancel() {
 Status::Value Client::status() {
 	return (Status::Value)EnumFromString<Status>(proxy->GetStatus(_tid).value());
 }
+
+void Client::searchName(QString filter, QString name) {
+	proxy->SearchName(_tid, filter, name);
+}

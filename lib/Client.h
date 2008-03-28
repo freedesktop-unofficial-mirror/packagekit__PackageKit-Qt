@@ -23,6 +23,8 @@ public:
 	bool allowCancel();
 	Status::Value status();
 
+	void searchName(QString filter, QString name);
+
 private:
 	DBusProxy *proxy;
 	QString _tid; // TID this instance is tied to. QString() means no tying
