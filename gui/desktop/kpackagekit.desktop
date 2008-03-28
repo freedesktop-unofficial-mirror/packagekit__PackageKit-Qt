@@ -1,0 +1,15 @@
+[Desktop Entry]
+DocPath=kcontrol/index.html
+Encoding=UTF-8
+Exec=kcmshell4 kpk_addrm kpk_settings kpk_update
+Icon=applications-other
+ServiceTypes=KCModule,KCModuleInit
+Type=Service
+X-KDE-ParentApp=kcontrol
+X-KDE-System-Settings-Parent-Category=application
+
+Name=KPackagekit
+
+Comment=Add and Remove Software
+
+X-KDE-Keywords=application,software,package,install,remove,update,upgrade

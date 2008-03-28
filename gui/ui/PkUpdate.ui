@@ -1,0 +1,103 @@
+<ui version="4.0" >
+ <class>PkUpdate</class>
+ <widget class="QWidget" name="PkUpdate" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>668</width>
+    <height>371</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="pushButton" >
+   <property name="geometry" >
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>145</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Check for Updates</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>10</y>
+     <width>105</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Force Refresh</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3" >
+   <property name="geometry" >
+    <rect>
+     <x>300</x>
+     <y>10</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Update System</string>
+   </property>
+  </widget>
+  <widget class="QListView" name="listView" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>241</width>
+     <height>311</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListView" name="listView_2" >
+   <property name="geometry" >
+    <rect>
+     <x>260</x>
+     <y>50</y>
+     <width>401</width>
+     <height>191</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListView" name="listView_3" >
+   <property name="geometry" >
+    <rect>
+     <x>260</x>
+     <y>240</y>
+     <width>401</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>470</x>
+     <y>10</y>
+     <width>161</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Update Package</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
