@@ -11,5 +11,5 @@ INCLUDEPATH += .
 QT += dbus
 
 # Input
-HEADERS += DBusProxy.h Connection.h constants.h Client.h Status.h Package.h
+HEADERS += DBusProxy.h Connection.h constants.h Client.h Status.h Role.h Package.h
 SOURCES += DBusProxy.cpp Connection.cpp Client.cpp Package.cpp
