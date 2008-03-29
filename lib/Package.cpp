@@ -21,6 +21,10 @@ Package::Package(const QString& packageId, const QString& info, const QString& s
 	_data = tokens.at(3);
 }
 
+const QString Package::id() {
+	return _name + ";" + _version + ";" + _arch + ";" + _data;
+}
+
 const QString& Package::name() {
 	return _name;
 }
