@@ -5,13 +5,13 @@
 
 namespace PackageKit {
 
-class NeworkDummy : public Network {
+class NetworkDummy : public Network {
 
 	Q_OBJECT
 
 public:
-	NeworkDummy(QObject *parent = 0);
-	~NeworkDummy();
+	NetworkDummy(QObject *parent = 0);
+	~NetworkDummy();
 
 	virtual bool isOnline() { return true;};
 };

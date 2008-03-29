@@ -15,7 +15,7 @@ public:
 
 	bool isOnline();
 public signals:
-	void online(bool arg1); 
+	void online(bool status); 
 };
 
 } // End namespace PackageKit
