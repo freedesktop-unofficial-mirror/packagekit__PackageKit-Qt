@@ -1,2 +1,2 @@
 #!/bin/sh
-LD_LIBRARY_PATH=../..:$LD_LIBRARY_PATH ./Enum
+LD_LIBRARY_PATH=../..:$LD_LIBRARY_PATH ./testEnum

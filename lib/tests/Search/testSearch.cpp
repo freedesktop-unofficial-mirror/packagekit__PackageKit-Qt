@@ -1,5 +1,4 @@
 #include <QtCore>
-#include <QtDBus>
 
 #include "../../Client.h"
 
@@ -9,6 +8,6 @@ int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
 	Client c;
 	qDebug() << "We have tid " << c.tid();
-	qDebug() << "Status is " << EnumToString<Status>(c.status());
+	c.searchName("none", "vim");
 	return app.exec();
 }

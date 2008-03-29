@@ -7,6 +7,10 @@ using namespace PackageKit;
 Client::Client(QObject *parent) : QObject(parent) {
 	proxy = new DBusProxy(PK_NAME, PK_PATH, QDBusConnection::systemBus(), this);
 	_promiscuous = false; // Don't listen on all signals by default
+	getTid();
+
+	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&, const QString&)), this,
+									SLOT(Package_cb(const QString&, const QString&, const QString&, const QString&)));
 }
 
 Client::~Client() {
@@ -23,8 +27,8 @@ bool Client::setPromiscuous(bool enabled) {
 
 // Tid related functions
 
-QString Client::getTid() {
-	return _tid = proxy->GetTid().value();
+void Client::getTid() {
+	_tid = proxy->GetTid().value();
 }
 
 void Client::setTid(QString newTid) {
@@ -45,5 +49,12 @@ Status::Value Client::status() {
 }
 
 void Client::searchName(QString filter, QString name) {
+	qDebug() << "searching for"<< name << "with filters" << filter;
 	proxy->SearchName(_tid, filter, name);
+}
+
+void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {
+	if(!_promiscuous && tid != _tid) return;
+	qDebug() << "tid" << tid << "info" << info << "id" << package_id << "sum" << summary;
+	emit newPackage(new Package(package_id));
 }

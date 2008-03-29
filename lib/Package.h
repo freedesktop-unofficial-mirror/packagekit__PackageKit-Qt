@@ -10,7 +10,7 @@ class Package : public QObject {
 	Q_OBJECT
 
 public:
-	Package(QString packageId, QObject *parent = 0);
+	Package(const QString& packageId, QObject *parent = 0);
 	const QString& name();
 	const QString& version();
 	const QString& arch();

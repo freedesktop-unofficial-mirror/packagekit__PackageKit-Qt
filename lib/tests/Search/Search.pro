@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = testStatus
+TARGET = testSearch
 DEPENDPATH += .
 INCLUDEPATH += .
 LIBS += -L../../ -lqpackagekit
@@ -11,4 +11,4 @@ QT += dbus
 
 # Input
 HEADERS += 
-SOURCES += testStatus.cpp
+SOURCES += testSearch.cpp

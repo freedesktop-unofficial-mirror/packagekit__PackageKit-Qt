@@ -2,8 +2,9 @@
 
 using namespace PackageKit;
 
-Package::Package(QString packageId, QObject *parent) : QObject(parent) {
+Package::Package(const QString& packageId, QObject *parent) : QObject(parent) {
 	QStringList tokens = packageId.split(';');
+	if(tokens.size() != 3) qWarning("Package : bad package id");
 	_name = tokens.at(0);
 	_version = tokens.at(1);
 	_arch = tokens.at(2);
