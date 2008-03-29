@@ -56,5 +56,9 @@ void Client::searchName(QString filter, QString name) {
 void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {
 	if(!_promiscuous && tid != _tid) return;
 	qDebug() << "tid" << tid << "info" << info << "id" << package_id << "sum" << summary;
-	emit newPackage(new Package(package_id));
+	emit newPackage(new Package(package_id, info, summary));
+}
+
+Role::Value Client::role(QString &package_id) {
+	return (Role::Value)EnumFromString<Role>(proxy->GetRole(_tid, package_id));
 }

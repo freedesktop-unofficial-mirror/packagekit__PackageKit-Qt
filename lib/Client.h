@@ -5,6 +5,7 @@
 
 #include "DBusProxy.h"
 #include "Status.h"
+#include "Role.h"
 #include "Package.h"
 
 namespace PackageKit {
@@ -22,6 +23,7 @@ public:
 	const QString& tid();
 	bool allowCancel();
 	Status::Value status();
+	Role::Value role(QString &package_id);
 
 	void searchName(QString filter, QString name);
 
