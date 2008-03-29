@@ -8,3 +8,4 @@ After having installed a package, the program segfaults when I want to do a sear
   I don't call any function on NULL, so I don't see why this does not work.
 
 This is an interactive file : add your own bug here
+
