@@ -6,6 +6,7 @@
 #include "DBusProxy.h"
 #include "Status.h"
 #include "Role.h"
+#include "Exit.h"
 #include "Package.h"
 
 namespace PackageKit {
@@ -22,6 +23,7 @@ public:
 	void setTid(QString newTid);
 	const QString& tid();
 	bool allowCancel();
+
 	Status::Value status();
 	Role::Value role(QString &package_id);
 
@@ -29,6 +31,7 @@ public:
 
 signals:
 	void newPackage(Package *p);
+	void Finished(Exit::Value status, uint runtime);
 
 private:
 	DBusProxy *proxy;
@@ -38,6 +41,7 @@ private:
 
 private slots:
 	void Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary);
+	void Finished_cb(const QString& tid, const QString& status, uint runtime);
 
 };
 

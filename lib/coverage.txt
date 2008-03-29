@@ -1,101 +1,119 @@
-                CHECK
-               IF DONE
-PkClient*         X pk_client_new                       (void);
-gboolean          X pk_client_set_tid                   (PkClient *client,
-                                                         const gchar *tid);
-gboolean          X pk_client_set_promiscuous           (PkClient *client,
-                                                         gboolean enabled);
-gchar*            X pk_client_get_tid                   (PkClient *client);
-gboolean            pk_client_set_use_buffer            (PkClient *client,
-                                                         gboolean use_buffer);
-gboolean            pk_client_set_synchronous           (PkClient *client,
-                                                         gboolean synchronous);
-gboolean            pk_client_set_name_filter           (PkClient *client,
-                                                         gboolean name_filter);
-gboolean            pk_client_get_use_buffer            (PkClient *client);
-gboolean         X  pk_client_get_allow_cancel          (PkClient *client);
-gboolean         X  pk_client_get_status                (PkClient *client,
-                                                         PkStatusEnum *status);
-gboolean         X  pk_client_get_role                  (PkClient *client,
-                                                         PkRoleEnum *role,
-                                                         gchar **package_id);
-gboolean            pk_client_get_progress              (PkClient *client,
-                                                         guint *percentage,
-                                                         guint *subpercentage,
-                                                         guint *elapsed,
-                                                         guint *remaining);
-gboolean            pk_client_get_package               (PkClient *client,
-                                                         gchar **package_id);
-gboolean            pk_client_cancel                    (PkClient *client);
-gboolean            pk_client_get_updates               (PkClient *client);
-gboolean            pk_client_update_system             (PkClient *client);
-gboolean         X  pk_client_search_name               (PkClient *client,
-                                                         const gchar *filter,
-                                                         const gchar *search);
-gboolean            pk_client_search_details            (PkClient *client,
-                                                         const gchar *filter,
-                                                         const gchar *search);
-gboolean            pk_client_search_group              (PkClient *client,
-                                                         const gchar *filter,
-                                                         const gchar *search);
-gboolean            pk_client_search_file               (PkClient *client,
-                                                         const gchar *filter,
-                                                         const gchar *search);
-gboolean            pk_client_get_depends               (PkClient *client,
-                                                         const gchar *package_id,
-                                                         gboolean recursive);
-gboolean            pk_client_get_update_detail         (PkClient *client,
-                                                         const gchar *package_id);
-gboolean            pk_client_get_requires              (PkClient *client,
-                                                         const gchar *package_id,
-                                                         gboolean recursive);
-gboolean            pk_client_get_description           (PkClient *client,
-                                                         const gchar *package_id);
-gboolean            pk_client_get_files                 (PkClient *client,
-                                                         const gchar *package_id);
-gboolean            pk_client_remove_package            (PkClient *client,
-                                                         const gchar *package,
-                                                         gboolean allow_deps);
-gboolean            pk_client_refresh_cache             (PkClient *client,
-                                                         gboolean force);
-gboolean            pk_client_install_package           (PkClient *client,
-                                                         const gchar *package_id);
-gboolean            pk_client_update_package            (PkClient *client,
-                                                         const gchar *package_id);
-gboolean            pk_client_install_file              (PkClient *client,
-                                                         const gchar *full_path);
-gboolean            pk_client_service_pack              (PkClient *client,
-                                                         const gchar *location);
-gboolean            pk_client_resolve                   (PkClient *client,
-                                                         const gchar *filter,
-                                                         const gchar *package);
-gboolean            pk_client_rollback                  (PkClient *client,
-                                                         const gchar *transaction_id);
-gboolean            pk_client_requeue                   (PkClient *client);
-gboolean            pk_client_get_repo_list             (PkClient *client);
-gboolean            pk_client_repo_enable               (PkClient *client,
-                                                         const gchar *repo_id,
-                                                         gboolean enabled);
-gboolean            pk_client_repo_set_data             (PkClient *client,
-                                                         const gchar *repo_id,
-                                                         const gchar *parameter,
-                                                         const gchar *value);
-guint               pk_client_package_buffer_get_size   (PkClient *client);
-PkPackageItem*      pk_client_package_buffer_get_item   (PkClient *client,
-                                                         guint item);
-PkRestartEnum       pk_client_get_require_restart       (PkClient *client);
-PkEnumList*         pk_client_get_actions               (PkClient *client);
-PkEnumList*         pk_client_get_filters               (PkClient *client);
-PkEnumList*         pk_client_get_groups                (PkClient *client);
-gboolean            pk_client_reset                     (PkClient *client);
-gboolean            pk_client_get_old_transactions      (PkClient *client,
-                                                         guint number);
-gboolean            pk_client_get_backend_detail        (PkClient *client,
-                                                         gchar **name,
-                                                         gchar **author);
-gboolean            pk_client_get_time_since_action     (PkClient *client,
-                                                         PkRoleEnum role,
-                                                         guint *seconds);
-gboolean            pk_client_is_caller_active          (PkClient *client,
-                                                         gboolean *is_active);
-
+ CHECK
+IF DONE
+   X    pk_client_new                       (void);
+   X    pk_client_set_tid                   (PkClient *client,
+                                             const gchar *tid);
+   X    pk_client_set_promiscuous           (PkClient *client,
+                                             gboolean enabled);
+   X    pk_client_get_tid                   (PkClient *client);
+        pk_client_set_use_buffer            (PkClient *client,
+                                             gboolean use_buffer);
+        pk_client_set_synchronous           (PkClient *client,
+                                             gboolean synchronous);
+        pk_client_set_name_filter           (PkClient *client,
+                                             gboolean name_filter);
+        pk_client_get_use_buffer            (PkClient *client);
+  X     pk_client_get_allow_cancel          (PkClient *client);
+  X     pk_client_get_status                (PkClient *client,
+                                             PkStatusEnum *status);
+  X     pk_client_get_role                  (PkClient *client,
+                                             PkRoleEnum *role,
+                                             gchar **package_id);
+        pk_client_get_progress              (PkClient *client,
+                                             guint *percentage,
+                                             guint *subpercentage,
+                                             guint *elapsed,
+                                             guint *remaining);
+        pk_client_get_package               (PkClient *client,
+                                             gchar **package_id);
+        pk_client_cancel                    (PkClient *client);
+        pk_client_get_updates               (PkClient *client);
+        pk_client_update_system             (PkClient *client);
+  X     pk_client_search_name               (PkClient *client,
+                                             const gchar *filter,
+                                             const gchar *search);
+        pk_client_search_details            (PkClient *client,
+                                             const gchar *filter,
+                                             const gchar *search);
+        pk_client_search_group              (PkClient *client,
+                                             const gchar *filter,
+                                             const gchar *search);
+        pk_client_search_file               (PkClient *client,
+                                             const gchar *filter,
+                                             const gchar *search);
+        pk_client_get_depends               (PkClient *client,
+                                             const gchar *package_id,
+                                             gboolean recursive);
+        pk_client_get_update_detail         (PkClient *client,
+                                             const gchar *package_id);
+        pk_client_get_requires              (PkClient *client,
+                                             const gchar *package_id,
+                                             gboolean recursive);
+        pk_client_get_description           (PkClient *client,
+                                             const gchar *package_id);
+        pk_client_get_files                 (PkClient *client,
+                                             const gchar *package_id);
+        pk_client_remove_package            (PkClient *client,
+                                             const gchar *package,
+                                             gboolean allow_deps);
+        pk_client_refresh_cache             (PkClient *client,
+                                             gboolean force);
+        pk_client_install_package           (PkClient *client,
+                                             const gchar *package_id);
+        pk_client_update_package            (PkClient *client,
+                                             const gchar *package_id);
+        pk_client_install_file              (PkClient *client,
+                                             const gchar *full_path);
+        pk_client_service_pack              (PkClient *client,
+                                             const gchar *location);
+        pk_client_resolve                   (PkClient *client,
+                                             const gchar *filter,
+                                             const gchar *package);
+        pk_client_rollback                  (PkClient *client,
+                                             const gchar *transaction_id);
+        pk_client_requeue                   (PkClient *client);
+        pk_client_get_repo_list             (PkClient *client);
+        pk_client_repo_enable               (PkClient *client,
+                                             const gchar *repo_id,
+                                             gboolean enabled);
+        pk_client_repo_set_data             (PkClient *client,
+                                             const gchar *repo_id,
+                                             const gchar *parameter,
+                                             const gchar *value);
+        pk_client_package_buffer_get_size   (PkClient *client);
+        pk_client_package_buffer_get_item   (PkClient *client,
+                                             guint item);
+        pk_client_get_require_restart       (PkClient *client);
+        pk_client_get_actions               (PkClient *client);
+        pk_client_get_filters               (PkClient *client);
+        pk_client_get_groups                (PkClient *client);
+        pk_client_reset                     (PkClient *client);
+        pk_client_get_old_transactions      (PkClient *client,
+                                             guint number);
+        pk_client_get_backend_detail        (PkClient *client,
+                                             gchar **name,
+                                             gchar **author);
+        pk_client_get_time_since_action     (PkClient *client,
+                                             PkRoleEnum role,
+                                             guint *seconds);
+        pk_client_is_caller_active          (PkClient *client,
+                                             gboolean *is_active);
+		SIGNALS :
+        AllowCancel
+        CallerActiveChanged
+        Description
+        ErrorCode
+        Files
+        Finished
+        Locked
+        Message
+  X     Package
+        ProgressChanged
+        RepoDetail
+        RepoSignatureRequired
+        RequireRestart
+        StatusChanged
+        Transaction
+        TransactionListChanged
+        UpdateDetail
+        UpdatesChanged

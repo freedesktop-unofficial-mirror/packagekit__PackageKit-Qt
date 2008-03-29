@@ -12,6 +12,7 @@ class Package : public QObject {
 public:
 	Package(const QString& packageId, QObject *parent = 0);
 	Package(const QString& packageId, const QString& info, const QString& summary, QObject *parent = 0);
+	const QString id();
 	const QString& name();
 	const QString& version();
 	const QString& arch();

@@ -11,6 +11,7 @@ Client::Client(QObject *parent) : QObject(parent) {
 
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&, const QString&)), this,
 									SLOT(Package_cb(const QString&, const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(Finished(const QString&, const QString&, uint)), this, SLOT(Finished_cb(const QString&, const QString&, uint)));
 }
 
 Client::~Client() {
@@ -48,10 +49,16 @@ Status::Value Client::status() {
 	return (Status::Value)EnumFromString<Status>(proxy->GetStatus(_tid).value());
 }
 
+Role::Value Client::role(QString &package_id) {
+	return (Role::Value)EnumFromString<Role>(proxy->GetRole(_tid, package_id));
+}
+
 void Client::searchName(QString filter, QString name) {
 	qDebug() << "searching for"<< name << "with filters" << filter;
 	proxy->SearchName(_tid, filter, name);
 }
+
+//// Signal callbacks
 
 void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {
 	if(!_promiscuous && tid != _tid) return;
@@ -59,6 +66,7 @@ void Client::Package_cb(const QString& tid, const QString& info, const QString& 
 	emit newPackage(new Package(package_id, info, summary));
 }
 
-Role::Value Client::role(QString &package_id) {
-	return (Role::Value)EnumFromString<Role>(proxy->GetRole(_tid, package_id));
+void Client::Finished_cb(const QString& tid, const QString& status, uint runtime) {
+	if(!_promiscuous && tid != _tid) return;
+	emit Finished((Exit::Value)EnumFromString<Exit>(status), runtime);
 }
