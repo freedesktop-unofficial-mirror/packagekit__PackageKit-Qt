@@ -28,10 +28,14 @@ public:
 	Role::Value role(QString &package_id);
 
 	void searchName(QString filter, QString name);
+	void cancel();
+
+	void backendDetails(QString *name, QString *author);
 
 signals:
 	void newPackage(Package *p);
 	void Finished(Exit::Value status, uint runtime);
+	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
 private:
 	DBusProxy *proxy;
@@ -42,6 +46,7 @@ private:
 private slots:
 	void Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary);
 	void Finished_cb(const QString& tid, const QString& status, uint runtime);
+	void ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
 };
 

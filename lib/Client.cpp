@@ -54,8 +54,19 @@ Role::Value Client::role(QString &package_id) {
 }
 
 void Client::searchName(QString filter, QString name) {
-	qDebug() << "searching for"<< name << "with filters" << filter;
 	proxy->SearchName(_tid, filter, name);
+}
+
+void Client::cancel() {
+	proxy->Cancel(_tid);
+}
+
+
+void Client::backendDetails(QString *name, QString *author) {
+	QString n, a;
+	n = proxy->GetBackendDetail(a);
+	name = &n;
+	author = &a;
 }
 
 //// Signal callbacks
@@ -69,4 +80,9 @@ void Client::Package_cb(const QString& tid, const QString& info, const QString& 
 void Client::Finished_cb(const QString& tid, const QString& status, uint runtime) {
 	if(!_promiscuous && tid != _tid) return;
 	emit Finished((Exit::Value)EnumFromString<Exit>(status), runtime);
+}
+
+void Client::ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining) {
+	if(!_promiscuous && tid != _tid) return;
+	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
