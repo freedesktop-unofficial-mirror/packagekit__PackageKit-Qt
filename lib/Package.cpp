@@ -48,3 +48,7 @@ const QString& Package::info() {
 const QString& Package::summary() {
 	return _summary;
 }
+
+bool Package::operator==(const Package &other) const {
+	return const_cast<Package*>(this)->id() == const_cast<Package&>(other).id();
+}

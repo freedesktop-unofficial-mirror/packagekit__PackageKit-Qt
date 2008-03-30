@@ -16,6 +16,7 @@ Client::Client(QObject *parent) : QObject(parent) {
 														SLOT(ProgressChanged_cb(const QString&, uint, uint, uint, uint)));
 	connect(proxy, SIGNAL(Description(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)),
 					this, SLOT(Description_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
+	connect(proxy, SIGNAL(Files(const QString&, const QString&, const QString&)), this, SLOT(Files_cb(const QString&, const QString&, const QString&)));
 }
 
 Client::~Client() {
@@ -110,8 +111,7 @@ void Client::Package_cb(const QString& tid, const QString& info, const QString& 
 void Client::Description_cb(const QString &tid, const QString &package_id, const QString &license, const QString &group,
 															const QString &detail, const QString &url, qulonglong size) {
 	if(!_promiscuous && tid != _tid) return;
-	Package *p = new Package(package_id);
-	emit Description(p, license, group, detail, url, size);
+	emit Description(new Package(package_id), license, group, detail, url, size);
 }
 
 void Client::Finished_cb(const QString& tid, const QString& status, uint runtime) {
@@ -124,3 +124,7 @@ void Client::ProgressChanged_cb(const QString& tid, uint percentage, uint subper
 	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
 
+void Client::Files_cb(const QString& tid, const QString& package_id, const QString& files) {
+	if(!_promiscuous && tid != _tid) return;
+	emit Files(new Package(package_id), files.split(";"));
+}

@@ -43,6 +43,7 @@ public:
 signals:
 	void newPackage(Package *p);
 	void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
+	void Files(Package *p, QStringList files);
 	void Finished(Exit::Value status, uint runtime);
 	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
@@ -55,6 +56,7 @@ private:
 private slots:
 	void Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary);
     void Description_cb(const QString& tid, const QString& package_id, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
+	void Files_cb(const QString& tid, const QString& package_id, const QString& files);
 	void Finished_cb(const QString& tid, const QString& status, uint runtime);
 	void ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
 

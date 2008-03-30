@@ -20,6 +20,8 @@ public:
 	const QString& info();
 	const QString& summary();
 
+	bool operator==(const Package &other) const;
+
 private:
 	QString _name, _version, _arch, _data, _info, _summary;
 };
