@@ -32,10 +32,10 @@ IF DONE
   X     pk_client_search_name               (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
-        pk_client_search_details            (PkClient *client,
+  X     pk_client_search_details            (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
-        pk_client_search_group              (PkClient *client,
+  X     pk_client_search_group              (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
         pk_client_search_file               (PkClient *client,

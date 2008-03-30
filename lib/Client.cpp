@@ -57,6 +57,14 @@ void Client::searchName(QString filter, QString name) {
 	proxy->SearchName(_tid, filter, name);
 }
 
+void Client::searchDetails(QString filter, QString search) {
+	proxy->SearchDetails(_tid, filter, search);
+}
+
+void Client::searchGroup(QString filter, QString group) {
+	proxy->SearchGroup(_tid, filter, group);
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }

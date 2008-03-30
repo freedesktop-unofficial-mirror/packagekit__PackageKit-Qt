@@ -28,6 +28,8 @@ public:
 	Role::Value role(QString &package_id);
 
 	void searchName(QString filter, QString name);
+	void searchDetails(QString filter, QString search);
+	void searchGroup(QString filter, QString group);
 	void cancel();
 
 	void backendDetails(QString *name, QString *author);
