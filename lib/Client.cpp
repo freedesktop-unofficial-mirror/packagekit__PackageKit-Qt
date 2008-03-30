@@ -12,6 +12,10 @@ Client::Client(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&, const QString&)), this,
 									SLOT(Package_cb(const QString&, const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Finished(const QString&, const QString&, uint)), this, SLOT(Finished_cb(const QString&, const QString&, uint)));
+	connect(proxy, SIGNAL(ProgressChanged(const QString&, uint, uint, uint, uint)), this,
+														SLOT(ProgressChanged_cb(const QString&, uint, uint, uint, uint)));
+	connect(proxy, SIGNAL(Description(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)),
+					this, SLOT(Description_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
 }
 
 Client::~Client() {
@@ -69,6 +73,14 @@ void Client::searchFile(QString filter, QString file) {
 	proxy->SearchFile(_tid, filter, file);
 }
 
+void Client::getDescription(QString package_id) {
+	proxy->GetDescription(_tid, package_id);
+}
+
+void Client::getDescription(Package *p) {
+	getDescription(p->id());
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }
@@ -95,6 +107,13 @@ void Client::Package_cb(const QString& tid, const QString& info, const QString& 
 	emit newPackage(new Package(package_id, info, summary));
 }
 
+void Client::Description_cb(const QString &tid, const QString &package_id, const QString &license, const QString &group,
+															const QString &detail, const QString &url, qulonglong size) {
+	if(!_promiscuous && tid != _tid) return;
+	Package *p = new Package(package_id);
+	emit Description(p, license, group, detail, url, size);
+}
+
 void Client::Finished_cb(const QString& tid, const QString& status, uint runtime) {
 	if(!_promiscuous && tid != _tid) return;
 	emit Finished((Exit::Value)EnumFromString<Exit>(status), runtime);
@@ -104,3 +123,4 @@ void Client::ProgressChanged_cb(const QString& tid, uint percentage, uint subper
 	if(!_promiscuous && tid != _tid) return;
 	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
+
