@@ -65,8 +65,18 @@ void Client::searchGroup(QString filter, QString group) {
 	proxy->SearchGroup(_tid, filter, group);
 }
 
+void Client::searchFile(QString filter, QString file) {
+	proxy->SearchFile(_tid, filter, file);
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
+}
+
+void Client::getProgress() {
+	uint percentage, subpercentage, elapsed, remaining;
+	percentage = proxy->GetProgress(_tid, subpercentage, elapsed, remaining);
+	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
 
 

@@ -30,7 +30,9 @@ public:
 	void searchName(QString filter, QString name);
 	void searchDetails(QString filter, QString search);
 	void searchGroup(QString filter, QString group);
+	void searchFile(QString filter, QString file);
 	void cancel();
+	void getProgress();
 
 	void backendDetails(QString *name, QString *author);
 

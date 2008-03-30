@@ -19,7 +19,7 @@ IF DONE
   X     pk_client_get_role                  (PkClient *client,
                                              PkRoleEnum *role,
                                              gchar **package_id);
-        pk_client_get_progress              (PkClient *client,
+  X     pk_client_get_progress              (PkClient *client,
                                              guint *percentage,
                                              guint *subpercentage,
                                              guint *elapsed,
@@ -38,7 +38,7 @@ IF DONE
   X     pk_client_search_group              (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
-        pk_client_search_file               (PkClient *client,
+  X     pk_client_search_file               (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
         pk_client_get_depends               (PkClient *client,
