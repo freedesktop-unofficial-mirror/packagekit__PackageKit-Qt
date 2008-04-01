@@ -39,6 +39,7 @@ public:
 	void getRequires(Package *p, bool recursive);
 
 	void installPackage(Package *p);
+	void installFile(const QString& path);
 
 	void cancel();
 	void getProgress();
