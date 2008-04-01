@@ -42,6 +42,7 @@ public:
 	void refreshCache(bool force);
 
 	void backendDetails(QString *name, QString *author);
+	QStringList getActions();
 	QStringList getFilters();
 	QStringList getGroups();
 

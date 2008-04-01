@@ -111,6 +111,11 @@ void Client::backendDetails(QString *name, QString *author) {
 	author = &a;
 }
 
+QStringList Client::getActions() {
+	QString actions = proxy->GetActions();
+	return actions.split(";");
+}
+
 QStringList Client::getFilters() {
 	QString filters = proxy->GetFilters();
 	return filters.split(";");

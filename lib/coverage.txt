@@ -84,9 +84,9 @@ IF DONE
         pk_client_package_buffer_get_item   (PkClient *client,
                                              guint item);
         pk_client_get_require_restart       (PkClient *client);
-        pk_client_get_actions               (PkClient *client);
+  X     pk_client_get_actions               (PkClient *client);
   X     pk_client_get_filters               (PkClient *client);
-        pk_client_get_groups                (PkClient *client);
+  X     pk_client_get_groups                (PkClient *client);
         pk_client_reset                     (PkClient *client);
         pk_client_get_old_transactions      (PkClient *client,
                                              guint number);
