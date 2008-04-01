@@ -114,6 +114,10 @@ void Client::updatePackage(Package *p) {
 	proxy->UpdatePackage(_tid, p->id());
 }
 
+void Client::updateSystem() {
+	proxy->UpdateSystem(_tid);
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }
