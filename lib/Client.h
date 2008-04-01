@@ -27,18 +27,22 @@ public:
 	Status::Value status();
 	Role::Value role(QString &package_id);
 
-	void searchName(QString filter, QString name);
-	void searchDetails(QString filter, QString search);
-	void searchGroup(QString filter, QString group);
-	void searchFile(QString filter, QString file);
+	void searchName(const QString& filter, const QString& name);
+	void searchDetails(const QString& filter, const QString& search);
+	void searchGroup(const QString& filter, const QString& group);
+	void searchFile(const QString& filter, const QString& file);
+	void getPackage(const QString& package_id);
 
-	void getDescription(QString package_id);
+	void getDescription(const QString& package_id);
 	void getDescription(Package *p);
+	void getDepends(Package *p, bool recursive);
 
 	void cancel();
 	void getProgress();
+	void refreshCache(bool force);
 
 	void backendDetails(QString *name, QString *author);
+	QStringList getFilters();
 
 signals:
 	void newPackage(Package *p);

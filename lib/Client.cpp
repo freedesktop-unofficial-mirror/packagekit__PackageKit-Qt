@@ -58,28 +58,36 @@ Role::Value Client::role(QString &package_id) {
 	return (Role::Value)EnumFromString<Role>(proxy->GetRole(_tid, package_id));
 }
 
-void Client::searchName(QString filter, QString name) {
+void Client::searchName(const QString& filter, const QString& name) {
 	proxy->SearchName(_tid, filter, name);
 }
 
-void Client::searchDetails(QString filter, QString search) {
+void Client::searchDetails(const QString& filter, const QString& search) {
 	proxy->SearchDetails(_tid, filter, search);
 }
 
-void Client::searchGroup(QString filter, QString group) {
+void Client::searchGroup(const QString& filter, const QString& group) {
 	proxy->SearchGroup(_tid, filter, group);
 }
 
-void Client::searchFile(QString filter, QString file) {
+void Client::searchFile(const QString& filter, const QString& file) {
 	proxy->SearchFile(_tid, filter, file);
 }
 
-void Client::getDescription(QString package_id) {
+void Client::getPackage(const QString& package_id) {
+	proxy->GetPackage(package_id);
+}
+
+void Client::getDescription(const QString& package_id) {
 	proxy->GetDescription(_tid, package_id);
 }
 
 void Client::getDescription(Package *p) {
 	getDescription(p->id());
+}
+
+void Client::getDepends(Package *p, bool recursive) {
+	proxy->GetDepends(_tid, p->id(), recursive);
 }
 
 void Client::cancel() {
@@ -92,12 +100,20 @@ void Client::getProgress() {
 	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
 
+void Client::refreshCache(bool force) {
+	proxy->RefreshCache(_tid, force);
+}
 
 void Client::backendDetails(QString *name, QString *author) {
 	QString n, a;
 	n = proxy->GetBackendDetail(a);
 	name = &n;
 	author = &a;
+}
+
+QStringList Client::getFilters() {
+	QString filters = proxy->GetFilters();
+	return filters.split(";");
 }
 
 //// Signal callbacks

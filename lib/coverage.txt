@@ -24,7 +24,7 @@ IF DONE
                                              guint *subpercentage,
                                              guint *elapsed,
                                              guint *remaining);
-        pk_client_get_package               (PkClient *client,
+  X     pk_client_get_package               (PkClient *client,
                                              gchar **package_id);
   X     pk_client_cancel                    (PkClient *client);
         pk_client_get_updates               (PkClient *client);
@@ -41,7 +41,7 @@ IF DONE
   X     pk_client_search_file               (PkClient *client,
                                              const gchar *filter,
                                              const gchar *search);
-        pk_client_get_depends               (PkClient *client,
+  X     pk_client_get_depends               (PkClient *client,
                                              const gchar *package_id,
                                              gboolean recursive);
         pk_client_get_update_detail         (PkClient *client,
@@ -51,12 +51,12 @@ IF DONE
                                              gboolean recursive);
   X     pk_client_get_description           (PkClient *client,
                                              const gchar *package_id);
-        pk_client_get_files                 (PkClient *client,
+  X     pk_client_get_files                 (PkClient *client,
                                              const gchar *package_id);
         pk_client_remove_package            (PkClient *client,
                                              const gchar *package,
                                              gboolean allow_deps);
-        pk_client_refresh_cache             (PkClient *client,
+  X     pk_client_refresh_cache             (PkClient *client,
                                              gboolean force);
         pk_client_install_package           (PkClient *client,
                                              const gchar *package_id);
@@ -85,7 +85,7 @@ IF DONE
                                              guint item);
         pk_client_get_require_restart       (PkClient *client);
         pk_client_get_actions               (PkClient *client);
-        pk_client_get_filters               (PkClient *client);
+  X     pk_client_get_filters               (PkClient *client);
         pk_client_get_groups                (PkClient *client);
         pk_client_reset                     (PkClient *client);
         pk_client_get_old_transactions      (PkClient *client,
