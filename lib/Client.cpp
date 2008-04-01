@@ -110,6 +110,10 @@ void Client::installFile(const QString& path) {
 	proxy->InstallFile(_tid, path);
 }
 
+void Client::updatePackage(Package *p) {
+	proxy->UpdatePackage(_tid, p->id());
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }

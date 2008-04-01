@@ -60,9 +60,9 @@ IF DONE
                                              gboolean force);
   X     pk_client_install_package           (PkClient *client,
                                              const gchar *package_id);
-        pk_client_update_package            (PkClient *client,
+  X     pk_client_update_package            (PkClient *client,
                                              const gchar *package_id);
-        pk_client_install_file              (PkClient *client,
+  X     pk_client_install_file              (PkClient *client,
                                              const gchar *full_path);
         pk_client_service_pack              (PkClient *client,
                                              const gchar *location);

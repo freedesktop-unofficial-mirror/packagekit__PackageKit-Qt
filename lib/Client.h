@@ -40,6 +40,7 @@ public:
 
 	void installPackage(Package *p);
 	void installFile(const QString& path);
+	void updatePackage(Package *p);
 
 	void cancel();
 	void getProgress();
