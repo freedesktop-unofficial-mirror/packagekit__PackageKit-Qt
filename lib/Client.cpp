@@ -110,6 +110,10 @@ void Client::installFile(const QString& path) {
 	proxy->InstallFile(_tid, path);
 }
 
+void Client::getUpdates() {
+	proxy->GetUpdates(_tid);
+}
+
 void Client::updatePackage(Package *p) {
 	proxy->UpdatePackage(_tid, p->id());
 }

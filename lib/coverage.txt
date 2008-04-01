@@ -27,7 +27,7 @@ IF DONE
   X     pk_client_get_package               (PkClient *client,
                                              gchar **package_id);
   X     pk_client_cancel                    (PkClient *client);
-        pk_client_get_updates               (PkClient *client);
+  X     pk_client_get_updates               (PkClient *client);
   X     pk_client_update_system             (PkClient *client);
   X     pk_client_search_name               (PkClient *client,
                                              const gchar *filter,
