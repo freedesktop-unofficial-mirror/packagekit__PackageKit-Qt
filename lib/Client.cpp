@@ -116,6 +116,11 @@ QStringList Client::getFilters() {
 	return filters.split(";");
 }
 
+QStringList Client::getGroups() {
+	QString groups = proxy->GetGroups();
+	return groups.split(";");
+}
+
 //// Signal callbacks
 
 void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {

@@ -43,6 +43,7 @@ public:
 
 	void backendDetails(QString *name, QString *author);
 	QStringList getFilters();
+	QStringList getGroups();
 
 signals:
 	void newPackage(Package *p);

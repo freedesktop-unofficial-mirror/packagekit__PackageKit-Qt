@@ -90,7 +90,7 @@ IF DONE
         pk_client_reset                     (PkClient *client);
         pk_client_get_old_transactions      (PkClient *client,
                                              guint number);
-        pk_client_get_backend_detail        (PkClient *client,
+  X     pk_client_get_backend_detail        (PkClient *client,
                                              gchar **name,
                                              gchar **author);
         pk_client_get_time_since_action     (PkClient *client,
