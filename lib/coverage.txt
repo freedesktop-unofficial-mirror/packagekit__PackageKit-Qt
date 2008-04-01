@@ -106,7 +106,7 @@ IF DONE
   X     Files
   X     Finished
         Locked
-        Message
+  X     Message
   X     Package
   X     ProgressChanged
         RepoDetail

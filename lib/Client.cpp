@@ -20,6 +20,8 @@ Client::Client(QObject *parent) : QObject(parent) {
 														SLOT(Files_cb(const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&, const QString&)), this,
 													SLOT(ErrorCode_cb(const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(Message(const QString&, const QString&, const QString&)), this,
+													SLOT(Message_cb(const QString&, const QString&, const QString&)));
 }
 
 Client::~Client() {
@@ -161,4 +163,8 @@ void Client::Files_cb(const QString& tid, const QString& package_id, const QStri
 void Client::ErrorCode_cb(const QString& tid, const QString& code, const QString& details) {
 	if(!_promiscuous && tid != _tid) return;
 	emit ErrorCode(code, details);
+}
+
+void Client::Message_cb(const QString& tid, const QString& message, const QString& details) {
+	emit Message(message, details);
 }
