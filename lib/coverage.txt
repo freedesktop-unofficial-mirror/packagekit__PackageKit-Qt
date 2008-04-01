@@ -102,9 +102,9 @@ IF DONE
         AllowCancel
         CallerActiveChanged
   X     Description
-        ErrorCode
-        Files
-        Finished
+  X     ErrorCode
+  X     Files
+  X     Finished
         Locked
         Message
   X     Package

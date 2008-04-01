@@ -52,6 +52,7 @@ signals:
 	void Files(Package *p, QStringList files);
 	void Finished(Exit::Value status, uint runtime);
 	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+	void ErrorCode(const QString& code, const QString& details);
 
 private:
 	DBusProxy *proxy;
@@ -65,6 +66,7 @@ private slots:
 	void Files_cb(const QString& tid, const QString& package_id, const QString& files);
 	void Finished_cb(const QString& tid, const QString& status, uint runtime);
 	void ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
+	void ErrorCode_cb(const QString& tid, const QString& code, const QString& details);
 
 };
 

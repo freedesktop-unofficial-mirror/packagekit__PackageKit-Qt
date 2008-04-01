@@ -15,8 +15,11 @@ Client::Client(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(ProgressChanged(const QString&, uint, uint, uint, uint)), this,
 														SLOT(ProgressChanged_cb(const QString&, uint, uint, uint, uint)));
 	connect(proxy, SIGNAL(Description(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)),
-					this, SLOT(Description_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
-	connect(proxy, SIGNAL(Files(const QString&, const QString&, const QString&)), this, SLOT(Files_cb(const QString&, const QString&, const QString&)));
+			this, SLOT(Description_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
+	connect(proxy, SIGNAL(Files(const QString&, const QString&, const QString&)), this,
+														SLOT(Files_cb(const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&, const QString&)), this,
+													SLOT(ErrorCode_cb(const QString&, const QString&, const QString&)));
 }
 
 Client::~Client() {
@@ -153,4 +156,9 @@ void Client::ProgressChanged_cb(const QString& tid, uint percentage, uint subper
 void Client::Files_cb(const QString& tid, const QString& package_id, const QString& files) {
 	if(!_promiscuous && tid != _tid) return;
 	emit Files(new Package(package_id), files.split(";"));
+}
+
+void Client::ErrorCode_cb(const QString& tid, const QString& code, const QString& details) {
+	if(!_promiscuous && tid != _tid) return;
+	emit ErrorCode(code, details);
 }
