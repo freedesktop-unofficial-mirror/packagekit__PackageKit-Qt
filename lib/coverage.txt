@@ -46,7 +46,7 @@ IF DONE
                                              gboolean recursive);
         pk_client_get_update_detail         (PkClient *client,
                                              const gchar *package_id);
-        pk_client_get_requires              (PkClient *client,
+  X     pk_client_get_requires              (PkClient *client,
                                              const gchar *package_id,
                                              gboolean recursive);
   X     pk_client_get_description           (PkClient *client,
@@ -99,7 +99,7 @@ IF DONE
         pk_client_is_caller_active          (PkClient *client,
                                              gboolean *is_active);
 		SIGNALS :
-        AllowCancel
+  X     AllowCancel
         CallerActiveChanged
   X     Description
   X     ErrorCode

@@ -36,6 +36,7 @@ public:
 	void getDescription(const QString& package_id);
 	void getDescription(Package *p);
 	void getDepends(Package *p, bool recursive);
+	void getRequires(Package *p, bool recursive);
 
 	void cancel();
 	void getProgress();
@@ -47,6 +48,7 @@ public:
 	QStringList getGroups();
 
 signals:
+	void AllowCancel(bool allow_cancel);
 	void newPackage(Package *p);
 	void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
 	void Files(Package *p, QStringList files);
@@ -69,6 +71,7 @@ private slots:
 	void ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
 	void ErrorCode_cb(const QString& tid, const QString& code, const QString& details);
 	void Message_cb(const QString& tid, const QString& message, const QString& details);
+	void AllowCancel_cb(const QString& tid, bool allow_cancel);
 
 };
 

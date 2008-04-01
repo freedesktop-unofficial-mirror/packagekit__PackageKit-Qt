@@ -23,6 +23,7 @@ Client::Client(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(Message(const QString&, const QString&, const QString&)), this,
 													SLOT(Message_cb(const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Locked(bool)), this, SIGNAL(Locked(bool)));
+	connect(proxy, SIGNAL(AllowCancel(const QString&, bool)), this, SLOT(AllowCancel_cb(const QString&, bool)));
 }
 
 Client::~Client() {
@@ -96,6 +97,10 @@ void Client::getDepends(Package *p, bool recursive) {
 	proxy->GetDepends(_tid, p->id(), recursive);
 }
 
+void Client::getRequires(Package *p, bool recursive) {
+	proxy->GetRequires(_tid, p->id(), recursive);
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }
@@ -133,6 +138,10 @@ QStringList Client::getGroups() {
 }
 
 //// Signal callbacks
+void Client::AllowCancel_cb(const QString& tid, bool allow_cancel) {
+	if(!_promiscuous && tid != _tid) return;
+	emit AllowCancel(allow_cancel);
+}
 
 void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {
 	if(!_promiscuous && tid != _tid) return;
@@ -167,6 +176,7 @@ void Client::ErrorCode_cb(const QString& tid, const QString& code, const QString
 }
 
 void Client::Message_cb(const QString& tid, const QString& message, const QString& details) {
+	if(!_promiscuous && tid != _tid) return;
 	emit Message(message, details);
 }
 
