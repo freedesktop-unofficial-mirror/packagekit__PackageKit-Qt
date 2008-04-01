@@ -22,6 +22,7 @@ Client::Client(QObject *parent) : QObject(parent) {
 													SLOT(ErrorCode_cb(const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Message(const QString&, const QString&, const QString&)), this,
 													SLOT(Message_cb(const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(Locked(bool)), this, SIGNAL(Locked(bool)));
 }
 
 Client::~Client() {
@@ -168,3 +169,4 @@ void Client::ErrorCode_cb(const QString& tid, const QString& code, const QString
 void Client::Message_cb(const QString& tid, const QString& message, const QString& details) {
 	emit Message(message, details);
 }
+
