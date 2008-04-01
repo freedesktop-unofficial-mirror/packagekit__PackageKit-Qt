@@ -38,6 +38,8 @@ public:
 	void getDepends(Package *p, bool recursive);
 	void getRequires(Package *p, bool recursive);
 
+	void installPackage(Package *p);
+
 	void cancel();
 	void getProgress();
 	void refreshCache(bool force);

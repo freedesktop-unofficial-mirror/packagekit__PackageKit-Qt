@@ -101,6 +101,10 @@ void Client::getRequires(Package *p, bool recursive) {
 	proxy->GetRequires(_tid, p->id(), recursive);
 }
 
+void Client::installPackage(Package *p) {
+	proxy->InstallPackage(_tid, p->id());
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }

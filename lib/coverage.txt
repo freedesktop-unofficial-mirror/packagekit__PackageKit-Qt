@@ -58,7 +58,7 @@ IF DONE
                                              gboolean allow_deps);
   X     pk_client_refresh_cache             (PkClient *client,
                                              gboolean force);
-        pk_client_install_package           (PkClient *client,
+  X     pk_client_install_package           (PkClient *client,
                                              const gchar *package_id);
         pk_client_update_package            (PkClient *client,
                                              const gchar *package_id);
