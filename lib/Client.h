@@ -58,6 +58,7 @@ signals:
 	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 	void ErrorCode(const QString& code, const QString& details);
 	void Message(const QString& message, const QString& details);
+	void StatusChanged(Status::Value status);
 
 private:
 	DBusProxy *proxy;
@@ -66,6 +67,7 @@ private:
 	bool _promiscuous; // Weither this instance listens on all transactions or not
 
 private slots:
+	void AllowCancel_cb(const QString& tid, bool allow_cancel);
 	void Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary);
     void Description_cb(const QString& tid, const QString& package_id, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
 	void Files_cb(const QString& tid, const QString& package_id, const QString& files);
@@ -73,7 +75,7 @@ private slots:
 	void ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining);
 	void ErrorCode_cb(const QString& tid, const QString& code, const QString& details);
 	void Message_cb(const QString& tid, const QString& message, const QString& details);
-	void AllowCancel_cb(const QString& tid, bool allow_cancel);
+	void StatusChanged_cb(const QString& tid, const QString& status);
 
 };
 

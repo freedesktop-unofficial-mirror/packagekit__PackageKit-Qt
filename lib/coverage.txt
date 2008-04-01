@@ -112,7 +112,7 @@ IF DONE
         RepoDetail
         RepoSignatureRequired
         RequireRestart
-        StatusChanged
+  X     StatusChanged
         Transaction
         TransactionListChanged
         UpdateDetail
