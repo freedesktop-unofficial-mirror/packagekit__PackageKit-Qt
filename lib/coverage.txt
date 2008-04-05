@@ -116,4 +116,4 @@ IF DONE
         Transaction
         TransactionListChanged
   X     UpdateDetail
-        UpdatesChanged
+  X     UpdatesChanged

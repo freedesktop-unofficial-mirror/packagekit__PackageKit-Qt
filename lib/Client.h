@@ -69,6 +69,7 @@ signals:
 	void Message(const QString& message, const QString& details);
 	void StatusChanged(Status::Value status);
 	void RequireRestart(Restart::Value restart, const QString& details);
+	void UpdatesChanged();
 
 private:
 	DBusProxy *proxy;
@@ -88,6 +89,7 @@ private slots:
 	void Message_cb(const QString& tid, const QString& message, const QString& details);
 	void StatusChanged_cb(const QString& tid, const QString& status);
 	void RequireRestart_cb(const QString& tid, const QString& type, const QString& details);
+	void UpdatesChanged_cb(const QString& tid);
 
 };
 

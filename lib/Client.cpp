@@ -30,6 +30,7 @@ Client::Client(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(StatusChanged(const QString&, const QString&)), this, SLOT(StatusChanged_cb(const QString&, const QString&)));
 	connect(proxy, SIGNAL(RequireRestart(const QString&, const QString&, const QString&)), this,
 												SLOT(RequireRestart_cb(const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(UpdatesChanged(const QString&)), this, SLOT(UpdatesChanged_cb(const QString&)));
 }
 
 Client::~Client() {
@@ -222,4 +223,9 @@ void Client::StatusChanged_cb(const QString& tid, const QString& status) {
 void Client::RequireRestart_cb(const QString& tid, const QString& type, const QString& details) {
 	if(!_promiscuous && tid != _tid) return;
 	emit RequireRestart((Restart::Value)EnumFromString<Restart>(type), details);
+}
+
+void Client::UpdatesChanged_cb(const QString& tid) {
+	if(!_promiscuous && tid != _tid) return;
+	emit UpdatesChanged();
 }
