@@ -7,6 +7,7 @@
 #include "Status.h"
 #include "Role.h"
 #include "Exit.h"
+#include "Restart.h"
 #include "Package.h"
 
 namespace PackageKit {
@@ -67,6 +68,7 @@ signals:
 	void ErrorCode(const QString& code, const QString& details);
 	void Message(const QString& message, const QString& details);
 	void StatusChanged(Status::Value status);
+	void RequireRestart(Restart::Value restart, const QString& details);
 
 private:
 	DBusProxy *proxy;
@@ -85,6 +87,7 @@ private slots:
 	void ErrorCode_cb(const QString& tid, const QString& code, const QString& details);
 	void Message_cb(const QString& tid, const QString& message, const QString& details);
 	void StatusChanged_cb(const QString& tid, const QString& status);
+	void RequireRestart_cb(const QString& tid, const QString& type, const QString& details);
 
 };
 

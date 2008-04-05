@@ -28,6 +28,8 @@ Client::Client(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(Locked(bool)), this, SIGNAL(Locked(bool)));
 	connect(proxy, SIGNAL(AllowCancel(const QString&, bool)), this, SLOT(AllowCancel_cb(const QString&, bool)));
 	connect(proxy, SIGNAL(StatusChanged(const QString&, const QString&)), this, SLOT(StatusChanged_cb(const QString&, const QString&)));
+	connect(proxy, SIGNAL(RequireRestart(const QString&, const QString&, const QString&)), this,
+												SLOT(RequireRestart_cb(const QString&, const QString&, const QString&)));
 }
 
 Client::~Client() {
@@ -215,4 +217,9 @@ void Client::Message_cb(const QString& tid, const QString& message, const QStrin
 void Client::StatusChanged_cb(const QString& tid, const QString& status) {
 	if(!_promiscuous && tid != _tid) return;
 	emit StatusChanged((Status::Value)EnumFromString<Status>(status));
+}
+
+void Client::RequireRestart_cb(const QString& tid, const QString& type, const QString& details) {
+	if(!_promiscuous && tid != _tid) return;
+	emit RequireRestart((Restart::Value)EnumFromString<Restart>(type), details);
 }
