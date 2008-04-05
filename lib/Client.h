@@ -44,6 +44,7 @@ public:
 	void getUpdates();
 	void updatePackage(Package *p);
 	void updateSystem();
+	void getUpdateDetail(Package *p);
 
 	void cancel();
 	void getProgress();
@@ -55,8 +56,10 @@ public:
 	QStringList getGroups();
 
 signals:
+	void Locked(bool);
 	void AllowCancel(bool allow_cancel);
 	void newPackage(Package *p);
+	void updateDetail(Package *p, const QString& updates, const QString& obsoletes, const QString& vendor_url, const QString& bugzilla_url, const QString& cve_url, const QString& restart, const QString& update_text);
 	void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
 	void Files(Package *p, QStringList files);
 	void Finished(Exit::Value status, uint runtime);
@@ -74,6 +77,7 @@ private:
 private slots:
 	void AllowCancel_cb(const QString& tid, bool allow_cancel);
 	void Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary);
+	void UpdateDetail_cb(const QString& tid, const QString& package_id, const QString& updates, const QString& obsoletes, const QString& vendor_url, const QString& bugzilla_url, const QString& cve_url, const QString& restart, const QString& update_text);
     void Description_cb(const QString& tid, const QString& package_id, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
 	void Files_cb(const QString& tid, const QString& package_id, const QString& files);
 	void Finished_cb(const QString& tid, const QString& status, uint runtime);

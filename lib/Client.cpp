@@ -11,6 +11,9 @@ Client::Client(QObject *parent) : QObject(parent) {
 
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&, const QString&)), this,
 									SLOT(Package_cb(const QString&, const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&,
+				const QString&, const QString&, const QString&)), this, SLOT(UpdateDetail_cb(const QString&, const QString&,
+				const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Finished(const QString&, const QString&, uint)), this, SLOT(Finished_cb(const QString&, const QString&, uint)));
 	connect(proxy, SIGNAL(ProgressChanged(const QString&, uint, uint, uint, uint)), this,
 														SLOT(ProgressChanged_cb(const QString&, uint, uint, uint, uint)));
@@ -122,6 +125,10 @@ void Client::updateSystem() {
 	proxy->UpdateSystem(_tid);
 }
 
+void Client::getUpdateDetail(Package *p) {
+	proxy->GetUpdateDetail(_tid, p->id());
+}
+
 void Client::cancel() {
 	proxy->Cancel(_tid);
 }
@@ -166,8 +173,12 @@ void Client::AllowCancel_cb(const QString& tid, bool allow_cancel) {
 
 void Client::Package_cb(const QString& tid, const QString& info, const QString& package_id, const QString& summary) {
 	if(!_promiscuous && tid != _tid) return;
-	qDebug() << "tid" << tid << "info" << info << "id" << package_id << "sum" << summary;
 	emit newPackage(new Package(package_id, info, summary));
+}
+
+void Client::UpdateDetail_cb(const QString& tid, const QString& package_id, const QString& updates, const QString& obsoletes, const QString& vendor_url, const QString& bugzilla_url, const QString& cve_url, const QString& restart, const QString& update_text) {
+	if(!_promiscuous && tid != _tid) return;
+	emit updateDetail(new Package(package_id, this), updates, obsoletes, vendor_url, bugzilla_url, cve_url, restart, update_text);
 }
 
 void Client::Description_cb(const QString &tid, const QString &package_id, const QString &license, const QString &group,

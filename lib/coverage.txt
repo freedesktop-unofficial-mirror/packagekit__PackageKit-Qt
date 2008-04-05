@@ -44,7 +44,7 @@ IF DONE
   X     pk_client_get_depends               (PkClient *client,
                                              const gchar *package_id,
                                              gboolean recursive);
-        pk_client_get_update_detail         (PkClient *client,
+  X     pk_client_get_update_detail         (PkClient *client,
                                              const gchar *package_id);
   X     pk_client_get_requires              (PkClient *client,
                                              const gchar *package_id,
