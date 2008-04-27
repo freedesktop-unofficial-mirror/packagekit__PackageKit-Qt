@@ -4,7 +4,7 @@
 
 TEMPLATE = lib
 VERSION = 0.1
-TARGET = qpackagekit
+TARGET = packagekit-qt
 DEPENDPATH += .
 INCLUDEPATH += .
 
