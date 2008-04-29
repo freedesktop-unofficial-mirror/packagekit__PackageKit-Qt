@@ -65,26 +65,32 @@ bool Client::allowCancel() {
 }
 
 Status::Value Client::status() {
+	if(_tid == QString()) getTid();
 	return (Status::Value)EnumFromString<Status>(proxy->GetStatus(_tid).value());
 }
 
 Role::Value Client::role(QString &package_id) {
+	if(_tid == QString()) getTid();
 	return (Role::Value)EnumFromString<Role>(proxy->GetRole(_tid, package_id));
 }
 
 void Client::searchName(const QString& filter, const QString& name) {
+	if(_tid == QString()) getTid();
 	proxy->SearchName(_tid, filter, name);
 }
 
 void Client::searchDetails(const QString& filter, const QString& search) {
+	if(_tid == QString()) getTid();
 	proxy->SearchDetails(_tid, filter, search);
 }
 
 void Client::searchGroup(const QString& filter, const QString& group) {
+	if(_tid == QString()) getTid();
 	proxy->SearchGroup(_tid, filter, group);
 }
 
 void Client::searchFile(const QString& filter, const QString& file) {
+	if(_tid == QString()) getTid();
 	proxy->SearchFile(_tid, filter, file);
 }
 
@@ -93,6 +99,7 @@ void Client::getPackage(const QString& package_id) {
 }
 
 void Client::getDescription(const QString& package_id) {
+	if(_tid == QString()) getTid();
 	proxy->GetDescription(_tid, package_id);
 }
 
@@ -101,48 +108,59 @@ void Client::getDescription(Package *p) {
 }
 
 void Client::getDepends(Package *p, bool recursive) {
+	if(_tid == QString()) getTid();
 	proxy->GetDepends(_tid, p->id(), recursive);
 }
 
 void Client::getRequires(Package *p, bool recursive) {
+	if(_tid == QString()) getTid();
 	proxy->GetRequires(_tid, p->id(), recursive);
 }
 
 void Client::installPackage(Package *p) {
+	if(_tid == QString()) getTid();
 	proxy->InstallPackage(_tid, p->id());
 }
 
 void Client::installFile(const QString& path) {
+	if(_tid == QString()) getTid();
 	proxy->InstallFile(_tid, path);
 }
 
 void Client::getUpdates() {
+	if(_tid == QString()) getTid();
 	proxy->GetUpdates(_tid);
 }
 
 void Client::updatePackage(Package *p) {
+	if(_tid == QString()) getTid();
 	proxy->UpdatePackage(_tid, p->id());
 }
 
 void Client::updateSystem() {
+	if(_tid == QString()) getTid();
 	proxy->UpdateSystem(_tid);
 }
 
 void Client::getUpdateDetail(Package *p) {
+	if(_tid == QString()) getTid();
 	proxy->GetUpdateDetail(_tid, p->id());
 }
 
 void Client::cancel() {
+	if(_tid == QString()) return;
 	proxy->Cancel(_tid);
 }
 
 void Client::getProgress() {
+	if(_tid == QString()) return;
 	uint percentage, subpercentage, elapsed, remaining;
 	percentage = proxy->GetProgress(_tid, subpercentage, elapsed, remaining);
 	emit ProgressChanged(percentage, subpercentage, elapsed, remaining);
 }
 
 void Client::refreshCache(bool force) {
+	if(_tid == QString()) getTid();
 	proxy->RefreshCache(_tid, force);
 }
 
@@ -193,6 +211,7 @@ void Client::Description_cb(const QString &tid, const QString &package_id, const
 void Client::Finished_cb(const QString& tid, const QString& status, uint runtime) {
 	if(!_promiscuous && tid != _tid) return;
 	emit Finished((Exit::Value)EnumFromString<Exit>(status), runtime);
+	_tid = QString();
 }
 
 void Client::ProgressChanged_cb(const QString& tid, uint percentage, uint subpercentage, uint elapsed, uint remaining) {
