@@ -1,0 +1,99 @@
+<ui version="4.0" >
+ <class>PkAddRm</class>
+ <widget class="QWidget" name="PkAddRm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>696</width>
+    <height>426</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Add and Remove Software</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2" >
+   <item row="0" column="0" >
+    <widget class="QLineEdit" name="lineEdit" />
+   </item>
+   <item row="0" column="1" >
+    <widget class="QPushButton" name="searchPB" >
+     <property name="text" >
+      <string>Search in:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" >
+    <widget class="QToolButton" name="filtersTB" >
+     <property name="text" >
+      <string/>
+     </property>
+     <property name="toolButtonStyle" >
+      <enum>Qt::ToolButtonTextBesideIcon</enum>
+     </property>
+     <property name="arrowType" >
+      <enum>Qt::DownArrow</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" >
+    <widget class="QComboBox" name="groupsCB" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text" >
+       <string>All Packages</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4" >
+    <widget class="QTreeView" name="packageView" >
+     <property name="rootIsDecorated" >
+      <bool>false</bool>
+     </property>
+     <property name="itemsExpandable" >
+      <bool>false</bool>
+     </property>
+     <property name="headerHidden" >
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4" >
+    <widget class="QDockWidget" name="descriptionDW" >
+     <widget class="QWidget" name="dockWidgetContents" >
+      <property name="geometry" >
+       <rect>
+        <x>2</x>
+        <y>22</y>
+        <width>684</width>
+        <height>184</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout" >
+       <item row="0" column="0" >
+        <widget class="QTextEdit" name="descriptionTE" />
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
