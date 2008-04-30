@@ -22,8 +22,8 @@
 
 #include "kpk-settings.h"
 
-K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>();)
-K_EXPORT_PLUGIN(KPackageKitFactory("kpackagekit"))
+K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>("kpackagekit"); )
+K_EXPORT_PLUGIN(KPackageKitFactory("kcmkpkasettings"))
 
 KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
     : KCModule(KPackageKitFactory::componentData(), parent, args)

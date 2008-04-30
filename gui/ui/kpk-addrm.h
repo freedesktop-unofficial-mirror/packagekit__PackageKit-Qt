@@ -20,15 +20,20 @@
 #define KPACKAGEKIT_H
 
 #include <KCModule>
+#include <QGridLayout>
 
-#include "PkManage.h"
+#include "AddRm/PkAddRm.h"
 
-class KPackageKit : public KCModule, Ui::PkManage
+class KPackageKit : public KCModule
 {
     Q_OBJECT
 
-    public:
-        KPackageKit(QWidget *parent, const QVariantList &args);
+public:
+    KPackageKit(QWidget *parent, const QVariantList &args);
+    ~KPackageKit();
+private:
+    PkAddRm *view;
+    QGridLayout *m_grid;
 
 };
 

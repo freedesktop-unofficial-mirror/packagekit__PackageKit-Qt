@@ -1,8 +1,0 @@
-[Desktop Entry]
-Icon=applications-other
-Name=Add and Remove Software
-Name[pt_BR]=Adicionar e Remover Programas
-Type=Service
-X-KDE-ServiceTypes=SystemSettingsCategory
-X-KDE-System-Settings-Category=add-and-remove-software
-X-KDE-System-Settings-Parent-Category=computer-administration

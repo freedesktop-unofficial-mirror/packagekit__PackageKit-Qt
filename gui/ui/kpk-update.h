@@ -28,7 +28,7 @@ class KPackageKit : public KCModule, Ui::PkUpdate
     Q_OBJECT
 
     public:
-        KPackageKit(QWidget *&parent, const QStringList &args);
+        KPackageKit(QWidget *&parent, const QVariantList &args);
 
 };
 

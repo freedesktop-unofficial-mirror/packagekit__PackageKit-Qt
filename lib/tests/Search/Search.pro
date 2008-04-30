@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = testSearch
 DEPENDPATH += .
 INCLUDEPATH += .
-LIBS += -L../../ -lqpackagekit
+LIBS += -L../../ -lpackagekit-qt
 QT += dbus
 
 # Input

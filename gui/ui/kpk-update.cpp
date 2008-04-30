@@ -19,18 +19,14 @@
 
 #include <kgenericfactory.h>
 #include <KAboutData>
-#include <KDebug>
+
 #include "kpk-update.h"
 
+K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>("kpackagekit"); )
+K_EXPORT_PLUGIN(KPackageKitFactory("kcmkpkupdate"))
 
-typedef KGenericFactory<KPackageKit, QWidget> KPackageKitFactory;
- K_EXPORT_COMPONENT_FACTORY( kcm_kpk_update, KPackageKitFactory("kcm_kpk_update") );
-
-// K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>();)
-// K_EXPORT_PLUGIN(KPackageKitFactory("zkpackagekit"))
-
-KPackageKit::KPackageKit(QWidget *&parent, const QStringList &args)
-    : KCModule(KPackageKitFactory::componentData(), parent)
+KPackageKit::KPackageKit(QWidget *&parent, const QVariantList &args)
+    : KCModule(KPackageKitFactory::componentData(), parent, args)
 {
     KAboutData *about = new KAboutData("kcm_kpk_update", 0, ki18n("KPackageKit Update"),"0.1");
     setAboutData(about);

@@ -22,14 +22,22 @@
 
 #include "kpk-addrm.h"
 
-K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>();)
-K_EXPORT_PLUGIN(KPackageKitFactory("kpackagekit"))
+K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>(); )
+K_EXPORT_PLUGIN(KPackageKitFactory("kcm_kpk_addrm"))
 
 KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
     : KCModule(KPackageKitFactory::componentData(), parent, args)
 {
     KAboutData *about = new KAboutData("kcm_kpk_addrm", 0, ki18n("Add and Remove Software"),"0.1");
     setAboutData(about);
-    setupUi(this);
+    setButtons(0);/*NoAdditionalButton*/
+    m_grid = new QGridLayout(this);
+    view = new PkAddRm(this);
+    m_grid->addWidget(view);
+}
 
+KPackageKit::~KPackageKit()
+{
+    delete view;
+    delete m_grid;
 }

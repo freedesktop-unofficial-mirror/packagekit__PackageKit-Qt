@@ -3,18 +3,19 @@
 
 #include <QtGui>
 
-class FilterMenu : public QToolButton {
-
-	Q_OBJECT
+class FilterMenu
+{
+Q_OBJECT
 
 public:
-	FilterMenu(const QStringList &filters, QWidget *parent = 0);
-	QString filters();
+    FilterMenu(const QStringList &filters, QWidget *parent = 0);
+    QString filters();
 
 private:
-	QMenu *menu;
-	// We need to keep a list to build the filters string
-	QList<QAction*> actions;
+    QToolButton *m_tool_bt;
+    QMenu *menu;
+    // We need to keep a list to build the filters string
+    QList<QAction*> actions;
 };
 
 #endif
