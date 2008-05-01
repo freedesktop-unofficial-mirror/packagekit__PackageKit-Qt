@@ -32,6 +32,7 @@ QIcon xx = aaa;
     switch(role) {
         case Qt::DisplayRole:
             return p->name() + " - " + p->version() + " (" + p->arch() + ")";
+
         case Qt::DecorationRole:
             return xx;
 
@@ -43,8 +44,10 @@ QIcon xx = aaa;
 
         case SummaryRole:
             return p->summary();
+
         case Qt::EditRole:
             return p->id();
+
         default:
             return QVariant();
     }
