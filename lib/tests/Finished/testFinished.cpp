@@ -14,3 +14,4 @@ int main(int argc, char **argv) {
 	c.searchName("none", "vim");
 	return app.exec();
 }
+
