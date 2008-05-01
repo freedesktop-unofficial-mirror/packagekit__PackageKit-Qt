@@ -32,7 +32,7 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     pk_client = new Client();
     qDebug() << "We have tid " << pk_client->tid();
     connect(pk_client, SIGNAL(newPackage(Package *)), pkg_model, SLOT(addPackage(Package *)));
-//     connect(pk_client, SIGNAL(Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)), this, SLOT( desc(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size) ) );
+    connect(pk_client, SIGNAL(Description(Package *p,  QString& license,  QString& group,  QString& detail,  QString& url, qulonglong size)), this, SLOT( desc(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size) ) );
     for (int i = 0; i < pk_client->getGroups().size(); ++i)
         groupsCB->addItem(KIcon("applications-" + pk_client->getGroups().at(i)),pk_client->getGroups().at(i));
     descriptionDW->hide();

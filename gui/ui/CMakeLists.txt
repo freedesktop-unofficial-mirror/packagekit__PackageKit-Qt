@@ -9,7 +9,7 @@ link_directories( /home/daniel/projetos/PackageKit/QPackageKit/lib/ )
 add_definitions(${QT_DEFINITIONS} ${KDE_DEFINITIONS})
 include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${KDE4_KIO_INCLUDES} )
 
-############ PK ADD RM #######################
+############ PK ADD RM ######################
 set(kpk_addrm_SRCS
     kpk-addrm.cpp
     AddRm/PkAddRm.cpp
