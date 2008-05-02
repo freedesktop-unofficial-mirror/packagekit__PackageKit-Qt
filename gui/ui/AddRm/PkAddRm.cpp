@@ -20,22 +20,45 @@
 
 #include <klocale.h>
 #include <kstandarddirs.h>
+#include <QPalette>
+#include <QColor>
 #include "PkAddRm.h"
 
 PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
 {
     setupUi( this );
-
-    packageView->setModel(pkg_model = new PkAddRmModel(this));
+    //initialize the model, delegate, client and  connect it's signals
+    packageView->setModel(m_pkg_model_main = new PkAddRmModel(this));
     packageView->setItemDelegate(pkg_delegate = new PkAddRmDelegate(this));
-    searchPB->setDefault(true);
-    pk_client = new Client();
-    qDebug() << "We have tid " << pk_client->tid();
-    connect(pk_client, SIGNAL(newPackage(Package *)), pkg_model, SLOT(addPackage(Package *)));
-    connect(pk_client, SIGNAL(Description(Package *p,  QString& license,  QString& group,  QString& detail,  QString& url, qulonglong size)), this, SLOT( desc(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size) ) );
-    for (int i = 0; i < pk_client->getGroups().size(); ++i)
-        groupsCB->addItem(KIcon("applications-" + pk_client->getGroups().at(i)),pk_client->getGroups().at(i));
+    m_pkClient_main = new Client();
+    qDebug() << "We have tid " << m_pkClient_main->tid();
+    connect( m_pkClient_main, SIGNAL(newPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
+    connect( m_pkClient_main, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
+    //initialize the groups
+    //TODO create a better approach on this.
+    for (int i = 0; i < m_pkClient_main->getGroups().size(); ++i)
+        groupsCB->addItem(KIcon("applications-" + m_pkClient_main->getGroups().at(i)),m_pkClient_main->getGroups().at(i));
+    //initialize the dependecies and description client, and model.
+    m_pkClient_dep = new Client();
+    qDebug() << "We have tid " << m_pkClient_dep->tid();
+    dependsOnLV->setModel(m_pkg_model_dep = new PkAddRmModel(this));
+    connect( m_pkClient_dep, SIGNAL(newPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_dep, SIGNAL(Description(Package *,  const QString, const QString, const QString,
+        const QString, qulonglong) ),
+        this, SLOT( Description(Package *, const QString, const QString, const QString,
+        const QString, qulonglong) ) );
+    //initialize the requirements client, and model.
+    m_pkClient_req = new Client();
+    qDebug() << "We have tid " << m_pkClient_req->tid();
+    dependsOnLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
+    connect( m_pkClient_req, SIGNAL(newPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
+    // connect the timer...
+    connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
+    // hides the description to have more space.
     descriptionDW->hide();
+    actionPB->hide();
+    notifyF->hide();
     QStringList filters;
     filters << "installed" << "devel" << "gui" << "free" << "basename";
     FilterMenu(filters);
@@ -43,37 +66,86 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
 
 PkAddRm::~PkAddRm()
 {
-    delete pkg_model;
+    delete m_pkg_model_main;
     delete pkg_delegate;
-    delete pk_client;
+    delete m_pkClient_main;
     delete m_toolQM;
+    delete m_pkg_model_dep;
+    delete m_pkClient_dep;
+    delete m_pkg_model_req;
+    delete m_pkClient_req;
 }
 
 void PkAddRm::on_searchPB_clicked()
 {
-    pkg_model->clear();
-qDebug() << "Search Name " ;
-    pk_client->searchName("none", lineEdit->text());
+    m_pkg_model_main->clear();
+    qDebug() << "Search Name " << filters() ;
+    m_pkClient_main->searchName(filters(), lineEdit->text());
+    m_pkClient_dep->searchName(filters(), lineEdit->text());
     descriptionDW->setVisible(false);
 }
 
 void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 {
     qDebug() << "Search Group " << text;
-    pkg_model->clear();
-    pk_client->searchGroup("none", text);
+    m_pkg_model_main->clear();
+    m_pkClient_main->searchGroup(filters(), text);
     descriptionDW->setVisible(false);
 }
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 {
-    qDebug() << "showww " ;
-    pk_client->getDescription(index.model()->data(index, Qt::EditRole).toString());
+    m_pkClient_dep->getDescription(index.model()->data(index, PkAddRmModel::IdRole).toString());
+    m_pkClient_dep->getDepends(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()),false);
+    notifyF->show();
+    actionPB->show();
+}
+
+void PkAddRm::Finished(Exit::Value status, uint runtime)
+{
+    notifyF->show();
+    notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
+    QPalette teste;
+    teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,50));
+    notifyL->setPalette(teste);
+    notifyL->setAutoFillBackground(true);
+    m_notifyT.start(5000);
+//     notifyL->show();
+}
+
+void PkAddRm::notifyUpdate()
+{
+    qDebug() << "oi";
+    m_notifyT.stop();
+    notifyL->setAutoFillBackground(false);
+    notifyF->hide();
 }
 
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
-    qDebug() << "desc " << detail << p->name();
+
+    m_pkClient_dep->getRequires(p,true);
+    QString description;
+    description += "<b>" + i18n("Package Name") + ":</b> " + p->name() + "<br />";
+    if ( !license.isEmpty() )
+        description += "<b>" + i18n("License") + ":</b> " + license + "<br />";
+    if ( !group.isEmpty() )
+        description += "<b>" + i18n("Group") + ":</b> " + group + "<br />";
+    if ( !detail.isEmpty() )
+        description += "<b>" + i18n("Details") + ":</b> " + detail + "<br />";
+    if ( !url.isEmpty() )
+        description += "<b>" + i18n("Home Page") + ":</b> <a href=\"" + url + "\">" + url + "</a><br />";
+    if ( size > 0 )
+        description += "<b>" + i18n("Size") + ":</b> " + KGlobal::locale()->formatByteSize(size);
+    descriptionKTB->setHtml(description);
+    descriptionDW->setVisible(true);
+}
+
+void PkAddRm::Files(Package *, QStringList files)
+{
+    filesPTE->clear();
+    for (int i = 0; i < files.size(); ++i)
+        filesPTE->appendPlainText(files.at(i));
     descriptionDW->setVisible(true);
 }
 

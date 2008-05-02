@@ -1,10 +1,10 @@
 #include "PkAddRm_Model.h"
 
-#include <KIcon>
-
 using namespace PackageKit;
 
-PkAddRmModel::PkAddRmModel(QObject *parent) : QAbstractTableModel(parent)
+PkAddRmModel::PkAddRmModel(QObject *parent) : QAbstractTableModel(parent),
+m_iconDeb("application-x-deb"), m_iconRpm("application-x-rpm"),
+m_iconTgz("application-x-compressed-tar"), m_iconGeneric("utilities-file-archiver")
 {
 
 }
@@ -25,27 +25,28 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
 
     Package *p = packages.at(index.row());
 
-KIcon aaa("application-x-deb");
-QIcon xx = aaa;
-
-
     switch(role) {
         case Qt::DisplayRole:
             return p->name() + " - " + p->version() + " (" + p->arch() + ")";
 
         case Qt::DecorationRole:
-            return xx;
-
-        case VersionRole:
-            return p->summary();
-
-        case ArchRole:
-            return p->arch();
+            if ( p->data() == "debian" )
+	        return m_iconDeb;
+	    else if ( p->data() == "fedora" )
+	        return m_iconRpm;
+	    else
+	        return m_iconGeneric;
 
         case SummaryRole:
             return p->summary();
 
-        case Qt::EditRole:
+        case InstalledRole:
+	    if ( p->info() == "available" )
+	        return false;
+            else
+	        return true;
+
+        case IdRole:
             return p->id();
 
         default:

@@ -49,7 +49,7 @@ void PkAddRmDelegate::paint(QPainter *painter,
         const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 
-    index.model()->data(index, Qt::EditRole).toInt();
+//     index.model()->data(index, Qt::EditRole).toInt();
 
 //     KCategorizedItemsViewModels::AbstractItem * item =
 //         getItemByProxyIndex(index);
@@ -83,7 +83,13 @@ void PkAddRmDelegate::paintColMain(QPainter *painter,
     int width = option.rect.width();
 
     bool leftToRight = (painter->layoutDirection() == Qt::LeftToRight);
-    QIcon::Mode iconMode = QIcon::Normal;
+
+    // selects the mode to paint the icon based on the info field
+    QIcon::Mode iconMode = ( index.model()->data(index, PkAddRmModel::InstalledRole).toBool() ? QIcon::Normal : QIcon::Disabled);
+//     if ( index.model()->data(index, PkAddRmModel::InstalledRole).toBool() )
+//         QIcon::Mode iconMode = QIcon::Normal;
+//     else
+//         QIcon::Mode iconMode = QIcon::Disabled;
 
     QColor foregroundColor = (option.state.testFlag(QStyle::State_Selected))?
         option.palette.color(QPalette::HighlightedText):option.palette.color(QPalette::Text);
@@ -104,7 +110,7 @@ void PkAddRmDelegate::paintColMain(QPainter *painter,
 
     // Easier to ask the model for the data
     QString title = index.model()->data(index, Qt::DisplayRole).toString();
-    QString description = index.model()->data(index, 32).toString();
+    QString description = index.model()->data(index, PkAddRmModel::SummaryRole).toString();
 
     // Painting
 
