@@ -10,5 +10,5 @@ LIBS += -L../../ -lpackagekit-qt
 QT += dbus
 
 # Input
-HEADERS += 
-SOURCES += testSearch.cpp
+HEADERS += testCallback.h
+SOURCES += testSearch.cpp testCallback.cpp
