@@ -2,10 +2,10 @@
 #define KPK_PACKAGEMODEL_H
 
 #include <QAbstractTableModel>
+#include <KIcon>
 
 #include "../../../lib/Client.h"
 #include "../../../lib/Package.h"
-
 
 using namespace PackageKit;
 
@@ -25,14 +25,17 @@ public:
     void clear();
 
     enum {
-        VersionRole = 32,
-        ArchRole,
-        SummaryRole
+        SummaryRole = 32,
+        InstalledRole,
+        IdRole
         };
 
 private:
     QList<Package*> packages;
-
+    KIcon m_iconDeb;
+    KIcon m_iconRpm;
+    KIcon m_iconTgz;
+    KIcon m_iconGeneric;
 };
 
 #endif

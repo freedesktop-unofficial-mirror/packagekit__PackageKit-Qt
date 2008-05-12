@@ -42,10 +42,19 @@ public slots:
     void on_groupsCB_currentIndexChanged( const QString & text );
     void on_packageView_pressed( const QModelIndex & index );
     void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
+    void Files(Package *p, QStringList files);
+    void Finished(Exit::Value status, uint runtime);
 private:
-    PkAddRmModel *pkg_model;
+    PkAddRmModel *m_pkg_model_main;
+    PkAddRmModel *m_pkg_model_dep;
+    PkAddRmModel *m_pkg_model_req;
     PkAddRmDelegate *pkg_delegate;
-    Client *pk_client;
+    Client *m_pkClient_main;
+    Client *m_pkClient_dep;
+    Client *m_pkClient_req;
+    QTimer m_notifyT;
+private slots:
+    void notifyUpdate();
 //Filter Menu
 public:
     void FilterMenu(const QStringList &filters);
