@@ -22,7 +22,7 @@
 #include <KCModule>
 #include <QGridLayout>
 
-#include "AddRm/PkAddRm.h"
+#include "PkAddRm.h"
 
 class KPackageKit : public KCModule
 {

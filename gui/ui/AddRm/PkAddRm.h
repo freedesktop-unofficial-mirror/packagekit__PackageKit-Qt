@@ -39,6 +39,7 @@ public:
     ~PkAddRm();
 public slots:
     void on_searchPB_clicked();
+    void on_actionPB_clicked();
     void on_groupsCB_currentIndexChanged( const QString & text );
     void on_packageView_pressed( const QModelIndex & index );
     void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);

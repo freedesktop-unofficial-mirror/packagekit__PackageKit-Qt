@@ -19,8 +19,18 @@
    <string>Add and Remove Software</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <property name="spacing" >
+    <number>0</number>
+   </property>
    <item row="0" column="0" >
-    <widget class="QLineEdit" name="lineEdit" />
+    <widget class="QLineEdit" name="lineEdit" >
+     <property name="locale" >
+      <locale country="UnitedStates" language="English" />
+     </property>
+    </widget>
    </item>
    <item row="0" column="1" >
     <widget class="QPushButton" name="searchPB" >
@@ -34,8 +44,14 @@
    </item>
    <item row="0" column="2" >
     <widget class="QToolButton" name="filtersTB" >
+     <property name="locale" >
+      <locale country="UnitedStates" language="English" />
+     </property>
      <property name="text" >
       <string/>
+     </property>
+     <property name="popupMode" >
+      <enum>QToolButton::InstantPopup</enum>
      </property>
      <property name="toolButtonStyle" >
       <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -78,6 +94,9 @@
         <height>2</height>
        </size>
       </property>
+      <property name="locale" >
+       <locale country="UnitedStates" language="English" />
+      </property>
       <property name="rootIsDecorated" >
        <bool>false</bool>
       </property>
@@ -108,9 +127,9 @@
        <property name="geometry" >
         <rect>
          <x>2</x>
-         <y>22</y>
-         <width>682</width>
-         <height>186</height>
+         <y>24</y>
+         <width>690</width>
+         <height>182</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2" >
@@ -142,8 +161,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>141</height>
+             <width>670</width>
+             <height>135</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -151,7 +170,11 @@
            </attribute>
            <layout class="QGridLayout" name="gridLayout_3" >
             <item row="0" column="0" >
-             <widget class="KTextBrowser" name="descriptionKTB" />
+             <widget class="KTextBrowser" name="descriptionKTB" >
+              <property name="locale" >
+               <locale country="UnitedStates" language="English" />
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -160,8 +183,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>141</height>
+             <width>670</width>
+             <height>135</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -185,8 +208,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>141</height>
+             <width>670</width>
+             <height>135</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -213,8 +236,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>141</height>
+             <width>670</width>
+             <height>135</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -236,9 +259,6 @@
          </widget>
         </item>
        </layout>
-       <zorder>tabWidget</zorder>
-       <zorder></zorder>
-       <zorder></zorder>
       </widget>
      </widget>
     </widget>
@@ -249,7 +269,7 @@
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow" >
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Plain</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_7" >
       <property name="margin" >
