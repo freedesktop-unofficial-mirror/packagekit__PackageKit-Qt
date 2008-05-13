@@ -36,9 +36,29 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
     connect( m_pkClient_main, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
     //initialize the groups
-    //TODO create a better approach on this.
-    for (int i = 0; i < m_pkClient_main->getGroups().size(); ++i)
-        groupsCB->addItem(KIcon("applications-" + m_pkClient_main->getGroups().at(i)),m_pkClient_main->getGroups().at(i));
+
+    //TODO map everything and fix search group.
+    for (int i = 0; i < m_pkClient_main->getGroups().size(); ++i) {
+        if ( m_pkClient_main->getGroups().at(i) == "accessories" )
+	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
+	else if ( m_pkClient_main->getGroups().at(i) == "games" )
+	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
+	else if ( m_pkClient_main->getGroups().at(i) == "graphics" )
+	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
+	else if ( m_pkClient_main->getGroups().at(i) == "internet" )
+	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
+	else if ( m_pkClient_main->getGroups().at(i) == "office" )
+	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
+	else if ( m_pkClient_main->getGroups().at(i) == "other" )
+	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
+	else if ( m_pkClient_main->getGroups().at(i) == "programming" )
+	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
+	else if ( m_pkClient_main->getGroups().at(i) == "multimedia" )
+	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
+	else if ( m_pkClient_main->getGroups().at(i) == "system" )
+	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
+    }
+
     //initialize the dependecies and description client, and model.
     m_pkClient_dep = new Client();
     qDebug() << "We have tid " << m_pkClient_dep->tid();
@@ -99,37 +119,69 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
     m_pkClient_dep->getDepends(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()),false);
     notifyF->show();
     actionPB->show();
+qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
+//     m_pkClient_main->installPackage(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()) );
+}
+
+void PkAddRm::on_actionPB_clicked()
+{
+//     m_pkClient_main->installPackage(new Package("vim-tiny;1:7.1-266+1;amd64;Debian") );
 }
 
 void PkAddRm::Finished(Exit::Value status, uint runtime)
 {
     notifyF->show();
-    notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
     QPalette teste;
-    teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,50));
-    notifyL->setPalette(teste);
-    notifyL->setAutoFillBackground(true);
-    m_notifyT.start(5000);
-//     notifyL->show();
+    switch(status) {
+        case Exit::Success :
+	    notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+	    break;
+	case Exit::Failed :
+	    notifyL->setText("Search Failed " + KGlobal::locale()->formatDuration(runtime) );
+            teste.setColor(QPalette::Normal, QPalette::Window, QColor(255,0,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(50);
+	    break;
+	case Exit::Quit : break;
+	case Exit::Kill : break;
+// 	case Exit::Unknow : break;
+    }
 }
 
 void PkAddRm::notifyUpdate()
 {
-    qDebug() << "oi";
-    m_notifyT.stop();
-    notifyL->setAutoFillBackground(false);
-    notifyF->hide();
+    QPalette palleteN(notifyL->palette());
+    QColor colorN(palleteN.color(QPalette::Normal, QPalette::Window));
+    if ( colorN.alpha() <= 0 ) {
+        m_notifyT.stop();
+        notifyL->setAutoFillBackground(false);
+	if ( !actionPB->isVisible() )
+	    notifyF->hide();
+    }
+    else {
+        colorN.setAlpha(colorN.alpha() - 5);
+        palleteN.setColor(QPalette::Normal, QPalette::Window, colorN);
+        notifyL->setPalette(palleteN);
+    }
 }
 
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
-
-    m_pkClient_dep->getRequires(p,true);
+    //ask required by packages
+    m_pkClient_req->getRequires(p, false);
+    //ask depends on packages
+    m_pkClient_dep->getDepends(p, false);
+    //format and show description
     QString description;
     description += "<b>" + i18n("Package Name") + ":</b> " + p->name() + "<br />";
-    if ( !license.isEmpty() )
+    if ( !license.isEmpty() && license != "unknown" )
         description += "<b>" + i18n("License") + ":</b> " + license + "<br />";
-    if ( !group.isEmpty() )
+    if ( !group.isEmpty() && group != "unknown" )
         description += "<b>" + i18n("Group") + ":</b> " + group + "<br />";
     if ( !detail.isEmpty() )
         description += "<b>" + i18n("Details") + ":</b> " + detail + "<br />";
@@ -151,32 +203,29 @@ void PkAddRm::Files(Package *, QStringList files)
 
 void PkAddRm::FilterMenu(const QStringList &filters)
 {
-    filtersTB->setPopupMode(QToolButton::InstantPopup);
-    filtersTB->setArrowType(Qt::DownArrow);
-
     if(filters.size() != 0) {
         m_toolQM = new QMenu(this);
         filtersTB->setMenu(m_toolQM);
 
         if(filters.contains("installed")) {
             // Installed
-            QMenu *menuInstalled = new QMenu(tr("Installed"), m_toolQM);
+            QMenu *menuInstalled = new QMenu(i18n("Installed"), m_toolQM);
             m_toolQM->addMenu(menuInstalled);
             QActionGroup *installedGroup = new QActionGroup(menuInstalled);
             installedGroup->setExclusive(true);
-            QAction *installedTrue = new QAction(tr("installed"), installedGroup);
+            QAction *installedTrue = new QAction(i18n("installed"), installedGroup);
             installedTrue->setCheckable(true);
             installedTrue->setData("installed");
             installedGroup->addAction(installedTrue);
             menuInstalled->addAction(installedTrue);
 
-            QAction *installedFalse = new QAction(tr("~installed"), installedGroup);
+            QAction *installedFalse = new QAction(i18n("~installed"), installedGroup);
             installedFalse->setCheckable(true);
             installedFalse->setData("~installed");
             installedGroup->addAction(installedFalse);
             menuInstalled->addAction(installedFalse);
 
-            QAction *installedNone = new QAction(tr("No filter"), installedGroup);
+            QAction *installedNone = new QAction(i18n("No filter"), installedGroup);
             installedNone->setCheckable(true);
             installedNone->setChecked(true);
             installedGroup->addAction(installedNone);
@@ -186,24 +235,24 @@ void PkAddRm::FilterMenu(const QStringList &filters)
         }
         if(filters.contains("devel")) {
             // Development
-            QMenu *menuDevelopment = new QMenu(tr("Development"), m_toolQM);
+            QMenu *menuDevelopment = new QMenu(i18n("Development"), m_toolQM);
             m_toolQM->addMenu(menuDevelopment);
             QActionGroup *developmentGroup = new QActionGroup(menuDevelopment);
             developmentGroup->setExclusive(true);
 
-            QAction *developmentTrue = new QAction(tr("development"), developmentGroup);
+            QAction *developmentTrue = new QAction(i18n("development"), developmentGroup);
             developmentTrue->setCheckable(true);
             developmentTrue->setData("development");
             developmentGroup->addAction(developmentTrue);
             menuDevelopment->addAction(developmentTrue);
 
-            QAction *developmentFalse = new QAction(tr("~development"), developmentGroup);
+            QAction *developmentFalse = new QAction(i18n("~development"), developmentGroup);
             developmentFalse->setCheckable(true);
             developmentFalse->setData("~development");
             developmentGroup->addAction(developmentFalse);
             menuDevelopment->addAction(developmentFalse);
 
-            QAction *developmentNone = new QAction(tr("No filter"), developmentGroup);
+            QAction *developmentNone = new QAction(i18n("No filter"), developmentGroup);
             developmentNone->setCheckable(true);
             developmentNone->setChecked(true);
             developmentGroup->addAction(developmentNone);
@@ -213,24 +262,24 @@ void PkAddRm::FilterMenu(const QStringList &filters)
         }
         if(filters.contains("gui")) {
             // Graphical
-            QMenu *menuGui = new QMenu(tr("Graphical"), m_toolQM);
+            QMenu *menuGui = new QMenu(i18n("Graphical"), m_toolQM);
             m_toolQM->addMenu(menuGui);
             QActionGroup *guiGroup = new QActionGroup(menuGui);
             guiGroup->setExclusive(true);
 
-            QAction *guiTrue = new QAction(tr("gui"), guiGroup);
+            QAction *guiTrue = new QAction(i18n("gui"), guiGroup);
             guiTrue->setCheckable(true);
             guiTrue->setData("gui");
             guiGroup->addAction(guiTrue);
             menuGui->addAction(guiTrue);
 
-            QAction *guiFalse = new QAction(tr("~gui"), guiGroup);
+            QAction *guiFalse = new QAction(i18n("~gui"), guiGroup);
             guiFalse->setCheckable(true);
             guiFalse->setData("~gui");
             guiGroup->addAction(guiFalse);
             menuGui->addAction(guiFalse);
 
-            QAction *guiNone = new QAction(tr("No filter"), guiGroup);
+            QAction *guiNone = new QAction(i18n("No filter"), guiGroup);
             guiNone->setCheckable(true);
             guiNone->setChecked(true);
             guiGroup->addAction(guiNone);
@@ -240,24 +289,24 @@ void PkAddRm::FilterMenu(const QStringList &filters)
         }
         if(filters.contains("free")) {
             // Free
-            QMenu *menuFree = new QMenu(tr("Free"), m_toolQM);
+            QMenu *menuFree = new QMenu(i18n("Free"), m_toolQM);
             m_toolQM->addMenu(menuFree);
             QActionGroup *freeGroup = new QActionGroup(menuFree);
             freeGroup->setExclusive(true);
 
-            QAction *freeTrue = new QAction(tr("free"), freeGroup);
+            QAction *freeTrue = new QAction(i18n("free"), freeGroup);
             freeTrue->setCheckable(true);
             freeTrue->setData("free");
             freeGroup->addAction(freeTrue);
             menuFree->addAction(freeTrue);
 
-            QAction *freeFalse = new QAction(tr("~free"), freeGroup);
+            QAction *freeFalse = new QAction(i18n("~free"), freeGroup);
             freeFalse->setCheckable(true);
             freeFalse->setData("~free");
             freeGroup->addAction(freeFalse);
             menuFree->addAction(freeFalse);
 
-            QAction *freeNone = new QAction(tr("No filter"), freeGroup);
+            QAction *freeNone = new QAction(i18n("No filter"), freeGroup);
             freeNone->setCheckable(true);
             freeNone->setChecked(true);
             freeGroup->addAction(freeNone);
@@ -267,7 +316,7 @@ void PkAddRm::FilterMenu(const QStringList &filters)
         }
         if(filters.contains("basename")) {
             m_toolQM->addSeparator();
-            QAction *basename = new QAction(tr("Hide subpackages"), m_toolQM);
+            QAction *basename = new QAction(i18n("Hide subpackages"), m_toolQM);
             basename->setCheckable(true);
             basename->setData("basename");
             m_toolQM->addAction(basename);
