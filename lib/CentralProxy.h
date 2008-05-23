@@ -85,10 +85,17 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("GetTransactionList"), argumentList);
     }
 
-    inline QDBusReply<void> StateHasChanged()
+    inline QDBusReply<void> StateHasChanged(const QString &role)
     {
         QList<QVariant> argumentList;
+		argumentList << qVariantFromValue(role);
         return callWithArgumentList(QDBus::Block, QLatin1String("StateHasChanged"), argumentList);
+    }
+
+    inline QDBusReply<void> SuggestDaemonQuit()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("SuggestDaemonQuit"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS
