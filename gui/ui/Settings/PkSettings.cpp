@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Daniel Nicoletti   *
- *   mirttex@users.sourceforge.net   *
+ *   Copyright (C) 2008 by Daniel Nicoletti   *
+ *   mirttex85-pk@yahoo.com.br   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,15 +19,66 @@
  ***************************************************************************/
 
 #include "PkSettings.h"
+#include <KDebug>
+#include <KConfig>
+#include <KGlobal>
+
+// 1 Hour = 3600 in Epoch
+// 1 Day = 86400 in Epoch (24 Hours)
+// 1 Week = 604800 in Epoch (7 Days / 168 Hours)
+// 1 Month = 2628000 in Epoch
+
  
 PkSettings::PkSettings( QWidget *parent ) : QWidget( parent )
 {
     setupUi( this );
+//     m_kcfDM = new KConfigDialogManager(this, m_pk_cfgSkell = new PkConfigSkell());
+    connect( notifyUpdatesCB, SIGNAL(stateChanged(int)), this, SLOT(checkChanges(int)) );
+    connect( notifyLongTasksCB, SIGNAL(stateChanged(int)), this, SLOT(checkChanges(int)) );
 }
 
-void PkSettings::on_pBDefDir_clicked()
+void PkSettings::checkChanges(int)
 {
-    
+    kDebug() << "checkChanges " << notifyUpdatesCB->checkState();
+    KConfig config("KPackageKit");
+    KConfigGroup smartIconGroup( &config, "SmartIcon" );
+    if ( notifyUpdatesCB->checkState() !=
+         (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdatesCB", (int) Qt::Checked)
+        ||
+         notifyLongTasksCB->checkState() !=
+         (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasksCB", (int) Qt::Checked) )
+        emit(changed(true));
+    else
+        emit(changed(false));
+}
+
+void PkSettings::load()
+{
+    kDebug() << "load";
+    KConfig config("KPackageKit");
+    KConfigGroup smartIconGroup( &config, "SmartIcon" );
+    notifyUpdatesCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdatesCB",
+        (int) Qt::Checked) );
+    notifyLongTasksCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasksCB",
+        (int) Qt::Checked) );
+}
+
+void PkSettings::save()
+{
+    kDebug() << "save";
+    KConfig config("KPackageKit");
+    KConfigGroup smartIconGroup( &config, "SmartIcon" );
+    smartIconGroup.writeEntry( "notifyUpdatesCB", (int) notifyUpdatesCB->checkState() );
+    smartIconGroup.writeEntry( "notifyLongTasksCB", (int) notifyLongTasksCB->checkState() );
+config.sync();
+}
+
+void PkSettings::defaults()
+{
+    kDebug() << "defaults";
+    notifyUpdatesCB->setCheckState(Qt::Checked);
+    notifyLongTasksCB->setCheckState(Qt::Checked);
+    emit(checkChanges(0));
 }
 
 #include "PkSettings.moc" 

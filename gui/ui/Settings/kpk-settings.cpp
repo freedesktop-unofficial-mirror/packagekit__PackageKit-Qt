@@ -1,5 +1,5 @@
 /*  This file is part of the KDE project
- *  Copyright (C) 2007 Carlo Segato <brandon.ml@gmail.com>
+ *  Copyright (C) 2008 Daniel Nicoletti <mirttex85-pk@yahoo.com.br>
  * 
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2
@@ -22,14 +22,25 @@
 
 #include "kpk-settings.h"
 
-K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>("kpackagekit"); )
-K_EXPORT_PLUGIN(KPackageKitFactory("kcmkpkasettings"))
+K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>(); )
+K_EXPORT_PLUGIN(KPackageKitFactory("kcm_kpk_settings"))
 
 KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
     : KCModule(KPackageKitFactory::componentData(), parent, args)
 {
     KAboutData *about = new KAboutData("kcm_kpk_settings", 0, ki18n("KPackageKit Settings"),"0.1");
     setAboutData(about);
-    setupUi(this);
+    m_grid = new QGridLayout(this);
+    view = new PkSettings(this);
+    connect(this, SIGNAL(s_load()), view, SLOT(load()) );
+    connect(this, SIGNAL(s_save()), view, SLOT(save()) );
+    connect(this, SIGNAL(s_defaults()), view, SLOT(defaults()) );
+    connect(view, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)) );
+    m_grid->addWidget(view);
+}
 
+KPackageKit::~KPackageKit()
+{
+    delete view;
+    delete m_grid;
 }

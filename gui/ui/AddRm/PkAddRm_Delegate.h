@@ -1,5 +1,6 @@
 /*
  *   Copyright (C) 2007 Ivan Cukic <ivan.cukic+kde@gmail.com>
+ *   Copyright (C) 2008 Daniel Nicoletti <mirttex85-pk@yahoo.com.br>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library/Lesser General Public License

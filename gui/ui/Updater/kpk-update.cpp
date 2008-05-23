@@ -1,5 +1,5 @@
 /*  This file is part of the KDE project
- *  Copyright (C) 2007 Carlo Segato <brandon.ml@gmail.com>
+ *  Copyright (C) 2008 Daniel Nicoletti <mirttex85-pk@yahoo.com.br>
  * 
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2
@@ -22,8 +22,8 @@
 
 #include "kpk-update.h"
 
-K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>("kpackagekit"); )
-K_EXPORT_PLUGIN(KPackageKitFactory("kcmkpkupdate"))
+K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>(); )
+K_EXPORT_PLUGIN(KPackageKitFactory("kcm_kpk_update"))
 
 KPackageKit::KPackageKit(QWidget *&parent, const QVariantList &args)
     : KCModule(KPackageKitFactory::componentData(), parent, args)
@@ -31,5 +31,4 @@ KPackageKit::KPackageKit(QWidget *&parent, const QVariantList &args)
     KAboutData *about = new KAboutData("kcm_kpk_update", 0, ki18n("KPackageKit Update"),"0.1");
     setAboutData(about);
     setupUi(this);
-    kDebug() << args;
 }

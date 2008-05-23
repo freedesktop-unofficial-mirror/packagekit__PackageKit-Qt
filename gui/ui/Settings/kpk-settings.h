@@ -1,5 +1,5 @@
 /*  This file is part of the KDE project
- *  Copyright (C) 2007 Carlo Segato <brandon.ml@gmail.com>
+ *  Copyright (C) 2008 Daniel Nicoletti <mirttex85-pk@yahoo.com.br>
  * 
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2
@@ -20,17 +20,27 @@
 #define KPACKAGEKIT_H
 
 #include <KCModule>
-
+#include <QGridLayout>
 #include "PkSettings.h"
 
-class KPackageKit : public KCModule, Ui::PkSettings
+class KPackageKit : public KCModule
 {
-    Q_OBJECT
+Q_OBJECT
 
-    public:
-        KPackageKit(QWidget *parent, const QVariantList &args);
-
+public:
+    KPackageKit(QWidget *parent, const QVariantList &args);
+    ~KPackageKit();
+public slots:
+    virtual void load() { emit(s_load()); };
+    virtual void save() { emit(s_save()); };
+    virtual void defaults() { emit(s_defaults()); };
+signals:
+    void s_load();
+    void s_save();
+    void s_defaults();
+private:
+    PkSettings *view;
+    QGridLayout *m_grid;
 };
 
 #endif
-
