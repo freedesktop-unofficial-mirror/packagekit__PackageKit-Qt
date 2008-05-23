@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef TRANSACTIONPROXY_H_1210097570
-#define TRANSACTIONPROXY_H_1210097570
+#ifndef TRANSACTIONPROXY_H_1211584460
+#define TRANSACTIONPROXY_H_1211584460
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -64,11 +64,11 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("GetDepends"), argumentList);
     }
 
-    inline QDBusReply<void> GetDescription(const QString &package_id)
+    inline QDBusReply<void> GetDetails(const QString &package_id)
     {
         QList<QVariant> argumentList;
         argumentList << qVariantFromValue(package_id);
-        return callWithArgumentList(QDBus::Block, QLatin1String("GetDescription"), argumentList);
+        return callWithArgumentList(QDBus::Block, QLatin1String("GetDetails"), argumentList);
     }
 
     inline QDBusReply<void> GetFiles(const QString &package_id)
@@ -154,18 +154,18 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("GetUpdates"), argumentList);
     }
 
-    inline QDBusReply<void> InstallFile(const QString &full_path)
+    inline QDBusReply<void> InstallFiles(bool trusted, const QStringList &full_paths)
     {
         QList<QVariant> argumentList;
-        argumentList << qVariantFromValue(full_path);
-        return callWithArgumentList(QDBus::Block, QLatin1String("InstallFile"), argumentList);
+        argumentList << qVariantFromValue(trusted) << qVariantFromValue(full_paths);
+        return callWithArgumentList(QDBus::Block, QLatin1String("InstallFiles"), argumentList);
     }
 
-    inline QDBusReply<void> InstallPackage(const QString &package_id)
+    inline QDBusReply<void> InstallPackages(const QStringList &package_ids)
     {
         QList<QVariant> argumentList;
-        argumentList << qVariantFromValue(package_id);
-        return callWithArgumentList(QDBus::Block, QLatin1String("InstallPackage"), argumentList);
+        argumentList << qVariantFromValue(package_ids);
+        return callWithArgumentList(QDBus::Block, QLatin1String("InstallPackages"), argumentList);
     }
 
     inline QDBusReply<void> InstallSignature(const QString &sig_type, const QString &key_id, const QString &package_id)
@@ -188,11 +188,11 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("RefreshCache"), argumentList);
     }
 
-    inline QDBusReply<void> RemovePackage(const QString &package_id, bool allow_deps, bool autoremove)
+    inline QDBusReply<void> RemovePackages(const QStringList &package_ids, bool allow_deps, bool autoremove)
     {
         QList<QVariant> argumentList;
-        argumentList << qVariantFromValue(package_id) << qVariantFromValue(allow_deps) << qVariantFromValue(autoremove);
-        return callWithArgumentList(QDBus::Block, QLatin1String("RemovePackage"), argumentList);
+        argumentList << qVariantFromValue(package_ids) << qVariantFromValue(allow_deps) << qVariantFromValue(autoremove);
+        return callWithArgumentList(QDBus::Block, QLatin1String("RemovePackages"), argumentList);
     }
 
     inline QDBusReply<void> RepoEnable(const QString &repo_id, bool enabled)
@@ -274,7 +274,7 @@ public Q_SLOTS: // METHODS
 Q_SIGNALS: // SIGNALS
     void AllowCancel(bool allow_cancel);
     void CallerActiveChanged(bool is_active);
-    void Description(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
+    void Details(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
     void ErrorCode(const QString &code, const QString &details);
     void EulaRequired(const QString &eula_id, const QString &package_id, const QString &vendor_name, const QString &license_agreement);
     void Files(const QString &package_id, const QString &file_list);

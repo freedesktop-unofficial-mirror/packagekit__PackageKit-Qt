@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 	Daemon d;
 	TestCallback tc;
 	Transaction *t = d.newTransaction();
-	QObject::connect(t, SIGNAL(gotPackage(Package*)), &tc, SLOT(newPackage(Package*)));
+	QObject::connect(t, SIGNAL(GotPackage(Package*)), &tc, SLOT(newPackage(Package*)));
 	QObject::connect(t, SIGNAL(Finished(Exit::Value, uint)), &app, SLOT(quit()));
 	t->searchName("none", "vim");
 	return app.exec();

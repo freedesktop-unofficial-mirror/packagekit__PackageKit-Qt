@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef CENTRALPROXY_H_1210097366
-#define CENTRALPROXY_H_1210097366
+#ifndef CENTRALPROXY_H_1211584608
+#define CENTRALPROXY_H_1211584608
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -66,6 +66,12 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("GetGroups"), argumentList);
     }
 
+    inline QDBusReply<QString> GetNetworkState()
+    {
+        QList<QVariant> argumentList;
+        return callWithArgumentList(QDBus::Block, QLatin1String("GetNetworkState"), argumentList);
+    }
+
     inline QDBusReply<QString> GetTid()
     {
         QList<QVariant> argumentList;
@@ -85,10 +91,10 @@ public Q_SLOTS: // METHODS
         return callWithArgumentList(QDBus::Block, QLatin1String("GetTransactionList"), argumentList);
     }
 
-    inline QDBusReply<void> StateHasChanged(const QString &role)
+    inline QDBusReply<void> StateHasChanged(const QString &reason)
     {
         QList<QVariant> argumentList;
-		argumentList << qVariantFromValue(role);
+        argumentList << qVariantFromValue(reason);
         return callWithArgumentList(QDBus::Block, QLatin1String("StateHasChanged"), argumentList);
     }
 
@@ -100,6 +106,7 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
     void Locked(bool is_locked);
+    void NetworkStateChanged(const QString &state);
     void RepoListChanged();
     void RestartSchedule();
     void TransactionListChanged(const QStringList &transactions);
@@ -107,6 +114,5 @@ Q_SIGNALS: // SIGNALS
 };
 
 } // End namespace PackageKit
-
 #endif
 
