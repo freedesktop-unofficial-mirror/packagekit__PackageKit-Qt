@@ -1,0 +1,57 @@
+
+ CHECK
+IF DONE
+
+	METHODS :
+
+	AcceptEula
+	Cancel
+	GetAllowCancel
+	GetDepends
+	GetDetails
+	GetFiles
+	GetOldTransactions
+	GetPackageLast
+	GetPackages
+	GetProgress
+	GetRepoList
+	GetRequires
+	GetRole
+	GetStatus
+	GetUpdateDetail
+	GetUpdates
+	InstallFiles
+	InstallPackages
+	InstallSignature
+	IsCallerActive
+	RefreshCache
+	RemovePackages
+	RepoEnable
+	RepoSetData
+	Resolve
+	Rollback
+	SearchDetails
+	SearchFile
+	SearchGroup
+	SearchName
+	UpdatePackages
+	UpdateSystem
+	WhatProvides
+
+	SIGNALS :
+	AllowCancel
+	CallerActiveChanged
+	Details
+	ErrorCode
+	Files
+	Finished
+	Message
+	Package
+	ProgressChanged
+	RepoDetail
+	RepoSignatureRequired
+	EulaRequired
+	RequireRestart
+	StatusChanged
+	Transaction
+	UpdateDetail

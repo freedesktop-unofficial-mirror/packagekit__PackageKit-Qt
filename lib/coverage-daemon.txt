@@ -1,0 +1,25 @@
+
+ CHECK
+IF DONE
+	METHODS :
+
+	GetActions
+	GetBackendDetail
+	GetFilters
+	GetGroups
+	GetTid
+	GetTimeSinceAction
+	GetTransactionList
+	StateHasChanged
+	SuggestDaemonQuit
+	GetNetworkState
+	SetProxy
+
+	SIGNALS :
+
+	TransactionListChanged
+	Locked
+	NetworkStateChanged
+	RestartSchedule
+	RepoListChanged
+	UpdatesChanged
