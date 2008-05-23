@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+
+X-KDE-ServiceTypes=KDEDModule
+X-KDE-Library=kpackagekitd
+X-KDE-Kded-autoload=true
+
+Name=KPackageKit Service
+Name[pt_BR]=Serviço KPackageKit
+
+Comment=Tracks and Notify about Software Updates
+Comment[pt_BR]=Busca e Notifica sobre Atualizações de Software
