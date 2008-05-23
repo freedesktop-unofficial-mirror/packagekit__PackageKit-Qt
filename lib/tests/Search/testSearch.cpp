@@ -1,16 +1,16 @@
 #include <QtCore>
 
-#include "../../Client.h"
+#include "../../QPackageKit.h"
 #include "testCallback.h"
 
 using namespace PackageKit;
 
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
-	Client c;
+	Daemon d;
 	TestCallback tc;
-	QObject::connect(&c, SIGNAL(newPackage(Package*)), &tc, SLOT(newPackage(Package*)));
-	qDebug() << "We have tid " << c.tid();
-	c.searchName("none", "vim");
+	Transaction *t = d.newTransaction();
+	QObject::connect(t, SIGNAL(gotPackage(Package*)), &tc, SLOT(newPackage(Package*)));
+	t->searchName("none", "vim");
 	return app.exec();
 }

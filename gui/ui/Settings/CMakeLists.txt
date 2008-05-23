@@ -1,7 +1,6 @@
 set(kpk_settings_SRCS
     kpk-settings.cpp
     PkSettings.cpp
-    PkConfigSkell.cpp
 )
 kde4_add_ui_files(kpk_settings_SRCS
     PkSettings.ui

@@ -3,7 +3,7 @@
 
 #include <QtCore>
 
-#include "../../Client.h"
+#include "../../QPackageKit.h"
 
 namespace PackageKit {
 
