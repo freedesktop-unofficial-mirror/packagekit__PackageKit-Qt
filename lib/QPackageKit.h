@@ -4,4 +4,7 @@
 #include "Daemon.h"
 #include "Transaction.h"
 
+// Enums
+#include "Exit.h"
+
 #endif

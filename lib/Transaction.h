@@ -5,6 +5,7 @@
 
 #include "TransactionProxy.h"
 #include "Package.h"
+#include "Exit.h"
 
 namespace PackageKit {
 
@@ -23,9 +24,11 @@ public:
 
 signals:
 	void gotPackage(Package *p);
+	void Finished(Exit::Value status, uint runtime);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
+	void Finished_cb(const QString& exit, uint runtime);
 
 private:
 	TransactionProxy *proxy;
