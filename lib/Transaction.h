@@ -30,6 +30,8 @@ public:
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);
+	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
+	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
 signals:
 	void GotPackage(Package *p);

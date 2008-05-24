@@ -59,6 +59,18 @@ void Transaction::installPackage(Package *p) {
 	proxy->InstallPackages(pids);
 }
 
+void Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	proxy->RemovePackages(pids, allow_deps, autoremove);
+}
+
+void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
+	QStringList pids;
+	pids << p->id();
+	proxy->RemovePackages(pids, allow_deps, autoremove);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
