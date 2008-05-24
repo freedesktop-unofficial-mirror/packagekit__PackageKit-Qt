@@ -6,8 +6,8 @@ IF DONE
 X GetActions
 X GetBackendDetail
 X GetFilters
-  GetGroups
-  GetTid
+X GetGroups
+X GetTid
   GetTimeSinceAction
   GetTransactionList
   StateHasChanged

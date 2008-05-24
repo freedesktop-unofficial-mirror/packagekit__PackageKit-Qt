@@ -21,11 +21,13 @@ public:
 	void cancel();
 
 	void searchName(const QString& filter, const QString& name);
+	void getDetails(Package *p);
 
 signals:
 	void GotPackage(Package *p);
 	void Details(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
 	void Finished(Exit::Value status, uint runtime);
+	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);

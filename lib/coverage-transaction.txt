@@ -8,7 +8,7 @@ IF DONE
 X Cancel
   GetAllowCancel
   GetDepends
-  GetDetails
+X GetDetails
   GetFiles
   GetOldTransactions
   GetPackageLast

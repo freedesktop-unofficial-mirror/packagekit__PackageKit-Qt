@@ -12,6 +12,7 @@ Transaction::Transaction(QString tid, QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&)), this, SLOT(Package_cb(const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Details(const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)), this, SLOT(Details_cb(const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
 	connect(proxy, SIGNAL(Finished(const QString&, uint)), this, SLOT(Finished_cb(const QString&, uint)));
+	connect(proxy, SIGNAL(ProgressChanged(uint, uint, uint, uint)), this, SIGNAL(ProgressChanged(uint, uint, uint, uint)));
 }
 
 Transaction::~Transaction() {
@@ -24,6 +25,10 @@ void Transaction::cancel() {
 void Transaction::searchName(const QString& filter, const QString& name) {
 	qDebug() << "search for " << name;
 	proxy->SearchName(filter, name);
+}
+
+void Transaction::getDetails(Package *p) {
+	proxy->GetDetails(p->id());
 }
 
 // Signal callbacks
