@@ -35,8 +35,11 @@ Status::Value Transaction::getStatus() {
 }
 
 void Transaction::searchName(const QString& filter, const QString& name) {
-	qDebug() << "search for " << name;
 	proxy->SearchName(filter, name);
+}
+
+void Transaction::getPackages(const QString& filter) {
+	proxy->GetPackages(filter);
 }
 
 void Transaction::getDetails(Package *p) {

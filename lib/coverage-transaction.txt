@@ -12,7 +12,7 @@ X GetDetails
 X GetFiles
   GetOldTransactions
   GetPackageLast
-  GetPackages
+X GetPackages
   GetProgress
   GetRepoList
   GetRequires

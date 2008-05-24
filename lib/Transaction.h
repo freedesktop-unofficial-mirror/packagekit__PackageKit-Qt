@@ -25,6 +25,7 @@ public:
 	Status::Value getStatus();
 
 	void searchName(const QString& filter, const QString& name);
+	void getPackages(const QString& filter);
 	void getDetails(Package *p);
 	void getFiles(Package *p);
 
