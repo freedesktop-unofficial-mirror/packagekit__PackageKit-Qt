@@ -9,7 +9,7 @@ X Cancel
   GetAllowCancel
   GetDepends
 X GetDetails
-  GetFiles
+X GetFiles
   GetOldTransactions
   GetPackageLast
   GetPackages
@@ -43,7 +43,7 @@ X SearchName
   CallerActiveChanged
 X Details
   ErrorCode
-  Files
+X Files
 X Finished
   Message
   Package
