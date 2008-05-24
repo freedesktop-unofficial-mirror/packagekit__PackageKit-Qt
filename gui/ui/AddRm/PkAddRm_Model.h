@@ -4,8 +4,8 @@
 #include <QAbstractTableModel>
 #include <KIcon>
 
-#include "../../../lib/Client.h"
-#include "../../../lib/Package.h"
+#include "../../../lib/QPackageKit.h"
+// #include "../../../lib/Package.h"
 
 using namespace PackageKit;
 
