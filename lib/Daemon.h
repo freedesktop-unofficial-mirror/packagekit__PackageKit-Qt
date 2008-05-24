@@ -5,11 +5,13 @@
 
 #include "CentralProxy.h"
 
-#include "Transaction.h"
 
 namespace PackageKit {
 
+class Transaction;
+
 class Daemon : public QObject {
+	friend class Transaction;
 
 	Q_OBJECT
 
@@ -29,6 +31,7 @@ public:
 
 private:
 	CentralProxy *proxy;
+	QString getTid();
 
 };
 
