@@ -19,6 +19,11 @@ void Daemon::getBackendDetails(QString &name, QString &author) {
 	name = proxy->GetBackendDetail(author);
 }
 
+QStringList Daemon::getFilters() {
+	QString filters = proxy->GetFilters();
+	return filters.split(";");
+}
+
 void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }

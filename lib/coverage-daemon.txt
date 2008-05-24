@@ -4,8 +4,8 @@ IF DONE
 	METHODS :
 
 X GetActions
-  GetBackendDetail
-  GetFilters
+X GetBackendDetail
+X GetFilters
   GetGroups
   GetTid
   GetTimeSinceAction

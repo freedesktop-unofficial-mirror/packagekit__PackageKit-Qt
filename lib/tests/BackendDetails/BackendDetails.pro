@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = getActions
+TARGET = backendDetails
 DEPENDPATH += .
 INCLUDEPATH += .
 LIBS += -L../../ -lpackagekit-qt
@@ -11,4 +11,4 @@ QT += dbus
 
 # Input
 HEADERS += ../../QPackageKit.h
-SOURCES += getActions.cpp
+SOURCES += backendDetails.cpp

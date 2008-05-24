@@ -20,6 +20,8 @@ public:
 	// PackageKit functions
 	QStringList getActions();
 	void getBackendDetails(QString &name, QString &author);
+	QStringList getFilters();
+
 	void suggestQuit();
 
 	Transaction* newTransaction();
