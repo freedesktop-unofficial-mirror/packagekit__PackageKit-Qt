@@ -29,6 +29,10 @@ Role::Value Transaction::getRole(Package *p) {
 	return role;
 }
 
+Status::Value Transaction::getStatus() {
+	return (Status::Value)EnumFromString<Status>(proxy->GetStatus());
+}
+
 void Transaction::searchName(const QString& filter, const QString& name) {
 	qDebug() << "search for " << name;
 	proxy->SearchName(filter, name);

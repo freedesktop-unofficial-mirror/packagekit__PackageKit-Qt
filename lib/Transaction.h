@@ -7,6 +7,7 @@
 #include "Package.h"
 #include "Exit.h"
 #include "Role.h"
+#include "Status.h"
 
 namespace PackageKit {
 
@@ -21,6 +22,7 @@ public:
 	// PackageKit functions
 	void cancel();
 	Role::Value getRole(Package *p = NULL);
+	Status::Value getStatus();
 
 	void searchName(const QString& filter, const QString& name);
 	void getDetails(Package *p);

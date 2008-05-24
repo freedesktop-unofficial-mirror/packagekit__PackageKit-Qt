@@ -17,7 +17,7 @@ X GetDetails
   GetRepoList
   GetRequires
 X GetRole
-  GetStatus
+X GetStatus
   GetUpdateDetail
   GetUpdates
   InstallFiles
