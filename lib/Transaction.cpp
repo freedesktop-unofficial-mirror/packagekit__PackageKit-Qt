@@ -50,6 +50,10 @@ void Transaction::getFiles(Package *p) {
 	proxy->GetFiles(p->id());
 }
 
+void Transaction::getDepends (Package *p, const QString& filter, bool recursive) {
+	proxy->GetDepends(p->id(), filter, recursive);
+}
+
 void Transaction::installPackages(const QList<Package*> &packages) {
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();

@@ -7,7 +7,7 @@ IF DONE
   AcceptEula
 X Cancel
   GetAllowCancel
-  GetDepends
+X GetDepends
 X GetDetails
 X GetFiles
   GetOldTransactions
