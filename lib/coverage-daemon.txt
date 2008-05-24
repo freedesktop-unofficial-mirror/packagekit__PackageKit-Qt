@@ -3,23 +3,23 @@
 IF DONE
 	METHODS :
 
-	GetActions
-	GetBackendDetail
-	GetFilters
-	GetGroups
-	GetTid
-	GetTimeSinceAction
-	GetTransactionList
-	StateHasChanged
-	SuggestDaemonQuit
-	GetNetworkState
-	SetProxy
+X GetActions
+  GetBackendDetail
+  GetFilters
+  GetGroups
+  GetTid
+  GetTimeSinceAction
+  GetTransactionList
+  StateHasChanged
+X SuggestDaemonQuit
+  GetNetworkState
+  SetProxy
 
-	SIGNALS :
+  SIGNALS :
 
-	TransactionListChanged
-	Locked
-	NetworkStateChanged
-	RestartSchedule
-	RepoListChanged
-	UpdatesChanged
+  TransactionListChanged
+  Locked
+  NetworkStateChanged
+  RestartSchedule
+  RepoListChanged
+  UpdatesChanged

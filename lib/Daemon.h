@@ -19,6 +19,7 @@ public:
 
 	// PackageKit functions
 	QStringList getActions();
+	void getBackendDetails(QString &name, QString &author);
 	void suggestQuit();
 
 	Transaction* newTransaction();

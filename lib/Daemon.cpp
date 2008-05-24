@@ -15,6 +15,10 @@ QStringList Daemon::getActions() {
 	return actions.split(";");
 }
 
+void Daemon::getBackendDetails(QString &name, QString &author) {
+	name = proxy->GetBackendDetail(author);
+}
+
 void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }
