@@ -24,6 +24,11 @@ QStringList Daemon::getFilters() {
 	return filters.split(";");
 }
 
+QStringList Daemon::getGroups() {
+	QString groups = proxy->GetGroups();
+	return groups.split(";");
+}
+
 void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }

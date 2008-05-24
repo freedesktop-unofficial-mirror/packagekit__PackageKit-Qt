@@ -21,6 +21,7 @@ public:
 	QStringList getActions();
 	void getBackendDetails(QString &name, QString &author);
 	QStringList getFilters();
+	QStringList getGroups();
 
 	void suggestQuit();
 

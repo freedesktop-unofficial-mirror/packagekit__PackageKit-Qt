@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
 	qDebug() << "We use the backend" << name << ", it was written by" << author;
 	qDebug() << "The backend supports the following actions :" << d.getActions();
 	qDebug() << "The backend supports the following filters :" << d.getFilters();
+	qDebug() << "The backend supports the following groups :" << d.getGroups();
 
 	return 0;
 }
