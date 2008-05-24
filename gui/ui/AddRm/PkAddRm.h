@@ -50,9 +50,9 @@ private:
     PkAddRmModel *m_pkg_model_dep;
     PkAddRmModel *m_pkg_model_req;
     PkAddRmDelegate *pkg_delegate;
-    Client *m_pkClient_main;
-    Client *m_pkClient_dep;
-    Client *m_pkClient_req;
+    Transaction *m_pkClient_main;
+    Transaction *m_pkClient_dep;
+    Transaction *m_pkClient_req;
     QTimer m_notifyT;
 private slots:
     void notifyUpdate();
@@ -63,6 +63,7 @@ public:
 
 private:
     QMenu *m_toolQM;
+    Daemon d;
     // We need to keep a list to build the filters string
     QList<QAction*> actions;
 

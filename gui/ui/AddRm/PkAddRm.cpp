@@ -30,49 +30,49 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     //initialize the model, delegate, client and  connect it's signals
     packageView->setModel(m_pkg_model_main = new PkAddRmModel(this));
     packageView->setItemDelegate(pkg_delegate = new PkAddRmDelegate(this));
-    m_pkClient_main = new Client();
-    qDebug() << "We have tid " << m_pkClient_main->tid();
-    connect( m_pkClient_main, SIGNAL(newPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
+    m_pkClient_main = d.newTransaction();
+//     qDebug() << "We have tid " << m_pkClient_main->tid();
+    connect( m_pkClient_main, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
     connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
     connect( m_pkClient_main, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
     //initialize the groups
 
     //TODO map everything and fix search group.
-    for (int i = 0; i < m_pkClient_main->getGroups().size(); ++i) {
-        if ( m_pkClient_main->getGroups().at(i) == "accessories" )
-	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
-	else if ( m_pkClient_main->getGroups().at(i) == "games" )
-	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
-	else if ( m_pkClient_main->getGroups().at(i) == "graphics" )
-	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
-	else if ( m_pkClient_main->getGroups().at(i) == "internet" )
-	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
-	else if ( m_pkClient_main->getGroups().at(i) == "office" )
-	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
-	else if ( m_pkClient_main->getGroups().at(i) == "other" )
-	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
-	else if ( m_pkClient_main->getGroups().at(i) == "programming" )
-	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
-	else if ( m_pkClient_main->getGroups().at(i) == "multimedia" )
-	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
-	else if ( m_pkClient_main->getGroups().at(i) == "system" )
-	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
-    }
+//     for (int i = 0; i < m_pkClient_main->getGroups().size(); ++i) {
+//         if ( m_pkClient_main->getGroups().at(i) == "accessories" )
+// 	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "games" )
+// 	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "graphics" )
+// 	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "internet" )
+// 	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "office" )
+// 	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "other" )
+// 	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "programming" )
+// 	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "multimedia" )
+// 	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
+// 	else if ( m_pkClient_main->getGroups().at(i) == "system" )
+// 	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
+//     }
 
     //initialize the dependecies and description client, and model.
-    m_pkClient_dep = new Client();
-    qDebug() << "We have tid " << m_pkClient_dep->tid();
+    m_pkClient_dep = d.newTransaction();
+//     qDebug() << "We have tid " << m_pkClient_dep->tid();
     dependsOnLV->setModel(m_pkg_model_dep = new PkAddRmModel(this));
-    connect( m_pkClient_dep, SIGNAL(newPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_dep, SIGNAL(Description(Package *,  const QString, const QString, const QString,
+    connect( m_pkClient_dep, SIGNAL(GotPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_dep, SIGNAL(Details(Package *,  const QString, const QString, const QString,
         const QString, qulonglong) ),
         this, SLOT( Description(Package *, const QString, const QString, const QString,
         const QString, qulonglong) ) );
     //initialize the requirements client, and model.
-    m_pkClient_req = new Client();
-    qDebug() << "We have tid " << m_pkClient_req->tid();
+    m_pkClient_req = d.newTransaction();
+//     qDebug() << "We have tid " << m_pkClient_req->tid();
     dependsOnLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
-    connect( m_pkClient_req, SIGNAL(newPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_req, SIGNAL(GotPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
     // connect the timer...
     connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
     // hides the description to have more space.
@@ -109,14 +109,14 @@ void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 {
     qDebug() << "Search Group " << text;
     m_pkg_model_main->clear();
-    m_pkClient_main->searchGroup(filters(), text);
+//     m_pkClient_main->searchGroup(filters(), text);
     descriptionDW->setVisible(false);
 }
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 {
-    m_pkClient_dep->getDescription(index.model()->data(index, PkAddRmModel::IdRole).toString());
-    m_pkClient_dep->getDepends(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()),false);
+//     m_pkClient_dep->getDescription(index.model()->data(index, PkAddRmModel::IdRole).toString());
+//     m_pkClient_dep->getDepends(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()),false);
     notifyF->show();
     actionPB->show();
 qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
@@ -173,9 +173,9 @@ void PkAddRm::notifyUpdate()
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
     //ask required by packages
-    m_pkClient_req->getRequires(p, false);
+//     m_pkClient_req->getRequires(p, false);
     //ask depends on packages
-    m_pkClient_dep->getDepends(p, false);
+//     m_pkClient_dep->getDepends(p, false);
     //format and show description
     QString description;
     description += "<b>" + i18n("Package Name") + ":</b> " + p->name() + "<br />";
