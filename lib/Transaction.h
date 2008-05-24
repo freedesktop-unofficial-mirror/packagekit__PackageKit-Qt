@@ -6,6 +6,7 @@
 #include "TransactionProxy.h"
 #include "Package.h"
 #include "Exit.h"
+#include "Role.h"
 
 namespace PackageKit {
 
@@ -19,9 +20,11 @@ public:
 
 	// PackageKit functions
 	void cancel();
+	Role::Value getRole(Package *p = NULL);
 
 	void searchName(const QString& filter, const QString& name);
 	void getDetails(Package *p);
+
 
 signals:
 	void GotPackage(Package *p);

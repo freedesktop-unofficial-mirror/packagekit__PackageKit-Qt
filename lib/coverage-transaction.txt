@@ -16,7 +16,7 @@ X GetDetails
   GetProgress
   GetRepoList
   GetRequires
-  GetRole
+X GetRole
   GetStatus
   GetUpdateDetail
   GetUpdates
@@ -47,7 +47,7 @@ X Details
 X Finished
   Message
   Package
-  ProgressChanged
+X ProgressChanged
   RepoDetail
   RepoSignatureRequired
   EulaRequired

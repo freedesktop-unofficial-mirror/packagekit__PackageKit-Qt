@@ -22,6 +22,13 @@ void Transaction::cancel() {
 	proxy->Cancel();
 }
 
+Role::Value Transaction::getRole(Package *p) {
+	QString pid;
+	Role::Value role = (Role::Value)EnumFromString<Role>(proxy->GetRole(pid));
+	if(p != NULL) p = new Package(pid);
+	return role;
+}
+
 void Transaction::searchName(const QString& filter, const QString& name) {
 	qDebug() << "search for " << name;
 	proxy->SearchName(filter, name);
