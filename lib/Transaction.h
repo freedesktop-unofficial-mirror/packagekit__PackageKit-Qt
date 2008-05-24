@@ -28,6 +28,9 @@ public:
 	void getDetails(Package *p);
 	void getFiles(Package *p);
 
+	void installPackages(const QList<Package*> &packages);
+	void installPackage(Package *p);
+
 signals:
 	void GotPackage(Package *p);
 	void Details(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);

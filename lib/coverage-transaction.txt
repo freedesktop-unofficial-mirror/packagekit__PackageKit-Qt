@@ -21,7 +21,7 @@ X GetStatus
   GetUpdateDetail
   GetUpdates
   InstallFiles
-  InstallPackages
+X InstallPackages
   InstallSignature
   IsCallerActive
   RefreshCache
@@ -46,7 +46,7 @@ X Details
 X Files
 X Finished
   Message
-  Package
+X Package
 X ProgressChanged
   RepoDetail
   RepoSignatureRequired

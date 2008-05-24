@@ -47,6 +47,18 @@ void Transaction::getFiles(Package *p) {
 	proxy->GetFiles(p->id());
 }
 
+void Transaction::installPackages(const QList<Package*> &packages) {
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	proxy->InstallPackages(pids);
+}
+
+void Transaction::installPackage(Package *p) {
+	QStringList pids;
+	pids << p->id();
+	proxy->InstallPackages(pids);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
