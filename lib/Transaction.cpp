@@ -29,7 +29,7 @@ void Transaction::renewTid() {
 
 bool Transaction::allowCancel() {
 	renewTid();
-	return proxy->GetCancel();
+	return proxy->GetAllowCancel();
 }
 
 void Transaction::cancel() {
