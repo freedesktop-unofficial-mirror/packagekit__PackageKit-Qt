@@ -54,4 +54,4 @@ X ProgressChanged
   RequireRestart
   StatusChanged
   Transaction
-  UpdateDetail
+X UpdateDetail

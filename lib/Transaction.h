@@ -54,6 +54,7 @@ signals:
 	void Files(Package *p, QStringList files);
 	void Finished(Exit::Value status, uint runtime);
 	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+	void UpdateDetail(const QString &package_id, const QString &updates, const QString &obsoletes, const QString &vendor_url, const QString &bugzilla_url, const QString &cve_url, const QString &restart, const QString &update_text);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);

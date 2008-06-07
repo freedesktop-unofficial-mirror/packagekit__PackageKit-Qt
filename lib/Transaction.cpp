@@ -24,6 +24,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(Files(const QString&, const QString&)), this, SLOT(Files_cb(const QString&, const QString&)));
 	connect(proxy, SIGNAL(Finished(const QString&, uint)), this, SLOT(Finished_cb(const QString&, uint)));
 	connect(proxy, SIGNAL(ProgressChanged(uint, uint, uint, uint)), this, SIGNAL(ProgressChanged(uint, uint, uint, uint)));
+	connect(proxy, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)), this, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
 
 }
 
@@ -153,3 +154,4 @@ void Transaction::Finished_cb(const QString& exit, uint runtime) {
 	_tid = QString();
 	emit Finished((Exit::Value)EnumFromString<Exit>(exit), runtime);
 }
+
