@@ -39,6 +39,8 @@ public:
 	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
+	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
+
 signals:
 	void GotPackage(Package *p);
 	void Details(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);

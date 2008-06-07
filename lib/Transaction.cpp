@@ -101,6 +101,10 @@ void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 	proxy->RemovePackages(pids, allow_deps, autoremove);
 }
 
+void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
+	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
