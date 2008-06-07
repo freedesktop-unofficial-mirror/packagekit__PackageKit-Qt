@@ -58,13 +58,15 @@ signals:
 	void RequireRestart(const QString&, const QString&);
 	void AllowCancel(bool allow_cancel);
     void ErrorCode(const QString &code, const QString &details);
-
+    void Message(const QString &message, const QString &details);
+	void StatusChanged(Status::Value v);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
 	void Details_cb(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
 	void Files_cb(const QString &pid, const QString &file_list);
 	void Finished_cb(const QString& exit, uint runtime);
+	void StatusChanged_cb(const QString& status);
 
 private:
 	TransactionProxy *proxy;

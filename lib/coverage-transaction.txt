@@ -45,13 +45,13 @@ X Details
 X ErrorCode
 X Files
 X Finished
-  Message
+X Message
 X Package
 X ProgressChanged
   RepoDetail
   RepoSignatureRequired
   EulaRequired
 X RequireRestart
-  StatusChanged
+X StatusChanged
   Transaction
 X UpdateDetail

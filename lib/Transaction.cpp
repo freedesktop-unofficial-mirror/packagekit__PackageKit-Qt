@@ -29,6 +29,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(AllowCancel(bool)), this, SIGNAL(AllowCancel(bool)));
 	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&)), this, SIGNAL(ErrorCode(const QString&, const QString&)));
 	connect(proxy, SIGNAL(Message(const QString&, const QString&)), this, SIGNAL(Message(const QString&, const QString&)));
+	connect(proxy, SIGNAL(StatusChanged(const QString&)), this, SLOT(StatusChanged_cb(const QString&)));
 
 }
 
@@ -159,3 +160,6 @@ void Transaction::Finished_cb(const QString& exit, uint runtime) {
 	emit Finished((Exit::Value)EnumFromString<Exit>(exit), runtime);
 }
 
+void Transaction::StatusChanged_cb(const QString &status) {
+	emit StatusChanged((Status::Value)EnumFromString<Status>(status));
+}
