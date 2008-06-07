@@ -6,7 +6,7 @@ IF DONE
 
   AcceptEula
 X Cancel
-  GetAllowCancel
+X GetAllowCancel
 X GetDepends
 X GetDetails
 X GetFiles

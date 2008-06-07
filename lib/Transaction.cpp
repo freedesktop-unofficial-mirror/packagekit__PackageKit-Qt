@@ -5,7 +5,8 @@
 using namespace PackageKit;
 
 Transaction::Transaction(Daemon *parent) : QObject(parent), parent(parent) {
-	renewTid();
+	_tid = QString();
+	proxy = NULL;
 }
 
 Transaction::~Transaction() {
@@ -26,8 +27,14 @@ void Transaction::renewTid() {
 
 }
 
+bool Transaction::allowCancel() {
+	renewTid();
+	return proxy->GetCancel();
+}
+
 void Transaction::cancel() {
-	proxy->Cancel();
+	if(proxy)
+		proxy->Cancel();
 }
 
 Role::Value Transaction::getRole(Package *p) {

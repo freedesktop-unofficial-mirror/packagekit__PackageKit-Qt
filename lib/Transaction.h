@@ -23,6 +23,7 @@ public:
 
 	// PackageKit functions
 	void renewTid();
+	bool allowCancel();
 	void cancel();
 	Role::Value getRole(Package *p = NULL);
 	Status::Value getStatus();
