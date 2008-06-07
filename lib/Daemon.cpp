@@ -1,5 +1,4 @@
 #include "Daemon.h"
-#include "Transaction.h"
 #include "constants.h"
 
 using namespace PackageKit;
@@ -35,9 +34,6 @@ void Daemon::suggestQuit() {
 }
 
 Transaction* Daemon::newTransaction() {
-	return new Transaction(this);
-}
-
-QString Daemon::getTid() {
-	return proxy->GetTid();
+	QString tid = proxy->GetTid();
+	return new Transaction(tid, this);
 }
