@@ -30,7 +30,7 @@ X RemovePackages
   RepoSetData
   Resolve
   Rollback
-  SearchDetails
+X SearchDetails
   SearchFile
   SearchGroup
 X SearchName

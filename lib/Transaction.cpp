@@ -55,6 +55,11 @@ void Transaction::searchName(const QString& filter, const QString& name) {
 	proxy->SearchName(filter, name);
 }
 
+void Transaction::searchDetails(const QString &filter, const QString& search) {
+	renewTid();
+	proxy->SearchDetails(filter, search);
+}
+
 void Transaction::getPackages(const QString& filter) {
 	renewTid();
 	proxy->GetPackages(filter);
@@ -94,6 +99,7 @@ void Transaction::installPackage(Package *p) {
 }
 
 void Transaction::installFiles(const QStringList& files, bool trusted) {
+	renewTid();
 	proxy->InstallFiles(trusted, files);
 }
 
