@@ -11,15 +11,18 @@
 
 namespace PackageKit {
 
+class Daemon;
+
 class Transaction : public QObject {
 
 	Q_OBJECT
 
 public:
-	Transaction(QString tid, QObject *parent = 0);
+	Transaction(Daemon *parent = 0);
 	~Transaction();
 
 	// PackageKit functions
+	void renewTid();
 	void cancel();
 	Role::Value getRole(Package *p = NULL);
 	Status::Value getStatus();
@@ -50,6 +53,7 @@ private slots:
 
 private:
 	TransactionProxy *proxy;
+	Daemon *parent;
 	QString _tid;
 
 };

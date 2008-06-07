@@ -11,6 +11,8 @@ namespace PackageKit {
 
 class Daemon : public QObject {
 
+	friend class Transaction;
+
 	Q_OBJECT
 
 public:
@@ -26,6 +28,9 @@ public:
 	void suggestQuit();
 
 	Transaction* newTransaction();
+
+protected:
+	QString getTid();
 
 private:
 	CentralProxy *proxy;

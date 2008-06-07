@@ -1,12 +1,21 @@
 #include "Transaction.h"
+#include "Daemon.h"
 #include "constants.h"
 
 using namespace PackageKit;
 
-Transaction::Transaction(QString tid, QObject *parent) : QObject(parent) {
-	_tid = tid;
-	proxy = new TransactionProxy(PK_NAME, (tid).toAscii().data() , QDBusConnection::systemBus(), this);
-	qDebug() << "trying to create new transaction with path" << (tid).toAscii().data();
+Transaction::Transaction(Daemon *parent) : QObject(parent), parent(parent) {
+	renewTid();
+}
+
+Transaction::~Transaction() {
+}
+
+void Transaction::renewTid() {
+	if(_tid != QString()) return;
+	_tid = parent->getTid() ;
+	proxy = new TransactionProxy(PK_NAME, (_tid).toAscii().data() , QDBusConnection::systemBus(), this);
+	qDebug() << "trying to create new transaction with path" << (_tid).toAscii().data();
 	if(!proxy->isValid()) qFatal("Error, cannot create transaction");
 
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&)), this, SLOT(Package_cb(const QString&, const QString&, const QString&)));
@@ -14,9 +23,7 @@ Transaction::Transaction(QString tid, QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(Files(const QString&, const QString&)), this, SLOT(Files_cb(const QString&, const QString&)));
 	connect(proxy, SIGNAL(Finished(const QString&, uint)), this, SLOT(Finished_cb(const QString&, uint)));
 	connect(proxy, SIGNAL(ProgressChanged(uint, uint, uint, uint)), this, SIGNAL(ProgressChanged(uint, uint, uint, uint)));
-}
 
-Transaction::~Transaction() {
 }
 
 void Transaction::cancel() {
@@ -24,6 +31,7 @@ void Transaction::cancel() {
 }
 
 Role::Value Transaction::getRole(Package *p) {
+	renewTid();
 	QString pid;
 	Role::Value role = (Role::Value)EnumFromString<Role>(proxy->GetRole(pid));
 	if(p != NULL) p = new Package(pid);
@@ -31,30 +39,37 @@ Role::Value Transaction::getRole(Package *p) {
 }
 
 Status::Value Transaction::getStatus() {
+	renewTid();
 	return (Status::Value)EnumFromString<Status>(proxy->GetStatus());
 }
 
 void Transaction::searchName(const QString& filter, const QString& name) {
+	renewTid();
 	proxy->SearchName(filter, name);
 }
 
 void Transaction::getPackages(const QString& filter) {
+	renewTid();
 	proxy->GetPackages(filter);
 }
 
 void Transaction::getDetails(Package *p) {
+	renewTid();
 	proxy->GetDetails(p->id());
 }
 
 void Transaction::getFiles(Package *p) {
+	renewTid();
 	proxy->GetFiles(p->id());
 }
 
 void Transaction::getDepends (Package *p, const QString& filter, bool recursive) {
+	renewTid();
 	proxy->GetDepends(p->id(), filter, recursive);
 }
 
 void Transaction::installPackages(const QList<Package*> &packages) {
+	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
 	proxy->InstallPackages(pids);
@@ -67,6 +82,7 @@ void Transaction::installPackage(Package *p) {
 }
 
 void Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
+	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
 	proxy->RemovePackages(pids, allow_deps, autoremove);
@@ -93,5 +109,6 @@ void Transaction::Files_cb(const QString &pid, const QString &file_list) {
 }
 
 void Transaction::Finished_cb(const QString& exit, uint runtime) {
+	_tid = QString();
 	emit Finished((Exit::Value)EnumFromString<Exit>(exit), runtime);
 }

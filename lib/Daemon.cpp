@@ -34,6 +34,9 @@ void Daemon::suggestQuit() {
 }
 
 Transaction* Daemon::newTransaction() {
-	QString tid = proxy->GetTid();
-	return new Transaction(tid, this);
+	return new Transaction(this);
+}
+
+QString Daemon::getTid() {
+	return proxy->GetTid();
 }

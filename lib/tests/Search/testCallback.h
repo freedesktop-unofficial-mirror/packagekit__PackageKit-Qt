@@ -16,6 +16,12 @@ public:
 
 public slots:
 	void newPackage(Package *p);
+	void searchAgain();
+	void finish();
+
+private:
+	Transaction *t;
+	Daemon *d;
 
 };
 
