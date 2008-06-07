@@ -60,6 +60,11 @@ void Transaction::searchDetails(const QString &filter, const QString& search) {
 	proxy->SearchDetails(filter, search);
 }
 
+void Transaction::searchGroup(const QString &filter, const QString& search) {
+	renewTid();
+	proxy->SearchGroup(filter, search);
+}
+
 void Transaction::getPackages(const QString& filter) {
 	renewTid();
 	proxy->GetPackages(filter);

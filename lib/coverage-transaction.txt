@@ -32,7 +32,7 @@ X RemovePackages
   Rollback
 X SearchDetails
   SearchFile
-  SearchGroup
+X SearchGroup
 X SearchName
   UpdatePackages
   UpdateSystem
