@@ -42,7 +42,7 @@ X SearchName
 X AllowCancel
   CallerActiveChanged
 X Details
-  ErrorCode
+X ErrorCode
 X Files
 X Finished
   Message

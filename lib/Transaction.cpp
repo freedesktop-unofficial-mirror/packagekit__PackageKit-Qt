@@ -25,8 +25,9 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(Finished(const QString&, uint)), this, SLOT(Finished_cb(const QString&, uint)));
 	connect(proxy, SIGNAL(ProgressChanged(uint, uint, uint, uint)), this, SIGNAL(ProgressChanged(uint, uint, uint, uint)));
 	connect(proxy, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)), this, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
-	connect(proxy, SIGNAL(RequireRestart(const QString&, const QString&)), this, SLOT(RequireRestart(const QString&, const QString&)));
-	connect(proxy, SIGNAL(AllowCancel(bool)), this SLOT(AllowCancel(bool)));
+	connect(proxy, SIGNAL(RequireRestart(const QString&, const QString&)), this, SIGNAL(RequireRestart(const QString&, const QString&)));
+	connect(proxy, SIGNAL(AllowCancel(bool)), this, SIGNAL(AllowCancel(bool)));
+	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&)), this, SIGNAL(ErrorCode(const QString&, const QString&)));
 
 }
 
