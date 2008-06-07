@@ -51,7 +51,7 @@ X ProgressChanged
   RepoDetail
   RepoSignatureRequired
   EulaRequired
-  RequireRestart
+X RequireRestart
   StatusChanged
   Transaction
 X UpdateDetail
