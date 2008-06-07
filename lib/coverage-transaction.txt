@@ -39,7 +39,7 @@ X SearchName
   WhatProvides
 
   SIGNALS :
-  AllowCancel
+X AllowCancel
   CallerActiveChanged
 X Details
   ErrorCode
