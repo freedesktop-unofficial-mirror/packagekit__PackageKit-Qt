@@ -15,7 +15,7 @@ X GetFiles
 X GetPackages
 X GetProgress
   GetRepoList
-  GetRequires
+X GetRequires
 X GetRole
 X GetStatus
   GetUpdateDetail

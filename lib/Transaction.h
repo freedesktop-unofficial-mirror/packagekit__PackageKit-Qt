@@ -33,6 +33,7 @@ public:
 	void getDetails(Package *p);
 	void getFiles(Package *p);
 	void getDepends(Package *p, const QString &filter, bool recursive = true);
+	void getRequires(Package *p, const QString &filter, bool recursive = true);
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);

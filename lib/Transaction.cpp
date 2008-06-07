@@ -75,6 +75,11 @@ void Transaction::getDepends (Package *p, const QString& filter, bool recursive)
 	proxy->GetDepends(p->id(), filter, recursive);
 }
 
+void Transaction::getRequires (Package *p, const QString& filter, bool recursive) {
+	renewTid();
+	proxy->GetDepends(p->id(), filter, recursive);
+}
+
 void Transaction::installPackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;
