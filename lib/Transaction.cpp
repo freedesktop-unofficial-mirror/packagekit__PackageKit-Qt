@@ -93,6 +93,10 @@ void Transaction::installPackage(Package *p) {
 	proxy->InstallPackages(pids);
 }
 
+void Transaction::installFiles(const QStringList& files, bool trusted) {
+	proxy->InstallFiles(trusted, files);
+}
+
 void Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
 	renewTid();
 	QStringList pids;

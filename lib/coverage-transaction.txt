@@ -20,7 +20,7 @@ X GetRole
 X GetStatus
   GetUpdateDetail
   GetUpdates
-  InstallFiles
+X InstallFiles
 X InstallPackages
   InstallSignature
   IsCallerActive
