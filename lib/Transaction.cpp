@@ -121,6 +121,11 @@ void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 	proxy->RemovePackages(pids, allow_deps, autoremove);
 }
 
+void Transaction::getUpdates(const QString& filter) {
+	renewTid();
+	proxy->GetUpdates(filter);
+}
+
 void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
 	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
 }

@@ -43,6 +43,8 @@ public:
 	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
+	void getUpdates(const QString& filter);
+
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
 
 signals:

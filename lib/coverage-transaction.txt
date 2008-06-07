@@ -19,7 +19,7 @@ X GetRequires
 X GetRole
 X GetStatus
   GetUpdateDetail
-  GetUpdates
+X GetUpdates
 X InstallFiles
 X InstallPackages
   InstallSignature
