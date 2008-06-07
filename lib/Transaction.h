@@ -44,6 +44,7 @@ public:
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
 	void getUpdates(const QString& filter);
+	void getUpdateDetail(const QString& package_id);
 
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
 

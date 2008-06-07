@@ -126,6 +126,11 @@ void Transaction::getUpdates(const QString& filter) {
 	proxy->GetUpdates(filter);
 }
 
+void Transaction::getUpdateDetail(const QString& package_id) {
+	renewTid();
+	proxy->GetUpdateDetail(package_id);
+}
+
 void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
 	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
 }

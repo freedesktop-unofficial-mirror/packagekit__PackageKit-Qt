@@ -18,7 +18,7 @@ X GetProgress
 X GetRequires
 X GetRole
 X GetStatus
-  GetUpdateDetail
+X GetUpdateDetail
 X GetUpdates
 X InstallFiles
 X InstallPackages
