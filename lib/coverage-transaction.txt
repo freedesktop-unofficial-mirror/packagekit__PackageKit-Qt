@@ -14,7 +14,7 @@ X GetFiles
   GetPackageLast
 X GetPackages
 X GetProgress
-  GetRepoList
+X GetRepoList
 X GetRequires
 X GetRole
 X GetStatus
@@ -48,7 +48,7 @@ X Finished
 X Message
 X Package
 X ProgressChanged
-  RepoDetail
+X RepoDetail
   RepoSignatureRequired
   EulaRequired
 X RequireRestart

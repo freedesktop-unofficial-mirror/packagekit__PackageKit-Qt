@@ -30,6 +30,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&)), this, SIGNAL(ErrorCode(const QString&, const QString&)));
 	connect(proxy, SIGNAL(Message(const QString&, const QString&)), this, SIGNAL(Message(const QString&, const QString&)));
 	connect(proxy, SIGNAL(StatusChanged(const QString&)), this, SLOT(StatusChanged_cb(const QString&)));
+	connect(proxy, SIGNAL(RepoDetail(const QString&, const QString&, bool)), this, SIGNAL(RepoDetail(const QString&, const QString&, bool)));
 
 }
 
@@ -191,6 +192,11 @@ void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elaps
 	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
 }
 
+void Transaction::getRepoList(const QString &filter) {
+	renewTid();
+	proxy->GetRepoList(filter);
+}
+
 void Transaction::repoEnable(const QString &repo_id, bool enabled) {
 	renewTid();
 	proxy->RepoEnable(repo_id, enabled);
@@ -228,3 +234,4 @@ void Transaction::Finished_cb(const QString& exit, uint runtime) {
 void Transaction::StatusChanged_cb(const QString &status) {
 	emit StatusChanged((Status::Value)EnumFromString<Status>(status));
 }
+

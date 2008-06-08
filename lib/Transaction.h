@@ -59,6 +59,7 @@ public:
 
 	void refreshCache(bool force = false);
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
+	void getRepoList(const QString &filter);
 	void repoEnable(const QString &repo_id, bool enabled);
 	void repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
 	bool isCallerActive();
@@ -75,6 +76,7 @@ signals:
     void ErrorCode(const QString &code, const QString &details);
     void Message(const QString &message, const QString &details);
 	void StatusChanged(Status::Value v);
+	void RepoDetail(const QString &repo_id, const QString &details, bool enabled);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
