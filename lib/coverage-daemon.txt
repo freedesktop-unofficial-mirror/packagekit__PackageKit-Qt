@@ -10,7 +10,7 @@ X GetGroups
 X GetTid
 X GetTimeSinceAction
 X GetTransactionList
-  StateHasChanged
+X StateHasChanged
 X SuggestDaemonQuit
 X GetNetworkState
 X SetProxy

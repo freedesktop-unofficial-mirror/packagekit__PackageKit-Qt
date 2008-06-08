@@ -32,6 +32,7 @@ public:
 	bool getNetworkState();
 	void setProxy(const QString &http_proxy, const QString &ftp_proxy);
 	void suggestQuit();
+	void stateHasChanged(const QString &reason);
 
 	Transaction* newTransaction();
 

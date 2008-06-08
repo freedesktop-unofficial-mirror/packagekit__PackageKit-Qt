@@ -56,6 +56,10 @@ void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }
 
+void Daemon::stateHasChanged(const QString &reason) {
+	proxy->StateHasChanged(reason);
+}
+
 Transaction* Daemon::newTransaction() {
 	return new Transaction(this);
 }
