@@ -34,8 +34,8 @@ X SearchDetails
   SearchFile
 X SearchGroup
 X SearchName
-  UpdatePackages
-  UpdateSystem
+X UpdatePackages
+X UpdateSystem
   WhatProvides
 
   SIGNALS :

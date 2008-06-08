@@ -142,6 +142,11 @@ void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 	proxy->RemovePackages(pids, allow_deps, autoremove);
 }
 
+void Transaction::updateSystem() {
+	renewTid();
+	proxy->UpdateSystem();
+}
+
 void Transaction::getUpdates(const QString& filter) {
 	renewTid();
 	proxy->GetUpdates(filter);

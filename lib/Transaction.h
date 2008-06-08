@@ -45,6 +45,8 @@ public:
 	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
+	void updateSystem();
+
 	void getUpdates(const QString& filter);
 	void getUpdateDetail(const QString& package_id);
 
