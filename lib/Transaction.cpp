@@ -104,6 +104,7 @@ void Transaction::installPackages(const QList<Package*> &packages) {
 }
 
 void Transaction::installPackage(Package *p) {
+	renewTid();
 	QStringList pids;
 	pids << p->id();
 	proxy->InstallPackages(pids);
