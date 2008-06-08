@@ -71,6 +71,11 @@ void Transaction::searchGroup(const QString &filter, const QString& search) {
 	proxy->SearchGroup(filter, search);
 }
 
+void Transaction::searchFile(const QString &filter, const QString& file) {
+	renewTid();
+	proxy->SearchFile(filter, file);
+}
+
 void Transaction::getPackages(const QString& filter) {
 	renewTid();
 	proxy->GetPackages(filter);

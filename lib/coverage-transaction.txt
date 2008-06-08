@@ -31,7 +31,7 @@ X RemovePackages
   Resolve
   Rollback
 X SearchDetails
-  SearchFile
+X SearchFile
 X SearchGroup
 X SearchName
 X UpdatePackages
