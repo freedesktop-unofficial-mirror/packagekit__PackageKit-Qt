@@ -8,7 +8,7 @@ X GetBackendDetail
 X GetFilters
 X GetGroups
 X GetTid
-  GetTimeSinceAction
+X GetTimeSinceAction
   GetTransactionList
   StateHasChanged
 X SuggestDaemonQuit
@@ -17,7 +17,7 @@ X GetNetworkState
 
   SIGNALS :
 
-  TransactionListChanged
+X TransactionListChanged
 X Locked
 X NetworkStateChanged
   RestartSchedule

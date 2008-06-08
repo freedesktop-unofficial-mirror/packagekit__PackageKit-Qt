@@ -32,6 +32,10 @@ QStringList Daemon::getGroups() {
 	return groups.split(";");
 }
 
+uint Daemon::getTimeSinceAction(Role::Value role) {
+	return proxy->GetTimeSinceAction(EnumToString<Role>(role));
+}
+
 // 1 = online ; 0 = offline
 bool Daemon::getNetworkState() {
 	QString state = proxy->GetNetworkState();

@@ -6,6 +6,7 @@
 #include "CentralProxy.h"
 
 #include "Transaction.h"
+#include "Role.h"
 
 namespace PackageKit {
 
@@ -24,6 +25,8 @@ public:
 	void getBackendDetails(QString &name, QString &author);
 	QStringList getFilters();
 	QStringList getGroups();
+
+	uint getTimeSinceAction(Role::Value role);
 
 	bool getNetworkState();
 	void suggestQuit();
