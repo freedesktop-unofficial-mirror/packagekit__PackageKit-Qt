@@ -106,6 +106,11 @@ void Transaction::whatProvides(const QString &filter, const Provides::Value &typ
 	proxy->WhatProvides(filter, EnumToString<Provides>(type), search);
 }
 
+void Transaction::resolve(const QString &filter, Package *p) {
+	renewTid();
+	proxy->Resolve(filter, p->id());
+}
+
 void Transaction::installPackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;

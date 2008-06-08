@@ -39,6 +39,7 @@ public:
 	void getDepends(Package *p, const QString &filter, bool recursive = true);
 	void getRequires(Package *p, const QString &filter, bool recursive = true);
 	void whatProvides(const QString &filter, const Provides::Value &type, const QString& search);
+	void resolve(const QString &filter, Package *p);
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);
