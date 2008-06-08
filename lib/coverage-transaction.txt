@@ -10,7 +10,7 @@ X GetAllowCancel
 X GetDepends
 X GetDetails
 X GetFiles
-  GetOldTransactions
+X GetOldTransactions
   GetPackageLast
 X GetPackages
 X GetProgress
@@ -53,5 +53,5 @@ X RepoDetail
   EulaRequired
 X RequireRestart
 X StatusChanged
-  Transaction
+X Transaction
 X UpdateDetail

@@ -63,6 +63,7 @@ public:
 	void repoEnable(const QString &repo_id, bool enabled);
 	void repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
 	bool isCallerActive();
+	void getOldTransactions(uint number);
 
 signals:
 	void GotPackage(Package *p);
@@ -77,6 +78,7 @@ signals:
     void Message(const QString &message, const QString &details);
 	void StatusChanged(Status::Value v);
 	void RepoDetail(const QString &repo_id, const QString &details, bool enabled);
+	void OldTransaction(const QString &tid, const QString &timespec, bool succeeded, Role::Value role, uint duration, const QString& data);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
@@ -84,6 +86,7 @@ private slots:
 	void Files_cb(const QString &pid, const QString &file_list);
 	void Finished_cb(const QString& exit, uint runtime);
 	void StatusChanged_cb(const QString& status);
+	void Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data);
 
 private:
 	TransactionProxy *proxy;

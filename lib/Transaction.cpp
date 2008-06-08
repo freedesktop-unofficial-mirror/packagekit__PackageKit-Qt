@@ -31,7 +31,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(Message(const QString&, const QString&)), this, SIGNAL(Message(const QString&, const QString&)));
 	connect(proxy, SIGNAL(StatusChanged(const QString&)), this, SLOT(StatusChanged_cb(const QString&)));
 	connect(proxy, SIGNAL(RepoDetail(const QString&, const QString&, bool)), this, SIGNAL(RepoDetail(const QString&, const QString&, bool)));
-
+	connect(proxy, SIGNAL(Transaction(const QString&, const QString&, bool, const QString&, uint, const QString&)), SLOT(Transaction_cb(const QString&, const QString&, bool, const QString&, uint, const QString&)));
 }
 
 bool Transaction::allowCancel() {
@@ -212,6 +212,11 @@ bool Transaction::isCallerActive() {
 	return proxy->IsCallerActive();
 }
 
+void Transaction::getOldTransactions(uint number) {
+	renewTid();
+	proxy->GetOldTransactions(number);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
@@ -235,3 +240,6 @@ void Transaction::StatusChanged_cb(const QString &status) {
 	emit StatusChanged((Status::Value)EnumFromString<Status>(status));
 }
 
+void Transaction::Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data){
+	emit OldTransaction(tid, timespec, succeeded, (Role::Value)EnumFromString<Role>(role), duration, data);
+}
