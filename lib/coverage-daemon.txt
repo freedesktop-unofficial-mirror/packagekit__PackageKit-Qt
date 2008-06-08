@@ -12,14 +12,14 @@ X GetTid
   GetTransactionList
   StateHasChanged
 X SuggestDaemonQuit
-  GetNetworkState
+X GetNetworkState
   SetProxy
 
   SIGNALS :
 
   TransactionListChanged
-  Locked
-  NetworkStateChanged
+X Locked
+X NetworkStateChanged
   RestartSchedule
   RepoListChanged
 X UpdatesChanged

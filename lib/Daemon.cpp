@@ -6,6 +6,7 @@ using namespace PackageKit;
 Daemon::Daemon(QObject *parent) : QObject(parent) {
 	proxy = new CentralProxy(PK_NAME, PK_PATH, QDBusConnection::systemBus(), this);
 	connect(proxy, SIGNAL(NetworkStateChanged(const QString&)), this, SLOT(NetworkStateChanged_cb(const QString&)));
+	connect(proxy, SIGNAL(Locked(bool)), this, SIGNAL(Locked(bool)));
 }
 
 Daemon::~Daemon() {
