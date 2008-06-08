@@ -57,6 +57,8 @@ public:
 
 	void refreshCache(bool force = false);
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
+	void repoEnable(const QString &repo_id, bool enabled);
+	void repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
 
 signals:
 	void GotPackage(Package *p);

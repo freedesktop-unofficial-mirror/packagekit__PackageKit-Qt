@@ -186,6 +186,16 @@ void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elaps
 	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
 }
 
+void Transaction::repoEnable(const QString &repo_id, bool enabled) {
+	renewTid();
+	proxy->RepoEnable(repo_id, enabled);
+}
+
+void Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
+	renewTid();
+	proxy->RepoSetData(repo_id, parameter, value);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
