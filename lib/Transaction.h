@@ -64,6 +64,7 @@ public:
 	void repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
 	bool isCallerActive();
 	void getOldTransactions(uint number);
+	void acceptEula(const QString &id);
 
 signals:
 	void GotPackage(Package *p);
@@ -79,6 +80,7 @@ signals:
 	void StatusChanged(Status::Value v);
 	void RepoDetail(const QString &repo_id, const QString &details, bool enabled);
 	void OldTransaction(const QString &tid, const QString &timespec, bool succeeded, Role::Value role, uint duration, const QString& data);
+	void EulaRequired(const QString &id, Package *p, const QString &vendor_name, const QString &agreement);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
@@ -87,6 +89,7 @@ private slots:
 	void Finished_cb(const QString& exit, uint runtime);
 	void StatusChanged_cb(const QString& status);
 	void Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data);
+	void EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement);
 
 private:
 	TransactionProxy *proxy;

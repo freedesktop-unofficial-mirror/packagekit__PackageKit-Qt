@@ -4,7 +4,7 @@ IF DONE
 
 	METHODS :
 
-  AcceptEula
+X AcceptEula
 X Cancel
 X GetAllowCancel
 X GetDepends
@@ -50,7 +50,7 @@ X Package
 X ProgressChanged
 X RepoDetail
   RepoSignatureRequired
-  EulaRequired
+X EulaRequired
 X RequireRestart
 X StatusChanged
 X Transaction

@@ -32,6 +32,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(StatusChanged(const QString&)), this, SLOT(StatusChanged_cb(const QString&)));
 	connect(proxy, SIGNAL(RepoDetail(const QString&, const QString&, bool)), this, SIGNAL(RepoDetail(const QString&, const QString&, bool)));
 	connect(proxy, SIGNAL(Transaction(const QString&, const QString&, bool, const QString&, uint, const QString&)), SLOT(Transaction_cb(const QString&, const QString&, bool, const QString&, uint, const QString&)));
+	connect(proxy, SIGNAL(EulaRequired(const QString&, const QString&, const QString&, const QString&)), SLOT(EulaRequired_cb(const QString&, const QString&, const QString&, const QString&)));
 }
 
 bool Transaction::allowCancel() {
@@ -217,6 +218,11 @@ void Transaction::getOldTransactions(uint number) {
 	proxy->GetOldTransactions(number);
 }
 
+void Transaction::acceptEula(const QString &id) {
+	renewTid();
+	proxy->AcceptEula(id);
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
@@ -243,3 +249,8 @@ void Transaction::StatusChanged_cb(const QString &status) {
 void Transaction::Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data){
 	emit OldTransaction(tid, timespec, succeeded, (Role::Value)EnumFromString<Role>(role), duration, data);
 }
+
+void Transaction::EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement){
+	emit EulaRequired(id, new Package(package_id, this), vendor_name, agreement);
+}
+
