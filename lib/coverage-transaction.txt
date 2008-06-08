@@ -40,7 +40,7 @@ X WhatProvides
 
   SIGNALS :
 X AllowCancel
-  CallerActiveChanged
+X CallerActiveChanged
 X Details
 X ErrorCode
 X Files

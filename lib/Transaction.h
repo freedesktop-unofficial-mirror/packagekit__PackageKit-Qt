@@ -82,6 +82,7 @@ signals:
 	void OldTransaction(const QString &tid, const QString &timespec, bool succeeded, Role::Value role, uint duration, const QString& data);
 	void EulaRequired(const QString &id, Package *p, const QString &vendor_name, const QString &agreement);
 	void RepoSignatureRequired(Package *p, const QString &repository_name, const QString &key_url, const QString &key_userid, const QString &key_id, const QString &key_fingerprint, const QString &key_timestamp, SignatureType::Value type);
+	void CallerActiveChanged(bool active);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
