@@ -50,6 +50,7 @@ public:
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
 	void updateSystem();
+	void rollback(const QString &tid);
 
 	void getUpdates(const QString& filter);
 	void getUpdateDetail(const QString& package_id);

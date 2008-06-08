@@ -162,6 +162,11 @@ void Transaction::updateSystem() {
 	proxy->UpdateSystem();
 }
 
+void Transaction::rollback(const QString &tid) {
+	renewTid();
+	proxy->Rollback(tid);
+}
+
 void Transaction::getUpdates(const QString& filter) {
 	renewTid();
 	proxy->GetUpdates(filter);

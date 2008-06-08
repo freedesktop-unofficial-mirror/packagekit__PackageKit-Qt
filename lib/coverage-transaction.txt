@@ -29,7 +29,7 @@ X RemovePackages
   RepoEnable
   RepoSetData
 X Resolve
-  Rollback
+X Rollback
 X SearchDetails
 X SearchFile
 X SearchGroup
