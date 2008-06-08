@@ -24,7 +24,7 @@ X InstallFiles
 X InstallPackages
   InstallSignature
   IsCallerActive
-  RefreshCache
+X RefreshCache
 X RemovePackages
   RepoEnable
   RepoSetData

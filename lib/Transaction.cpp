@@ -172,6 +172,11 @@ void Transaction::getUpdateDetail(const QString& package_id) {
 	proxy->GetUpdateDetail(package_id);
 }
 
+void Transaction::refreshCache(bool force) {
+	renewTid();
+	proxy->RefreshCache(force);
+}
+
 void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
 	percentage = proxy->GetProgress(subpercentage, elapsed, remaining);
 }

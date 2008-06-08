@@ -54,6 +54,7 @@ public:
 	void getUpdates(const QString& filter);
 	void getUpdateDetail(const QString& package_id);
 
+	void refreshCache(bool force = false);
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
 
 signals:
