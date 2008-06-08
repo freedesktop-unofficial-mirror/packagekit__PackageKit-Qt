@@ -25,6 +25,7 @@ public:
 	void getBackendDetails(QString &name, QString &author);
 	QStringList getFilters();
 	QStringList getGroups();
+	QStringList getTransactionList();
 
 	uint getTimeSinceAction(Role::Value role);
 

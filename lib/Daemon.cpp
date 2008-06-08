@@ -32,6 +32,10 @@ QStringList Daemon::getGroups() {
 	return groups.split(";");
 }
 
+QStringList Daemon::getTransactionList() {
+	return proxy->GetTransactionList();
+}
+
 uint Daemon::getTimeSinceAction(Role::Value role) {
 	return proxy->GetTimeSinceAction(EnumToString<Role>(role));
 }
