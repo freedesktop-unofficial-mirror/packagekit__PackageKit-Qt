@@ -101,6 +101,11 @@ void Transaction::getRequires (Package *p, const QString& filter, bool recursive
 	proxy->GetDepends(p->id(), filter, recursive);
 }
 
+void Transaction::whatProvides(const QString &filter, const Provides::Value &type, const QString& search) {
+	renewTid();
+	proxy->WhatProvides(filter, EnumToString<Provides>(type), search);
+}
+
 void Transaction::installPackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;

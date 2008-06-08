@@ -8,6 +8,7 @@
 #include "Exit.h"
 #include "Role.h"
 #include "Status.h"
+#include "Provides.h"
 
 namespace PackageKit {
 
@@ -37,6 +38,7 @@ public:
 	void getFiles(Package *p);
 	void getDepends(Package *p, const QString &filter, bool recursive = true);
 	void getRequires(Package *p, const QString &filter, bool recursive = true);
+	void whatProvides(const QString &filter, const Provides::Value &type, const QString& search);
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);

@@ -36,7 +36,7 @@ X SearchGroup
 X SearchName
 X UpdatePackages
 X UpdateSystem
-  WhatProvides
+X WhatProvides
 
   SIGNALS :
 X AllowCancel

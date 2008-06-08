@@ -11,5 +11,5 @@ INCLUDEPATH += .
 QT += dbus
 
 # Input
-HEADERS += CentralProxy.h constants.h Status.h Exit.h Role.h Package.h Restart.h Daemon.h Transaction.h TransactionProxy.h
+HEADERS += CentralProxy.h constants.h Status.h Exit.h Role.h Package.h Restart.h Daemon.h Transaction.h TransactionProxy.h Provides.h
 SOURCES += CentralProxy.cpp Package.cpp Daemon.cpp TransactionProxy.cpp Transaction.cpp
