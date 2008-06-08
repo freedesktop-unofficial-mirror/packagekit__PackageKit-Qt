@@ -125,6 +125,11 @@ void Transaction::installPackage(Package *p) {
 	proxy->InstallPackages(pids);
 }
 
+void Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
+	renewTid();
+	proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id());
+}
+
 void Transaction::updatePackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;

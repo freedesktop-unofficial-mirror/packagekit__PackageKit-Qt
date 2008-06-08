@@ -9,6 +9,7 @@
 #include "Role.h"
 #include "Status.h"
 #include "Provides.h"
+#include "SignatureType.h"
 
 namespace PackageKit {
 
@@ -43,6 +44,7 @@ public:
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);
+	void installSignature(const SignatureType::Value &type, const QString &key_id, Package *p);
 	void updatePackages(const QList<Package*> &packages);
 	void updatePackage(Package *p);
 	void installFiles(const QStringList& files, bool trusted = false);

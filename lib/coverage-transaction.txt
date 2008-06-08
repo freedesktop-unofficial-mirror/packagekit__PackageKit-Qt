@@ -22,7 +22,7 @@ X GetUpdateDetail
 X GetUpdates
 X InstallFiles
 X InstallPackages
-  InstallSignature
+X InstallSignature
 X IsCallerActive
 X RefreshCache
 X RemovePackages
