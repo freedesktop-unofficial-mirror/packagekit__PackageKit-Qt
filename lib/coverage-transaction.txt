@@ -49,7 +49,7 @@ X Message
 X Package
 X ProgressChanged
 X RepoDetail
-  RepoSignatureRequired
+X RepoSignatureRequired
 X EulaRequired
 X RequireRestart
 X StatusChanged

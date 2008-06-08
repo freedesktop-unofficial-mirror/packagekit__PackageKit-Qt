@@ -33,6 +33,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(RepoDetail(const QString&, const QString&, bool)), this, SIGNAL(RepoDetail(const QString&, const QString&, bool)));
 	connect(proxy, SIGNAL(Transaction(const QString&, const QString&, bool, const QString&, uint, const QString&)), SLOT(Transaction_cb(const QString&, const QString&, bool, const QString&, uint, const QString&)));
 	connect(proxy, SIGNAL(EulaRequired(const QString&, const QString&, const QString&, const QString&)), SLOT(EulaRequired_cb(const QString&, const QString&, const QString&, const QString&)));
+	connect(proxy, SIGNAL(RepoSignatureRequired(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)), this, SLOT(RepoSignatureRequired_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
 }
 
 bool Transaction::allowCancel() {
@@ -246,11 +247,15 @@ void Transaction::StatusChanged_cb(const QString &status) {
 	emit StatusChanged((Status::Value)EnumFromString<Status>(status));
 }
 
-void Transaction::Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data){
+void Transaction::Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data) {
 	emit OldTransaction(tid, timespec, succeeded, (Role::Value)EnumFromString<Role>(role), duration, data);
 }
 
-void Transaction::EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement){
+void Transaction::EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement) {
 	emit EulaRequired(id, new Package(package_id, this), vendor_name, agreement);
+}
+
+void Transaction::RepoSignatureRequired_cb(const QString &package_id, const QString &repository_name, const QString &key_url, const QString &key_userid, const QString &key_id, const QString &key_fingerprint, const QString &key_timestamp, const QString &type) {
+	emit RepoSignatureRequired(new Package(package_id), repository_name, key_url, key_userid, key_id, key_fingerprint, key_timestamp, (SignatureType::Value)EnumFromString<SignatureType>(type));
 }
 

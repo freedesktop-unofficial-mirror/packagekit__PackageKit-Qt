@@ -81,6 +81,7 @@ signals:
 	void RepoDetail(const QString &repo_id, const QString &details, bool enabled);
 	void OldTransaction(const QString &tid, const QString &timespec, bool succeeded, Role::Value role, uint duration, const QString& data);
 	void EulaRequired(const QString &id, Package *p, const QString &vendor_name, const QString &agreement);
+	void RepoSignatureRequired(Package *p, const QString &repository_name, const QString &key_url, const QString &key_userid, const QString &key_id, const QString &key_fingerprint, const QString &key_timestamp, SignatureType::Value type);
 
 private slots:
 	void Package_cb(const QString &info, const QString &package_id, const QString &summary);
@@ -90,6 +91,7 @@ private slots:
 	void StatusChanged_cb(const QString& status);
 	void Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data);
 	void EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement);
+	void RepoSignatureRequired_cb(const QString &package_id, const QString &repository_name, const QString &key_url, const QString &key_userid, const QString &key_id, const QString &key_fingerprint, const QString &key_timestamp, const QString &type);
 
 private:
 	TransactionProxy *proxy;
