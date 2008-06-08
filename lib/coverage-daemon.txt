@@ -9,7 +9,7 @@ X GetFilters
 X GetGroups
 X GetTid
 X GetTimeSinceAction
-  GetTransactionList
+X GetTransactionList
   StateHasChanged
 X SuggestDaemonQuit
 X GetNetworkState
@@ -20,6 +20,6 @@ X SetProxy
 X TransactionListChanged
 X Locked
 X NetworkStateChanged
-  RestartSchedule
-  RepoListChanged
+X RestartSchedule
+X RepoListChanged
 X UpdatesChanged

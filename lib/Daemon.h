@@ -48,6 +48,8 @@ signals:
 	void NetworkStateChanged(bool status);
 	void Locked(bool locked);
 	void TransactionListChanged(const QStringList &tids);
+	void RepoListChanged();
+	void RestartSchedule();
 
 };
 
