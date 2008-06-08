@@ -42,6 +42,10 @@ bool Daemon::getNetworkState() {
    return (state == "online");
 }
 
+void Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
+	proxy->SetProxy(http_proxy, ftp_proxy);
+}
+
 void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }

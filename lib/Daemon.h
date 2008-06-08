@@ -29,6 +29,7 @@ public:
 	uint getTimeSinceAction(Role::Value role);
 
 	bool getNetworkState();
+	void setProxy(const QString &http_proxy, const QString &ftp_proxy);
 	void suggestQuit();
 
 	Transaction* newTransaction();

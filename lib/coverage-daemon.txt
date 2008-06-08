@@ -13,7 +13,7 @@ X GetTimeSinceAction
   StateHasChanged
 X SuggestDaemonQuit
 X GetNetworkState
-  SetProxy
+X SetProxy
 
   SIGNALS :
 
