@@ -63,7 +63,7 @@ public:
 
 private:
     QMenu *m_toolQM;
-    Daemon d;
+    Daemon *m_daemon;
     // We need to keep a list to build the filters string
     QList<QAction*> actions;
 

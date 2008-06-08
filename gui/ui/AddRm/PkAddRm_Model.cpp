@@ -54,6 +54,11 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
     }
 }
 
+Package * PkAddRmModel::package(const QModelIndex &index)
+{
+    return packages.at(index.row());
+}
+
 void PkAddRmModel::addPackage(Package *package)
 {
 //     qDebug() << package->name() << package->version() << package->arch() << package->data() << package->info() <<  package->summary() ;
