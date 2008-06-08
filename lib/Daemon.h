@@ -25,6 +25,7 @@ public:
 	QStringList getFilters();
 	QStringList getGroups();
 
+	bool getNetworkState();
 	void suggestQuit();
 
 	Transaction* newTransaction();
@@ -34,6 +35,12 @@ protected:
 
 private:
 	CentralProxy *proxy;
+
+private slots:
+	void NetworkStateChanged_cb(const QString &status);
+
+signals:
+	void NetworkStateChanged(bool status);
 
 };
 

@@ -22,4 +22,4 @@ X SuggestDaemonQuit
   NetworkStateChanged
   RestartSchedule
   RepoListChanged
-  UpdatesChanged
+X UpdatesChanged

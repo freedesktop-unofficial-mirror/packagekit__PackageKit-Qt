@@ -28,7 +28,7 @@ X InstallPackages
 X RemovePackages
   RepoEnable
   RepoSetData
-  Resolve
+X Resolve
   Rollback
 X SearchDetails
 X SearchFile

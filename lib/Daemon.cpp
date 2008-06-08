@@ -5,6 +5,7 @@ using namespace PackageKit;
 
 Daemon::Daemon(QObject *parent) : QObject(parent) {
 	proxy = new CentralProxy(PK_NAME, PK_PATH, QDBusConnection::systemBus(), this);
+	connect(proxy, SIGNAL(NetworkStateChanged(const QString&)), this, SLOT(NetworkStateChanged_cb(const QString&)));
 }
 
 Daemon::~Daemon() {
@@ -29,6 +30,12 @@ QStringList Daemon::getGroups() {
 	return groups.split(";");
 }
 
+// 1 = online ; 0 = offline
+bool Daemon::getNetworkState() {
+	QString state = proxy->GetNetworkState();
+   return (state == "online");
+}
+
 void Daemon::suggestQuit() {
 	proxy->SuggestDaemonQuit();
 }
@@ -39,4 +46,8 @@ Transaction* Daemon::newTransaction() {
 
 QString Daemon::getTid() {
 	return proxy->GetTid();
+}
+
+void Daemon::NetworkStateChanged_cb(const QString &status) {
+	emit NetworkStateChanged((status == "online"));
 }
