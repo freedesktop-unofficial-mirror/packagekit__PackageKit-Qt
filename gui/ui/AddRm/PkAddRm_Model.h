@@ -22,6 +22,7 @@ public slots:
     void addPackage(Package *package);
 public:
     void removePackage(Package *package);
+    Package * package(const QModelIndex &index);
     void clear();
 
     enum {
