@@ -23,11 +23,11 @@ X GetUpdates
 X InstallFiles
 X InstallPackages
   InstallSignature
-  IsCallerActive
+X IsCallerActive
 X RefreshCache
 X RemovePackages
 X RepoEnable
-  RepoSetData
+X RepoSetData
 X Resolve
 X Rollback
 X SearchDetails

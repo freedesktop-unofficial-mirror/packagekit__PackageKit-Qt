@@ -196,6 +196,11 @@ void Transaction::repoSetData(const QString &repo_id, const QString &parameter, 
 	proxy->RepoSetData(repo_id, parameter, value);
 }
 
+bool Transaction::isCallerActive() {
+	if(_tid == QString()) return false;
+	return proxy->IsCallerActive();
+}
+
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
