@@ -39,6 +39,8 @@ public:
 
 	void installPackages(const QList<Package*> &packages);
 	void installPackage(Package *p);
+	void updatePackages(const QList<Package*> &packages);
+	void updatePackage(Package *p);
 	void installFiles(const QStringList& files, bool trusted = false);
 	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
 	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);

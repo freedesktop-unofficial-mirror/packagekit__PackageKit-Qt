@@ -110,6 +110,20 @@ void Transaction::installPackage(Package *p) {
 	proxy->InstallPackages(pids);
 }
 
+void Transaction::updatePackages(const QList<Package*> &packages) {
+	renewTid();
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	proxy->UpdatePackages(pids);
+}
+
+void Transaction::updatePackage(Package *p) {
+	renewTid();
+	QStringList pids;
+	pids << p->id();
+	proxy->UpdatePackages(pids);
+}
+
 void Transaction::installFiles(const QStringList& files, bool trusted) {
 	renewTid();
 	proxy->InstallFiles(trusted, files);
