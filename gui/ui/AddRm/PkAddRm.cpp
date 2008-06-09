@@ -40,6 +40,7 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     connect( m_pkClient_main, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
     connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
     connect( m_pkClient_main, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
+    connect( m_pkClient_main, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
 
     //initialize the groups
     //TODO map everything and fix search group.
@@ -66,23 +67,30 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     // install the backend filters
     FilterMenu( m_daemon->getFilters() );
 
-    // create a transaction for the dependecies and description client, and model.
-    m_pkClient_dep = m_daemon->newTransaction();
-    dependsOnLV->setModel(m_pkg_model_dep = new PkAddRmModel(this));
-
-    connect( m_pkClient_dep, SIGNAL(GotPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_dep, SIGNAL(Details(Package *,  const QString, const QString, const QString,
+    // create the description transaction
+    m_pkClient_desc = m_daemon->newTransaction();
+    connect( m_pkClient_desc, SIGNAL(Details(Package *,  const QString, const QString, const QString,
         const QString, qulonglong) ),
         this, SLOT( Description(Package *, const QString, const QString, const QString,
         const QString, qulonglong) ) );
 
-    //initialize the requirements client, and model.
-    m_pkClient_req = m_daemon->newTransaction();
-    dependsOnLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
+    // create the files transaction
+    m_pkClient_files = m_daemon->newTransaction();
+    connect( m_pkClient_files, SIGNAL( Files(Package *, QStringList) ), this, SLOT( Files(Package *, QStringList) ) );
 
+    // create a transaction for the dependecies, and its model.
+    m_pkClient_dep = m_daemon->newTransaction();
+    dependsOnLV->setModel(m_pkg_model_dep = new PkAddRmModel(this));
+    connect( m_pkClient_dep, SIGNAL(GotPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
+
+    // create a transaction for the requirements, and its model.
+    m_pkClient_req = m_daemon->newTransaction();
+    requiredByLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
     connect( m_pkClient_req, SIGNAL(GotPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
+
     // connect the timer...
     connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
+
     // hides the description to have more space.
     descriptionDW->hide();
     actionPB->hide();
@@ -109,6 +117,11 @@ void PkAddRm::on_searchPB_clicked()
     descriptionDW->setVisible(false);
 }
 
+void PkAddRm::Message(const QString &one, const QString &two)
+{
+    qDebug() << "Error code: " << one << " two: " << two;
+}
+
 void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 {
     qDebug() << "Search Group " << text.toLower();
@@ -119,18 +132,17 @@ void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 {
-    m_pkClient_dep->getDetails(m_pkg_model_main->package(index));
+    m_pkClient_desc->getDetails(m_pkg_model_main->package(index));
 
     notifyF->show();
     actionPB->show();
     qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
-//     m_pkClient_main->installPackage(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()) );
 }
 
 void PkAddRm::on_actionPB_clicked()
 {
     qDebug() << "install pkg";
-    m_pkClient_main->installPackage(new Package("gnome-power-manager;2.6.19;i386;fedora") );
+    m_pkClient_main->installPackage(new Package("vim-vimoutliner;0.3.4-9.fc7;noarch;fedora") );
 }
 
 void PkAddRm::Finished(Exit::Value status, uint runtime)
@@ -178,11 +190,16 @@ void PkAddRm::notifyUpdate()
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
     qDebug() << p->id();
+
     //ask required by packages
-//     m_pkClient_dep->getDepends(new Package(index.model()->data(index, PkAddRmModel::IdRole).toString()),false);
-//     m_pkClient_req->getRequires(p, false);
+    m_pkClient_req->getRequires("none", p, false);
+
     //ask depends on packages
-    m_pkClient_req->getDepends(p, filters(), true);
+    m_pkClient_dep->getDepends("none", p, false);
+
+    //ask files in packages
+    m_pkClient_files->getFiles(p);
+
     //format and show description
     QString description;
     description += "<b>" + i18n("Package Name") + ":</b> " + p->name() + "<br />";

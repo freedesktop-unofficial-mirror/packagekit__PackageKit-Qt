@@ -40,17 +40,21 @@ public:
 public slots:
     void on_searchPB_clicked();
     void on_actionPB_clicked();
-    void on_groupsCB_currentIndexChanged( const QString & text );
-    void on_packageView_pressed( const QModelIndex & index );
-    void Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size);
+    void on_groupsCB_currentIndexChanged( const QString &text );
+    void on_packageView_pressed( const QModelIndex &index );
+    void Description(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
     void Files(Package *p, QStringList files);
     void Finished(Exit::Value status, uint runtime);
+    void Message(const QString &one, const QString &two);
+
 private:
     PkAddRmModel *m_pkg_model_main;
     PkAddRmModel *m_pkg_model_dep;
     PkAddRmModel *m_pkg_model_req;
     PkAddRmDelegate *pkg_delegate;
     Transaction *m_pkClient_main;
+    Transaction *m_pkClient_desc;
+    Transaction *m_pkClient_files;
     Transaction *m_pkClient_dep;
     Transaction *m_pkClient_req;
     QTimer m_notifyT;
