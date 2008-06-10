@@ -109,14 +109,14 @@ void Transaction::getFiles(Package *p) {
 	proxy->GetFiles(p->id());
 }
 
-void Transaction::getDepends (Package *p, const QString& filter, bool recursive) {
+void Transaction::getDepends (const QString& filter, Package *p, bool recursive) {
 	renewTid();
-	proxy->GetDepends(p->id(), filter, recursive);
+	proxy->GetDepends(filter, p->id(), recursive);
 }
 
-void Transaction::getRequires (Package *p, const QString& filter, bool recursive) {
+void Transaction::getRequires ( const QString& filter, Package *p, bool recursive) {
 	renewTid();
-	proxy->GetDepends(p->id(), filter, recursive);
+	proxy->GetRequires(filter, p->id(), recursive);
 }
 
 void Transaction::whatProvides(const QString &filter, const Provides::Value &type, const QString& search) {

@@ -48,8 +48,8 @@ public:
 	void getPackages(const QString& filter);
 	void getDetails(Package *p);
 	void getFiles(Package *p);
-	void getDepends(Package *p, const QString &filter, bool recursive = true);
-	void getRequires(Package *p, const QString &filter, bool recursive = true);
+	void getDepends(const QString &filter, Package *p, bool recursive = true);
+	void getRequires( const QString &filter, Package *p, bool recursive = true);
 	void whatProvides(const QString &filter, const Provides::Value &type, const QString& search);
 	void resolve(const QString &filter, Package *p);
 

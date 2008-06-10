@@ -25,7 +25,7 @@
 #include <QDateTime>
 
 #include <KMessageBox>
-
+#include <limits.h>
 #include "kpackagekitd.h"
 
 K_PLUGIN_FACTORY(KPackageKitFactory, registerPlugin<KPackageKit>(); )
