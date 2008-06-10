@@ -25,6 +25,7 @@
 namespace PackageKit {
 
 class Daemon;
+class PolkitClient;
 
 class Transaction : public QObject {
 
@@ -35,7 +36,6 @@ public:
 	~Transaction();
 
 	// PackageKit functions
-	void renewTid();
 	bool allowCancel();
 	void cancel();
 	Role::Value getRole(Package *p = NULL);
@@ -109,6 +109,10 @@ private:
 	TransactionProxy *proxy;
 	Daemon *parent;
 	QString _tid;
+	// Get a new TID if needed
+	void renewTid();
+
+	PolkitClient *polkit;
 
 };
 

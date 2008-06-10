@@ -21,6 +21,8 @@
 
 namespace PackageKit {
 
+class PolkitClient;
+
 class Daemon : public QObject {
 
 	friend class Transaction;
@@ -52,6 +54,7 @@ protected:
 
 private:
 	CentralProxy *proxy;
+	PolkitClient *polkit;
 
 private slots:
 	void NetworkStateChanged_cb(const QString &status);

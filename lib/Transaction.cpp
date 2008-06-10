@@ -12,12 +12,15 @@
 #include "Transaction.h"
 #include "Daemon.h"
 #include "constants.h"
+#include "PolkitClient.h"
 
 using namespace PackageKit;
 
 Transaction::Transaction(Daemon *parent) : QObject(parent), parent(parent) {
 	_tid = QString();
 	proxy = NULL;
+
+	polkit = new PolkitClient(this);
 }
 
 Transaction::~Transaction() {
@@ -127,6 +130,9 @@ void Transaction::resolve(const QString &filter, Package *p) {
 }
 
 void Transaction::installPackages(const QList<Package*> &packages) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_INSTALL)) qFatal("Cannot get authorization to install packages");
+	qDebug() << "We're authentificated";
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
@@ -134,18 +140,23 @@ void Transaction::installPackages(const QList<Package*> &packages) {
 }
 
 void Transaction::installPackage(Package *p) {
-	renewTid();
-	QStringList pids;
-	pids << p->id();
-	proxy->InstallPackages(pids);
+	QList<Package*> packages;
+	packages << p;
+	installPackages(packages);
 }
 
 void Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_INSTALLSIGNATURE)) qFatal("Cannot get authorization to install signature");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id());
 }
 
 void Transaction::updatePackages(const QList<Package*> &packages) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_UPDATEPACKAGE)) qFatal("Cannot get authorization to update packages");
+	qDebug() << "We're authentificated";
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
@@ -160,11 +171,17 @@ void Transaction::updatePackage(Package *p) {
 }
 
 void Transaction::installFiles(const QStringList& files, bool trusted) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED))) qFatal("Cannot get authorization to install files");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->InstallFiles(trusted, files);
 }
 
 void Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_REMOVE)) qFatal("Cannot get authorization to remove packages");
+	qDebug() << "We're authentificated";
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
@@ -172,17 +189,23 @@ void Transaction::removePackages(const QList<Package*> &packages, bool allow_dep
 }
 
 void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
-	QStringList pids;
-	pids << p->id();
-	proxy->RemovePackages(pids, allow_deps, autoremove);
+	QList<Package*> packages;
+	packages << p;
+	removePackages(packages, allow_deps, autoremove);
 }
 
 void Transaction::updateSystem() {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_UPDATESYSTEM)) qFatal("Cannot get authorization to update system");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->UpdateSystem();
 }
 
 void Transaction::rollback(const QString &tid) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_ROLLBACK)) qFatal("Cannot get authorization to rollback a transaction");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->Rollback(tid);
 }
@@ -198,6 +221,9 @@ void Transaction::getUpdateDetail(const QString& package_id) {
 }
 
 void Transaction::refreshCache(bool force) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_REFRESHCACHE)) qFatal("Cannot get authorization to refresh cache");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->RefreshCache(force);
 }
@@ -212,11 +238,17 @@ void Transaction::getRepoList(const QString &filter) {
 }
 
 void Transaction::repoEnable(const QString &repo_id, bool enabled) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_REPOCHANGE)) qFatal("Cannot get authorization to change a repository");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->RepoEnable(repo_id, enabled);
 }
 
 void Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_REPOCHANGE)) qFatal("Cannot get authorization to change a repository");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->RepoSetData(repo_id, parameter, value);
 }
@@ -232,6 +264,9 @@ void Transaction::getOldTransactions(uint number) {
 }
 
 void Transaction::acceptEula(const QString &id) {
+	qDebug() << "Trying to get authorization...";
+	if(!polkit->getAuth(AUTH_ACCEPTEULA)) qFatal("Cannot get authorization to accept an EULA");
+	qDebug() << "We're authentificated";
 	renewTid();
 	proxy->AcceptEula(id);
 }

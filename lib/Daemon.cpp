@@ -11,6 +11,7 @@
 
 #include "Daemon.h"
 #include "constants.h"
+#include "PolkitClient.h"
 
 using namespace PackageKit;
 
@@ -21,6 +22,8 @@ Daemon::Daemon(QObject *parent) : QObject(parent) {
 	connect(proxy, SIGNAL(TransactionListChanged(const QStringList&)), this, SIGNAL(TransactionListChanged(const QStringList&)));
 	connect(proxy, SIGNAL(RestartSchedule()), this, SIGNAL(RestartSchedule()));
 	connect(proxy, SIGNAL(RepoListChanged()), this, SIGNAL(RepoListChanged()));
+
+	polkit = new PolkitClient(this);
 }
 
 Daemon::~Daemon() {
@@ -60,6 +63,9 @@ bool Daemon::getNetworkState() {
 }
 
 void Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
+    qDebug() << "Trying to get authorization...";
+    if(!polkit->getAuth(AUTH_SETPROXY)) qFatal("Cannot get authorization to set proxy");;
+    qDebug() << "We're authentificated";
 	proxy->SetProxy(http_proxy, ftp_proxy);
 }
 
