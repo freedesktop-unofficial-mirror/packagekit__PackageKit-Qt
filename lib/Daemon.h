@@ -51,6 +51,7 @@ public:
 
 protected:
 	QString getTid();
+	void sendAuthRefused(const QString &message);
 
 private:
 	CentralProxy *proxy;
@@ -65,6 +66,7 @@ signals:
 	void TransactionListChanged(const QStringList &tids);
 	void RepoListChanged();
 	void RestartSchedule();
+	void AuthRefused(const QString &message); // Called when PolicyKit auth fails
 
 };
 
