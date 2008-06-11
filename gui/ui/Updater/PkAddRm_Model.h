@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <KIcon>
 
+#include "pkg_item.h"
 #include "../../../lib/QPackageKit.h"
 
 using namespace PackageKit;
@@ -17,6 +18,9 @@ public:
     int rowCount(const QModelIndex &/*parent = QModelIndex()*/) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QModelIndex index(int row, int column,
+                      const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &index) const;
 public slots:
     void addPackage(Package *package);
 public:
@@ -31,11 +35,18 @@ public:
         };
 
 private:
-    QList<Package*> packages;
-    KIcon m_iconDeb;
+    QHash<QString, PackageItem*> packages;
+    PackageItem *rootItem;
+    KIcon m_iconDeb; 
     KIcon m_iconRpm;
     KIcon m_iconTgz;
     KIcon m_iconGeneric;
+    KIcon m_iconBugFix;
+    KIcon m_iconLow;
+    KIcon m_iconImportant;
+    KIcon m_iconEnhancement;
+    KIcon m_iconSecurity;
+    KIcon m_iconNormal;
 };
 
 #endif

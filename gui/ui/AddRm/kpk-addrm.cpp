@@ -17,7 +17,7 @@
  * 
  */
 
-#include <kgenericfactory.h>
+#include <KGenericFactory>
 #include <KAboutData>
 
 #include "kpk-addrm.h"
@@ -34,10 +34,4 @@ KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
     m_grid = new QGridLayout(this);
     view = new PkAddRm(this);
     m_grid->addWidget(view);
-}
-
-KPackageKit::~KPackageKit()
-{
-    delete view;
-    delete m_grid;
 }

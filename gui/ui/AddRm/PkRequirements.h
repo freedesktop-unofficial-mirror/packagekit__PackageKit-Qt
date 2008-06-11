@@ -18,60 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PKADDRM_H
-#define PKADDRM_H
+#ifndef PKREQUIREMENTS_H
+#define PKREQUIREMENTS_H
 
-#include <QtGui/QtGui>
-#include <QtCore/QtCore>
+#include <QWidget>
 
 #include "PkAddRm_Model.h"
-#include "PkAddRm_Delegate.h"
-
-#include "ui_PkAddRm.h"
+#include "ui_PkRequirements.h"
+// #include "../../../lib/QPackageKit.h"
 
 using namespace PackageKit;
 
-class PkAddRm : public QWidget, public Ui::PkAddRm
+class PkRequirements : public QWidget, public Ui::PkRequirements
 {
     Q_OBJECT
 public:
-    PkAddRm( QWidget *parent=0 );
-    ~PkAddRm();
-
-public slots:
-    void on_searchPB_clicked();
-    void on_actionPB_clicked();
-    void on_groupsCB_currentIndexChanged( const QString &text );
-    void on_packageView_pressed( const QModelIndex &index );
-    void Description(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
-    void Files(Package *p, QStringList files);
-    void Finished(Exit::Value status, uint runtime);
-    void Message(const QString &one, const QString &two);
-
-private:
-    void infoHide();
-    void infoShow();
-    PkAddRmModel *m_pkg_model_main;
-    PkAddRmModel *m_pkg_model_dep;
-    PkAddRmModel *m_pkg_model_req;
-    PkAddRmDelegate *pkg_delegate;
-    Transaction *m_pkClient_main;
-    Transaction *m_pkClient_desc;
-    Transaction *m_pkClient_files;
-    Transaction *m_pkClient_dep;
-    Transaction *m_pkClient_req;
-    Transaction *m_pkClient_install;
-    QTimer m_notifyT;
-    QMenu *m_toolQM;
-    Daemon *m_daemon;
-    // We need to keep a list to build the filters string
-    QList<QAction*> actions;
-    void FilterMenu(const QStringList &filters);
-    QString filters();
-    Package *m_currPkg;
-
-private slots:
-    void notifyUpdate();
+    PkRequirements( QString msg, PkAddRmModel *model, QWidget *parent=0);
+    ~PkRequirements();
 };
 
 #endif
