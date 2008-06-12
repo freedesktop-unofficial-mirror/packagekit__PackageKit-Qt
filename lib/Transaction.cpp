@@ -41,7 +41,7 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)), this, SIGNAL(UpdateDetail(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(RequireRestart(const QString&, const QString&)), this, SIGNAL(RequireRestart(const QString&, const QString&)));
 	connect(proxy, SIGNAL(AllowCancel(bool)), this, SIGNAL(AllowCancel(bool)));
-	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&)), this, SIGNAL(ErrorCode(const QString&, const QString&)));
+	connect(proxy, SIGNAL(ErrorCode(const QString&, const QString&)), this, SLOT(ErrorCode_cb(const QString&, const QString&)));
 	connect(proxy, SIGNAL(Message(const QString&, const QString&)), this, SIGNAL(Message(const QString&, const QString&)));
 	connect(proxy, SIGNAL(StatusChanged(const QString&)), this, SLOT(StatusChanged_cb(const QString&)));
 	connect(proxy, SIGNAL(RepoDetail(const QString&, const QString&, bool)), this, SIGNAL(RepoDetail(const QString&, const QString&, bool)));
@@ -288,6 +288,10 @@ void Transaction::Files_cb(const QString &pid, const QString &file_list) {
 void Transaction::Finished_cb(const QString& exit, uint runtime) {
 	_tid = QString();
 	emit Finished((Exit::Value)EnumFromString<Exit>(exit), runtime);
+}
+
+void Transaction::ErrorCode_cb(const QString &code, const QString &details) {
+	emit ErrorCode((Error::Value)EnumFromString<Error>(code), details);
 }
 
 void Transaction::StatusChanged_cb(const QString &status) {

@@ -16,11 +16,14 @@
 
 #include "TransactionProxy.h"
 #include "Package.h"
+#include "Provides.h"
+#include "SignatureType.h"
+
+// Enums
 #include "Exit.h"
 #include "Role.h"
 #include "Status.h"
-#include "Provides.h"
-#include "SignatureType.h"
+#include "Error.h"
 
 namespace PackageKit {
 
@@ -86,7 +89,7 @@ signals:
 	void UpdateDetail(const QString &package_id, const QString &updates, const QString &obsoletes, const QString &vendor_url, const QString &bugzilla_url, const QString &cve_url, const QString &restart, const QString &update_text);
 	void RequireRestart(const QString&, const QString&);
 	void AllowCancel(bool allow_cancel);
-    void ErrorCode(const QString &code, const QString &details);
+    void ErrorCode(Error::Value, const QString &details);
     void Message(const QString &message, const QString &details);
 	void StatusChanged(Status::Value v);
 	void RepoDetail(const QString &repo_id, const QString &details, bool enabled);
@@ -100,6 +103,7 @@ private slots:
 	void Details_cb(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
 	void Files_cb(const QString &pid, const QString &file_list);
 	void Finished_cb(const QString& exit, uint runtime);
+	void ErrorCode_cb(const QString &code, const QString &details);
 	void StatusChanged_cb(const QString& status);
 	void Transaction_cb(const QString &tid, const QString &timespec, bool succeeded, const QString &role, uint duration, const QString& data);
 	void EulaRequired_cb(const QString &id, const QString &package_id, const QString &vendor_name, const QString &agreement);

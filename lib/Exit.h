@@ -27,7 +27,9 @@ public:
 typedef enum {
 	Success,
 	Failed,
-	Quit,
+	Cancelled,
+	KeyRequired,
+	EulaRequired,
 	Kill,
 	Unknown
 } Value;
