@@ -18,30 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PKUPDATE_H
-#define PKUPDATE_H
+#include "PkRequirements.h"
 
-#include "PkAddRm_Model.h"
-#include "PkAddRm_Delegate.h"
-#include "ui_PkUpdate.h"
-#include "../../../lib/QPackageKit.h"
-
-using namespace PackageKit;
- 
-class PkUpdate : public QWidget, public Ui::PkUpdate
+PkRequirements::PkRequirements( QString msg, PkAddRmModel* model, QWidget *parent )
+ : QWidget( parent )
 {
-Q_OBJECT
-public:
-    PkUpdate( QWidget *parent=0 );
-private slots:
-    void on_updatePB_clicked();
-    void on_refreshPB_clicked();
-    void on_historyPB_clicked();
-private:
-    PkAddRmModel *m_pkg_model_updates;
-    PkAddRmDelegate *pkg_delegate;
-    Daemon *m_daemon;
-    Transaction *m_pkClient_updates;
-};
+    setupUi( this );
 
-#endif
+    label->setText(msg);
+    packageView->setModel(model);
+}
+
+PkRequirements::~PkRequirements()
+{
+}
+
+#include "PkRequirements.moc"

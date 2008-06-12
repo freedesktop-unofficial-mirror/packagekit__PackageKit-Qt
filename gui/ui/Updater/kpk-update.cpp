@@ -17,7 +17,7 @@
  * 
  */
 
-#include <kgenericfactory.h>
+#include <KGenericFactory>
 #include <KAboutData>
 
 #include "kpk-update.h"
@@ -30,5 +30,7 @@ KPackageKit::KPackageKit(QWidget *&parent, const QVariantList &args)
 {
     KAboutData *about = new KAboutData("kcm_kpk_update", 0, ki18n("KPackageKit Update"),"0.1");
     setAboutData(about);
-    setupUi(this);
+    m_grid = new QGridLayout(this);
+    view = new PkUpdate(this);
+    m_grid->addWidget(view);
 }

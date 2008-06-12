@@ -25,11 +25,10 @@
 
 class KPackageKit : public KCModule
 {
-    Q_OBJECT
-
+Q_OBJECT
 public:
     KPackageKit(QWidget *parent, const QVariantList &args);
-    ~KPackageKit();
+
 private:
     PkAddRm *view;
     QGridLayout *m_grid;

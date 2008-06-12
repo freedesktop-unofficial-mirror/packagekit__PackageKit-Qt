@@ -5,99 +5,63 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>668</width>
-    <height>371</height>
+    <width>452</width>
+    <height>360</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>Form</string>
+  <property name="locale" >
+   <locale country="UnitedStates" language="English" />
   </property>
-  <widget class="QPushButton" name="pushButton" >
-   <property name="geometry" >
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>145</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Check for Updates</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>10</y>
-     <width>105</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Force Refresh</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_3" >
-   <property name="geometry" >
-    <rect>
-     <x>300</x>
-     <y>10</y>
-     <width>141</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Update System</string>
-   </property>
-  </widget>
-  <widget class="QListView" name="listView" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>241</width>
-     <height>311</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QListView" name="listView_2" >
-   <property name="geometry" >
-    <rect>
-     <x>260</x>
-     <y>50</y>
-     <width>401</width>
-     <height>191</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QListView" name="listView_3" >
-   <property name="geometry" >
-    <rect>
-     <x>260</x>
-     <y>240</y>
-     <width>401</width>
-     <height>121</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_4" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="geometry" >
-    <rect>
-     <x>470</x>
-     <y>10</y>
-     <width>161</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Update Package</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" colspan="3" >
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QTreeView" name="treeView" >
+      <property name="alternatingRowColors" >
+       <bool>false</bool>
+      </property>
+      <property name="animated" >
+       <bool>true</bool>
+      </property>
+      <property name="headerHidden" >
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="KTextBrowser" name="descriptionKTB" />
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QPushButton" name="updatePB" >
+     <property name="text" >
+      <string>Update System</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="QPushButton" name="refreshPB" >
+     <property name="text" >
+      <string>Refresh</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QPushButton" name="historyPB" >
+     <property name="text" >
+      <string>History</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>ktextbrowser.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

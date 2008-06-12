@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   Copyright (C) 2008 by Daniel Nicoletti                                *
+ *   daniel@whitemoon                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,31 +17,70 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "pkg_item.h"
 
-#ifndef PKUPDATE_H
-#define PKUPDATE_H
+#include <QStringList>
 
-#include "PkAddRm_Model.h"
-#include "PkAddRm_Delegate.h"
-#include "ui_PkUpdate.h"
-#include "../../../lib/QPackageKit.h"
-
-using namespace PackageKit;
- 
-class PkUpdate : public QWidget, public Ui::PkUpdate
+PackageItem::PackageItem(Package *pkg, PackageItem *parent)
+ : parentItem(parent), m_pkg(pkg)
 {
-Q_OBJECT
-public:
-    PkUpdate( QWidget *parent=0 );
-private slots:
-    void on_updatePB_clicked();
-    void on_refreshPB_clicked();
-    void on_historyPB_clicked();
-private:
-    PkAddRmModel *m_pkg_model_updates;
-    PkAddRmDelegate *pkg_delegate;
-    Daemon *m_daemon;
-    Transaction *m_pkClient_updates;
-};
+}
 
-#endif
+PackageItem::PackageItem()
+ : parentItem(0)
+{
+}
+
+QString PackageItem::name()
+{
+    if (parentItem)
+        if ( m_pkg->name().isEmpty() )
+            return QString::number( childCount() ) + " " + m_pkg->info();
+        else
+            return m_pkg->name() + " - " + m_pkg->version() + " (" + m_pkg->arch() + ")";
+    else
+        return QString();
+}
+
+PackageItem::~PackageItem()
+{
+    qDeleteAll(childItems);
+}
+
+void PackageItem::appendChild(PackageItem *item)
+{
+    childItems.append(item);
+}
+
+PackageItem *PackageItem::child(int row)
+{
+    return childItems.value(row);
+}
+
+int PackageItem::childCount() const
+{
+    return childItems.count();
+}
+
+int PackageItem::columnCount() const
+{
+    return 1;
+}
+
+Package *PackageItem::data() const
+{
+    return m_pkg;
+}
+
+PackageItem *PackageItem::parent()
+{
+    return parentItem;
+}
+
+int PackageItem::row() const
+{
+    if (parentItem)
+        return parentItem->childItems.indexOf(const_cast<PackageItem*>(this));
+
+    return 0;
+}

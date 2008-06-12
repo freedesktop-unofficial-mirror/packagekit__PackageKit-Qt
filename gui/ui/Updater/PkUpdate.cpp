@@ -23,11 +23,39 @@
 PkUpdate::PkUpdate( QWidget *parent ) : QWidget( parent )
 {
     setupUi( this );
+    descriptionKTB->hide();
+
+    //initialize the model, delegate, client and  connect it's signals
+    treeView->setModel(m_pkg_model_updates = new PkAddRmModel(this));
+    treeView->setItemDelegate(pkg_delegate = new PkAddRmDelegate(this));
+
+    // Create a new daemon
+    m_daemon = new Daemon(this);
+
+    m_pkClient_updates = m_daemon->newTransaction();
+    connect( m_pkClient_updates, SIGNAL(GotPackage(Package *)), m_pkg_model_updates, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_updates, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
+    connect( m_pkClient_updates, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
+    connect( m_pkClient_updates, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    connect( m_pkClient_updates, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    m_pkClient_updates->getUpdates("none");
 }
 
-void PkUpdate::on_pBDefDir_clicked()
+void PkUpdate::on_updatePB_clicked()
 {
-    
+    qDebug() << "update";
+}
+
+void PkUpdate::on_refreshPB_clicked()
+{
+    qDebug() << "refresh";
+}
+
+void PkUpdate::on_historyPB_clicked()
+{
+    qDebug() << "history";
+    m_pkg_model_updates->clear();
+// qDebug() << m_pkg_model_updates->rowCount();
 }
 
 #include "PkUpdate.moc" 

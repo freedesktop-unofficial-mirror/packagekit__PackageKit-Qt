@@ -20,14 +20,18 @@
 #define KPACKAGEKIT_H
 
 #include <KCModule>
+#include <QGridLayout>
 #include "PkUpdate.h"
 
-class KPackageKit : public KCModule, Ui::PkUpdate
+class KPackageKit : public KCModule
 {
-    Q_OBJECT
+Q_OBJECT
+public:
+    KPackageKit(QWidget *&parent, const QVariantList &args);
 
-    public:
-        KPackageKit(QWidget *&parent, const QVariantList &args);
+private:
+    PkUpdate *view;
+    QGridLayout *m_grid;
 };
 
 #endif

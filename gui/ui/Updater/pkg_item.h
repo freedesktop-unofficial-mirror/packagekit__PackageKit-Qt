@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   Copyright (C) 2008 by Daniel Nicoletti                                *
+ *   daniel@whitemoon                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,31 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGE_ITEM_H
+#define PACKAGE_ITEM_H
 
-#ifndef PKUPDATE_H
-#define PKUPDATE_H
-
-#include "PkAddRm_Model.h"
-#include "PkAddRm_Delegate.h"
-#include "ui_PkUpdate.h"
 #include "../../../lib/QPackageKit.h"
 
+#include <QList>
+#include <QVariant>
+
 using namespace PackageKit;
- 
-class PkUpdate : public QWidget, public Ui::PkUpdate
-{
-Q_OBJECT
+
+/**
+	@author Daniel Nicoletti <daniel@whitemoon>
+*/
+class PackageItem{
 public:
-    PkUpdate( QWidget *parent=0 );
-private slots:
-    void on_updatePB_clicked();
-    void on_refreshPB_clicked();
-    void on_historyPB_clicked();
+    PackageItem(Package *pkg, PackageItem *parent = 0);
+    PackageItem();
+
+    ~PackageItem();
+
+    void appendChild(PackageItem *child);
+
+    PackageItem *child(int row);
+    int childCount() const;
+    int columnCount() const;
+    Package *data() const;
+    int row() const;
+    PackageItem *parent();
+    QString name();
+
 private:
-    PkAddRmModel *m_pkg_model_updates;
-    PkAddRmDelegate *pkg_delegate;
-    Daemon *m_daemon;
-    Transaction *m_pkClient_updates;
+    QList<PackageItem*> childItems;
+    Package *m_pkg;
+    PackageItem *parentItem;
 };
 
 #endif

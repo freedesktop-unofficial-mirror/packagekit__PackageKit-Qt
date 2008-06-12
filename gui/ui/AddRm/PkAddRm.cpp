@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <klocale.h>
-#include <kstandarddirs.h>
+#include <KLocale>
+#include <KStandardDirs>
 #include <QPalette>
 #include <QColor>
+
+#include "PkAddRm_Transaction.h"
 #include "PkAddRm.h"
 
 PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
@@ -35,11 +37,18 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     // Create a new daemon
     m_daemon = new Daemon(this);
 
+    // create the install transaction
+    m_pkClient_install = m_daemon->newTransaction();
+    connect( m_pkClient_install, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
+    connect( m_pkClient_install, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
+    connect( m_pkClient_install, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
+    connect( m_pkClient_install, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    connect( m_pkClient_install, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+
     // create the main transaction
     m_pkClient_main = m_daemon->newTransaction();
     connect( m_pkClient_main, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
     connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
-    connect( m_pkClient_main, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
     connect( m_pkClient_main, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
 
     //initialize the groups
@@ -82,7 +91,7 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     m_pkClient_dep = m_daemon->newTransaction();
     dependsOnLV->setModel(m_pkg_model_dep = new PkAddRmModel(this));
     connect( m_pkClient_dep, SIGNAL(GotPackage(Package *)), m_pkg_model_dep, SLOT(addPackage(Package *)) );
-
+ 
     // create a transaction for the requirements, and its model.
     m_pkClient_req = m_daemon->newTransaction();
     requiredByLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
@@ -91,10 +100,7 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     // connect the timer...
     connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
 
-    // hides the description to have more space.
-    descriptionDW->hide();
-    actionPB->hide();
-    notifyF->hide();
+    infoHide();
 }
 
 PkAddRm::~PkAddRm()
@@ -109,12 +115,31 @@ PkAddRm::~PkAddRm()
     delete m_pkClient_req;
 }
 
+void PkAddRm::infoHide()
+{
+    // hides the description to have more space.
+    descriptionDW->setVisible(false);
+    actionPB->hide();
+    notifyF->hide();
+    // cleans the models
+    m_currPkg = 0;
+    m_pkg_model_main->clear();
+    m_pkg_model_req->clear();
+    m_pkg_model_dep->clear();
+}
+
+void PkAddRm::infoShow()
+{
+    descriptionDW->setVisible(true);
+    notifyF->show();
+    actionPB->show();
+}
+
 void PkAddRm::on_searchPB_clicked()
 {
-    m_pkg_model_main->clear();
+    infoHide();
 //     qDebug() << "Search Name " << filters() ;
     m_pkClient_main->searchName( filters(), lineEdit->text() );
-    descriptionDW->setVisible(false);
 }
 
 void PkAddRm::Message(const QString &one, const QString &two)
@@ -124,25 +149,31 @@ void PkAddRm::Message(const QString &one, const QString &two)
 
 void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 {
+    //TODO fix this mapping
     qDebug() << "Search Group " << text.toLower();
-    m_pkg_model_main->clear();
+    infoHide();
     m_pkClient_main->searchGroup( filters(), text.toLower() );
-    descriptionDW->setVisible(false);
 }
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 {
     m_pkClient_desc->getDetails(m_pkg_model_main->package(index));
-
-    notifyF->show();
-    actionPB->show();
+    m_currPkg = m_pkg_model_main->package(index);
+    if (m_currPkg) {
+       if (m_currPkg->info() == "installed")
+           actionPB->setText(i18n("Remove"));
+       else
+           actionPB->setText(i18n("Install"));
+    }
     qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
 }
 
 void PkAddRm::on_actionPB_clicked()
 {
-    qDebug() << "install pkg";
-    m_pkClient_main->installPackage(new Package("vim-vimoutliner;0.3.4-9.fc7;noarch;fedora") );
+    PkAddRmTransaction *frm = new PkAddRmTransaction(m_currPkg, this);
+    frm->exec();
+//     delete frm;
+    qDebug() << "mainEXEC()";
 }
 
 void PkAddRm::Finished(Exit::Value status, uint runtime)
@@ -190,7 +221,6 @@ void PkAddRm::notifyUpdate()
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
     qDebug() << p->id();
-
     //ask required by packages
     m_pkClient_req->getRequires("none", p, false);
 
@@ -214,7 +244,7 @@ void PkAddRm::Description(Package *p, const QString& license, const QString& gro
     if ( size > 0 )
         description += "<b>" + i18n("Size") + ":</b> " + KGlobal::locale()->formatByteSize(size);
     descriptionKTB->setHtml(description);
-    descriptionDW->setVisible(true);
+    infoShow();
 }
 
 void PkAddRm::Files(Package *, QStringList files)
@@ -222,7 +252,7 @@ void PkAddRm::Files(Package *, QStringList files)
     filesPTE->clear();
     for (int i = 0; i < files.size(); ++i)
         filesPTE->appendPlainText(files.at(i));
-    descriptionDW->setVisible(true);
+    infoShow();
 }
 
 void PkAddRm::FilterMenu(const QStringList &filters)
