@@ -34,7 +34,7 @@ public:
 	~Daemon();
 
 	// PackageKit functions
-	QStringList getActions();
+	unsigned int getActions();
 	void getBackendDetails(QString &name, QString &author);
 	QStringList getFilters();
 	QStringList getGroups();

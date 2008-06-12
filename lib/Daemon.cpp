@@ -12,6 +12,7 @@
 #include "Daemon.h"
 #include "constants.h"
 #include "PolkitClient.h"
+#include "Actions.h"
 
 using namespace PackageKit;
 
@@ -29,9 +30,13 @@ Daemon::Daemon(QObject *parent) : QObject(parent) {
 Daemon::~Daemon() {
 }
 
-QStringList Daemon::getActions() {
-	QString actions = proxy->GetActions();
-	return actions.split(";");
+unsigned int Daemon::getActions() {
+	QStringList actions = QString(proxy->GetActions()).split(";");
+	unsigned int ret = 0;
+	for(int i = 0 ; i < actions.size() ; ++i) {
+		ret |= EnumFromString<Actions>(actions.at(i));
+	}
+	return ret;
 }
 
 void Daemon::getBackendDetails(QString &name, QString &author) {
