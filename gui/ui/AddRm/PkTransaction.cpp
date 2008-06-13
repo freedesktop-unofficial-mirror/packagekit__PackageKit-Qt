@@ -19,67 +19,91 @@
  ***************************************************************************/
 
 #include <KLocale>
-#include <KStandardDirs>
+// #include <KStandardDirs>
 #include <KMessageBox>
-// #include <KDialog>
-#include <QPalette>
-#include <QColor>
-#include "PkRequirements.h"
-#include "PkAddRm_Transaction.h"
 
-PkAddRmTransaction::PkAddRmTransaction( Package *pkg, QWidget *parent )
- : m_targetPackage(pkg)
+// #include <QPalette>
+// #include <QColor>
+// #include "PkRequirements.h"
+#include "PkTransaction.h"
+
+PkTransaction::PkTransaction( Transaction *trans, QString &caption, QWidget *parent )
+ : KDialog(parent), m_trans(trans)
 {
     setupUi( mainWidget() );
-//     setMainWidget(this);
-    // Create a new daemon
-    m_daemon = new Daemon(this);
-    // Create the requirements transaction and it's model
-    m_pkClient_req = m_daemon->newTransaction();
-    m_pkg_model_req = new PkAddRmModel(this);
-    connect( m_pkClient_req, SIGNAL(GotPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_req, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(reqFinished(Exit::Value, uint)) );
+    setCaption( caption );
+//     // Create a new daemon
+//     m_daemon = new Daemon(this);
+//     // Create the requirements transaction and it's model
+//     m_pkClient_req = m_daemon->newTransaction();
+//     m_pkg_model_req = new PkAddRmModel(this);
+//     connect( m_pkClient_req, SIGNAL( GotPackage(Package *) ), m_pkg_model_req, SLOT( addPackage(Package *) ) );
+//     connect( m_pkClient_req, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( reqFinished(Exit::Value, uint) ) );
 
-    // create the install transaction
-    m_pkClient_action = m_daemon->newTransaction();
-    connect( m_pkClient_action, SIGNAL( GotPackage(Package *) ), this, SLOT( currPackage(Package *) ) );
-    connect( m_pkClient_action, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( Finished(Exit::Value, uint) ) );
-    connect( m_pkClient_action, SIGNAL( AllowCancel(bool) ), this, SLOT( enableButtonCancel(bool) ) );
-    connect( m_pkClient_action, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+//     // create the install transaction
+//     m_pkClient_action = m_daemon->newTransaction();
+    connect( m_trans, SIGNAL( GotPackage(Package *) ), this, SLOT( currPackage(Package *) ) );
+    connect( m_trans, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( Finished(Exit::Value, uint) ) );
+    connect( m_trans, SIGNAL( AllowCancel(bool) ), this, SLOT( enableButtonCancel(bool) ) );
+    connect( m_trans, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( ErrorCode(const QString&, const QString&) ) );
 
-    connect( m_pkClient_action, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
-    connect( m_pkClient_action, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
+    connect( m_trans, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
+    connect( m_trans, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
     
-    setButtons( KDialog::Cancel | KDialog::Close );
+    // Set Cancel and custom bt hide
+    setButtons( KDialog::Cancel | KDialog::User1 );
+    setButtonText( KDialog::User1, i18n("Hide") );
+    setButtonToolTip( KDialog::User1, i18n("Allows you to hide the window but keeps running transaction task") );
     enableButtonCancel(false);
-//     setInitialSize( QSize(400,140) );
-    incrementInitialSize( QSize(400,140) );
-    m_pkClient_req->getDepends("~installed", pkg, true);
-    progressBar->setMaximum(0);
-    progressBar->setMinimum(0);
+
+    
+//     m_pkClient_req->getDepends("~installed", pkg, true);
+    m_pbTimer = new QTimer(this);
+    connect(m_pbTimer, SIGNAL(timeout()), this, SLOT(updateProgress() ));
+    m_pbTimer->start(5);
+
+    // set wait msg
+    currentL->setText( i18n("Please Wait..." ) );
 }
 
-void PkAddRmTransaction::currPackage(Package *p)
+void PkTransaction::updateProgress()
+{
+    progressBar->setValue(progressBar->value() + 1);
+}
+
+void PkTransaction::ProgressChanged(uint percentage, uint /*subpercentage*/, uint /*elapsed*/, uint /*remaining*/)
+{
+    m_pbTimer->stop();
+    progressBar->setMaximum(100);
+    progressBar->setValue(percentage);
+}
+
+void PkTransaction::currPackage(Package *p)
 {
     packageL->setText( p->name() + " - " + p->version() + " (" + p->arch() + ")" );
     descriptionL->setText( p->summary() );
 }
 
-void PkAddRmTransaction::slotButtonClicked(int button)
+void PkTransaction::slotButtonClicked(int button)
 {
-qDebug() << "slotbt";
-    if (button == KDialog::Cancel)
-        m_pkClient_action->cancel();/*accept();*/
-    else
-        KDialog::slotButtonClicked(button);
+    switch(button) {
+        case KDialog::Cancel :
+            m_trans->cancel();
+            break;/*accept();*/
+        case KDialog::User1 :
+            close();
+            break;
+        default :
+            KDialog::slotButtonClicked(button);
+    }
 }
 
-PkAddRmTransaction::~PkAddRmTransaction()
+PkTransaction::~PkTransaction()
 {
 
 }
 
-void PkAddRmTransaction::StatusChanged(Status::Value v)
+void PkTransaction::StatusChanged(Status::Value v)
 {
     switch (v) {
         case Status::Setup : 
@@ -142,51 +166,46 @@ void PkAddRmTransaction::StatusChanged(Status::Value v)
     }
 }
 
-void PkAddRmTransaction::ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining)
+void PkTransaction::ErrorCode(const QString &one, const QString &two)
 {
-    progressBar->setValue(percentage);
+    KMessageBox::detailedSorry( this, one, two, i18n("Error PackageKit"), KMessageBox::Notify );
 }
 
-void PkAddRmTransaction::Message(const QString &one, const QString &two)
-{
-    qDebug() << "Error code: " << one << " two: " << two;
-}
+// void PkTransaction::doAction()
+// {
+//     m_pkClient_action->installPackage(m_targetPackage);
+// }
 
-void PkAddRmTransaction::doAction()
-{
-    m_pkClient_action->installPackage(m_targetPackage);
-}
+// void PkTransaction::reqFinished(Exit::Value status, uint runtime)
+// {
+//     switch(status) {
+//         case Exit::Success :
+//             if (m_pkg_model_req->rowCount( QModelIndex() ) > 0 ) {
+// 	        KDialog *dialog = new KDialog( this );
+//                 dialog->setCaption( "Confirm" );
+//                 dialog->setButtons( KDialog::Ok | KDialog::Cancel );
+// 
+//                 PkRequirements *widget = new PkRequirements( i18n("The following packages must also be installed"), m_pkg_model_req, this );
+//                 dialog->setMainWidget( widget );
+//                 connect( dialog, SIGNAL( okClicked() ), this, SLOT( doAction() ) );
+// 		connect( dialog, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
+// 		dialog->exec();qDebug() << "exec())) ...";
+// 	    }
+//             else
+//                 doAction();
+// 		// 	case Status::Failed :
+// // 	    currentL->setText( i18n("Failed") );
+// // 	    break;
+// // 	case Status::Quit :
+// // 	    currentL->setText( i18n("Quiting") );
+// // 	    break;
+// // 	case Status::Kill :
+// // 	    currentL->setText( i18n("Killing") );
+// // 	    break;
+//     }
+// }
 
-void PkAddRmTransaction::reqFinished(Exit::Value status, uint runtime)
-{
-    switch(status) {
-        case Exit::Success :
-            if (m_pkg_model_req->rowCount( QModelIndex() ) > 0 ) {
-	        KDialog *dialog = new KDialog( this );
-                dialog->setCaption( "Confirm" );
-                dialog->setButtons( KDialog::Ok | KDialog::Cancel );
-
-                PkRequirements *widget = new PkRequirements( "The Folow...", m_pkg_model_req, this );
-                dialog->setMainWidget( widget );
-                connect( dialog, SIGNAL( okClicked() ), this, SLOT( doAction() ) );
-		connect( dialog, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
-		dialog->exec();qDebug() << "exec())) ...";
-	    }
-            else
-                doAction();
-		// 	case Status::Failed :
-// 	    currentL->setText( i18n("Failed") );
-// 	    break;
-// 	case Status::Quit :
-// 	    currentL->setText( i18n("Quiting") );
-// 	    break;
-// 	case Status::Kill :
-// 	    currentL->setText( i18n("Killing") );
-// 	    break;
-    }
-}
-
-void PkAddRmTransaction::Finished(Exit::Value status, uint runtime)
+void PkTransaction::Finished(Exit::Value status, uint /*runtime*/)
 {
     switch(status) {
         default :
@@ -216,4 +235,4 @@ qDebug() << "trans finished: " << status ;
 //     }
 }
 
-#include "PkAddRm_Transaction.moc"
+#include "PkTransaction.moc"

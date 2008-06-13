@@ -16,7 +16,7 @@ int PkAddRmModel::rowCount(const QModelIndex &) const
 
 int PkAddRmModel::columnCount(const QModelIndex &) const
 {
-    return 1;//for now we have only the name collumn
+    return 2;//for now we have only the name collumn
 }
 
 QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
