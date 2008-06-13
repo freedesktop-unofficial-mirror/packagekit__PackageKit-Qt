@@ -47,10 +47,7 @@ void PkDelegate::paint(QPainter *painter,
 {
 //     KCategorizedItemsViewModels::AbstractItem * item =
 //         getItemByProxyIndex(index);
-//     if (!item) return;
-
-if ( option.state & QStyle::State_MouseOver )
-    kDebug() << "oi";
+    if (!index.isValid()) return;
 
     QStyleOptionViewItemV4 opt(option);
     QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
@@ -209,11 +206,15 @@ void PkDelegate::paintColFav(QPainter *painter,
 //         m_onFavoriteIconItem = NULL;
 
     QIcon::Mode iconMode = QIcon::Normal;
-//     if (!index.model()->data(index, PkAddRmModel::InstalledRole).toBool()) {
+    if ( index.model()->data(index, Qt::CheckStateRole).toBool() ) {
+        iconMode = QIcon::Active;
+    } else /*if (option.state & QStyle::State_MouseOver)*/ {
         iconMode = QIcon::Disabled;
-//     } else if (option.state & QStyle::State_MouseOver) {
-//         iconMode = QIcon::Active;
-//     } 
+    }
+
+//     kDebug() << index.column();
+
+//     const KIcon * icon = ( index.model()->data(index, PkAddRmModel::InstalledRole).toBool() )? & m_removeIcon : & m_addIcon;
 
     if ( index.model()->data(index, PkAddRmModel::InstalledRole).toBool() )
         m_removeIcon.paint(painter, 
@@ -224,17 +225,14 @@ void PkDelegate::paintColFav(QPainter *painter,
             left + width - FAV_ICON_SIZE - UNIVERSAL_PADDING, top + UNIVERSAL_PADDING, 
             FAV_ICON_SIZE, FAV_ICON_SIZE, Qt::AlignCenter, iconMode);
 
-  iconMode = QIcon::Active;
+    iconMode = QIcon::Active;
 
-    const KIcon * icon = (index.model()->data(index, PkAddRmModel::InstalledRole).toBool())? & m_removeIcon : & m_addIcon;
+    const KIcon * icon = (index.model()->data(index, Qt::CheckStateRole).toBool() )? & m_removeIcon : & m_addIcon;
 
     if ( option.state & QStyle::State_MouseOver )
-{
-kDebug() << "oi";
         icon->paint(painter, 
                 left + width - EMBLEM_ICON_SIZE - UNIVERSAL_PADDING, top + UNIVERSAL_PADDING, 
                 EMBLEM_ICON_SIZE, EMBLEM_ICON_SIZE, Qt::AlignCenter, iconMode);
-}
 }
 
 // void PkDelegate::paintColRemove(QPainter *painter,
@@ -279,20 +277,10 @@ bool PkDelegate::editorEvent(QEvent *event,
                                const QStyleOptionViewItem &option,
                                const QModelIndex &index)
 {
-//     if (event->type() == QEvent::MouseButtonPress) {
-//         KCategorizedItemsViewModels::AbstractItem * item = getItemByProxyIndex(index);
-//         if (index.column() == 1) {
-//             m_onFavoriteIconItem = item;
-//             item->setFavorite(!item->isFavorite());
-//             return true;
-//         } else if (index.column() == 2 && item->running()) {
-//             item->setRunning(0);
-//             emit destroyApplets(item->name());
-//             return true;
-//         }
-//     }
-// 
-//     return QItemDelegate::editorEvent(event, model, option, index);
+    if ( event->type() == QEvent::MouseButtonPress && index.column() == 1 )
+        return model->setData(index, !model->data(index, Qt::CheckStateRole).toBool(), Qt::CheckStateRole );
+    else
+        return QItemDelegate::editorEvent(event, model, option, index);
 }
 
 QSize PkDelegate::sizeHint(const QStyleOptionViewItem &option,

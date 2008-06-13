@@ -30,8 +30,11 @@ KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
 {
     KAboutData *about = new KAboutData("kcm_kpk_addrm", 0, ki18n("Add and Remove Software"),"0.1");
     setAboutData(about);
-    setButtons(0);/*NoAdditionalButton*/
+    setButtons(Apply);
     m_grid = new QGridLayout(this);
     view = new PkAddRm(this);
+    connect(this, SIGNAL(s_load()), view, SLOT(load()) );
+    connect(this, SIGNAL(s_save()), view, SLOT(save()) );
+    connect(view, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)) );
     m_grid->addWidget(view);
 }

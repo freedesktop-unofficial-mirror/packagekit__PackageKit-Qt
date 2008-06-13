@@ -29,15 +29,17 @@ Q_OBJECT
 
 public:
     KPackageKit(QWidget *parent, const QVariantList &args);
-    ~KPackageKit();
+
 public slots:
     virtual void load() { emit(s_load()); };
     virtual void save() { emit(s_save()); };
     virtual void defaults() { emit(s_defaults()); };
+
 signals:
     void s_load();
     void s_save();
     void s_defaults();
+
 private:
     PkSettings *view;
     QGridLayout *m_grid;

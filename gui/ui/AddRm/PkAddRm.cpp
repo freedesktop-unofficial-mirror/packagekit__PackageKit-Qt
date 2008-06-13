@@ -20,10 +20,12 @@
 
 #include <KLocale>
 #include <KStandardDirs>
+#include <KMessageBox>
+
 #include <QPalette>
 #include <QColor>
 
-#include "PkTransaction.h"
+#include "PkReviewChanges.h"
 #include "PkAddRm.h"
 
 #define UNIVERSAL_PADDING 6
@@ -33,26 +35,45 @@ PkAddRm::PkAddRm( QWidget *parent )
 {
     setupUi( this );
 
+    // Create a new daemon
+    m_daemon = new Daemon(this);
+
     //initialize the model, delegate, client and  connect it's signals
     packageView->setItemDelegate(pkg_delegate = new PkDelegate(this));
     packageView->setModel(m_pkg_model_main = new PkAddRmModel(this));
-    updateColumnsWidth(true);
 
-    // Create a new daemon
-    m_daemon = new Daemon(this);
-qDebug() << m_daemon->getActions();
-    // create the install transaction
-    m_pkClient_install = m_daemon->newTransaction();
-    connect( m_pkClient_install, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_install, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
-    connect( m_pkClient_install, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
-    connect( m_pkClient_install, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
-    connect( m_pkClient_install, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    // check to see if the backend support these actions
+//     if ( m_daemon->getActions() & Actions::Install_package || m_daemon->getActions() & Actions::Remove_packages)
+        connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
+// qDebug() << "actions" << m_daemon->getActions();
+// qDebug() << "details" << Actions::Get_details;
+// if ( m_daemon->getActions() & Actions::Search_group )
+// qDebug() << "ok";
+// else
+// qDebug() << "no";
+
+//     if ( !(m_daemon->getActions() & Actions::Get_details) )
+//         tabWidget->setTabEnabled(0, false);
+//
+//     if ( !(m_daemon->getActions() & Actions::Get_requires) )
+//         tabWidget->setTabEnabled(1, false);
+//
+//     if ( !(m_daemon->getActions() & Actions::Get_depends) )
+//         tabWidget->setTabEnabled(2, false);
+//
+//     if ( !(m_daemon->getActions() & Actions::Get_files) )
+//         tabWidget->setTabEnabled(3, false);
+//
+//     if ( !(m_daemon->getActions() & Actions::Search_name) )
+//         searchPB->setEnabled(false);
+//
+//     if ( !(m_daemon->getActions() & Actions::Search_group) )
+//         groupsCB->setEnabled(false);
 
     // create the main transaction
     m_pkClient_main = m_daemon->newTransaction();
-    connect( m_pkClient_main, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_main, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
+    connect( m_pkClient_main, SIGNAL( GotPackage(Package *)), m_pkg_model_main, SLOT( addPackage(Package *)) );
+    connect( m_pkClient_main, SIGNAL( Finished(Exit::Value, uint)), this, SLOT( Finished(Exit::Value, uint)) );
     connect( m_pkClient_main, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
 
     //initialize the groups
@@ -104,14 +125,16 @@ qDebug() << m_daemon->getActions();
     // connect the timer...
     connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
 
+    // set fucus on the search lineEdit
+    lineEdit->setFocus(Qt::OtherFocusReason);
+
     infoHide();
 }
 
 void PkAddRm::resizeEvent ( QResizeEvent * event )
 {
-    updateColumnsWidth();
-
     QWidget::resizeEvent(event);
+    updateColumnsWidth();
 }
 
 bool PkAddRm::event ( QEvent * event )
@@ -156,25 +179,22 @@ void PkAddRm::infoHide()
 {
     // hides the description to have more space.
     descriptionDW->setVisible(false);
-    actionPB->hide();
     notifyF->hide();
     // cleans the models
-    m_currPkg = 0;
-    m_pkg_model_main->clear();
-    m_pkg_model_req->clear();
-    m_pkg_model_dep->clear();
+    m_pkg_model_main->clearPkg();
+    m_pkg_model_req->clearPkg();
+    m_pkg_model_dep->clearPkg();
 }
 
 void PkAddRm::infoShow()
 {
     descriptionDW->setVisible(true);
-    notifyF->show();
-    actionPB->show();
 }
 
 void PkAddRm::on_searchPB_clicked()
 {
     infoHide();
+    updateColumnsWidth();
 //     qDebug() << "Search Name " << filters() ;
     m_pkClient_main->searchName( filters(), lineEdit->text() );
 }
@@ -189,25 +209,41 @@ void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
     //TODO fix this mapping
     qDebug() << "Search Group " << text.toLower();
     infoHide();
+    updateColumnsWidth();
     m_pkClient_main->searchGroup( filters(), text.toLower() );
 }
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 {
-    m_pkClient_desc->getDetails(m_pkg_model_main->package(index));
-    m_currPkg = m_pkg_model_main->package(index);
-    if (m_currPkg) {
-       if (m_currPkg->info() == "installed")
-           actionPB->setText( i18n("Remove") );
-       else
-           actionPB->setText( i18n("Install") );
+    if ( index.column() == 0 ) {
+        Package *p = m_pkg_model_main->package(index);
+
+        // check to see if the backend support and get info
+        if ( m_daemon->getActions() & Actions::Get_details )
+            m_pkClient_desc->getDetails(m_pkg_model_main->package(index));
+
+        //ask required by packages
+        if ( m_daemon->getActions() & Actions::Get_requires )
+            m_pkClient_req->getRequires("none", p, false);
+
+        //ask depends on packages
+        if ( m_daemon->getActions() & Actions::Get_depends )
+            m_pkClient_dep->getDepends("none", p, false);
+
+        //ask files in packages
+        if ( m_daemon->getActions() & Actions::Get_files )
+            m_pkClient_files->getFiles(p);
+
     }
-    qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
 }
 
-void PkAddRm::on_actionPB_clicked()
+void PkAddRm::save()
 {
-packageView->resizeColumnToContents(1);
+// KMessageBox::detailedSorry( this, "oi", "oi", i18n("Error PackageKit"), KMessageBox::Notify );
+    PkReviewChanges *frm = new PkReviewChanges( m_pkg_model_main->packagesChanges(), this);
+    frm->exec();
+    delete frm;
+
 //     Transaction *trans = m_daemon->newTransaction();
 //     if (m_daemon->getActions().contains("get-depends") ) {
 //         trans->getDepends("~installed", m_currPkg, true);
@@ -219,6 +255,11 @@ packageView->resizeColumnToContents(1);
 //     frm->exec();
 //     delete frm;
 //     qDebug() << "mainEXEC()";
+}
+
+void PkAddRm::load()
+{
+    m_pkg_model_main->clearPkgChanges();
 }
 
 void PkAddRm::Finished(Exit::Value status, uint runtime)
@@ -240,7 +281,9 @@ void PkAddRm::Finished(Exit::Value status, uint runtime)
             notifyL->setAutoFillBackground(true);
             m_notifyT.start(50);
 	    break;
-	case Exit::Quit : break;
+	case Exit::Cancelled : break;
+	case Exit::KeyRequired : break;
+	case Exit::EulaRequired : break;
 	case Exit::Kill : break;
 	case Exit::Unknown : break;
     }
@@ -253,8 +296,7 @@ void PkAddRm::notifyUpdate()
     if ( colorN.alpha() <= 0 ) {
         m_notifyT.stop();
         notifyL->setAutoFillBackground(false);
-	if ( !actionPB->isVisible() )
-	    notifyF->hide();
+        notifyF->hide();
     }
     else {
         colorN.setAlpha(colorN.alpha() - 5);
@@ -265,16 +307,6 @@ void PkAddRm::notifyUpdate()
 
 void PkAddRm::Description(Package *p, const QString& license, const QString& group, const QString& detail, const QString& url, qulonglong size)
 {
-    qDebug() << p->id();
-    //ask required by packages
-    m_pkClient_req->getRequires("none", p, false);
-
-    //ask depends on packages
-    m_pkClient_dep->getDepends("none", p, false);
-
-    //ask files in packages
-    m_pkClient_files->getFiles(p);
-
     //format and show description
     QString description;
     description += "<b>" + i18n("Package Name") + ":</b> " + p->name() + "<br />";

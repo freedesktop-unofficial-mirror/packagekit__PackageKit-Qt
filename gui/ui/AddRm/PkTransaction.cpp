@@ -27,37 +27,25 @@
 // #include "PkRequirements.h"
 #include "PkTransaction.h"
 
-PkTransaction::PkTransaction( Transaction *trans, QString &caption, QWidget *parent )
+PkTransaction::PkTransaction( Transaction *trans, QString caption, QWidget *parent )
  : KDialog(parent), m_trans(trans)
 {
     setupUi( mainWidget() );
     setCaption( caption );
-//     // Create a new daemon
-//     m_daemon = new Daemon(this);
-//     // Create the requirements transaction and it's model
-//     m_pkClient_req = m_daemon->newTransaction();
-//     m_pkg_model_req = new PkAddRmModel(this);
-//     connect( m_pkClient_req, SIGNAL( GotPackage(Package *) ), m_pkg_model_req, SLOT( addPackage(Package *) ) );
-//     connect( m_pkClient_req, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( reqFinished(Exit::Value, uint) ) );
 
-//     // create the install transaction
-//     m_pkClient_action = m_daemon->newTransaction();
     connect( m_trans, SIGNAL( GotPackage(Package *) ), this, SLOT( currPackage(Package *) ) );
     connect( m_trans, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( Finished(Exit::Value, uint) ) );
     connect( m_trans, SIGNAL( AllowCancel(bool) ), this, SLOT( enableButtonCancel(bool) ) );
     connect( m_trans, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( ErrorCode(const QString&, const QString&) ) );
-
     connect( m_trans, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
     connect( m_trans, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
     
-    // Set Cancel and custom bt hide
+    // Set Cancel and custom buoton hide
     setButtons( KDialog::Cancel | KDialog::User1 );
     setButtonText( KDialog::User1, i18n("Hide") );
     setButtonToolTip( KDialog::User1, i18n("Allows you to hide the window but keeps running transaction task") );
     enableButtonCancel(false);
 
-    
-//     m_pkClient_req->getDepends("~installed", pkg, true);
     m_pbTimer = new QTimer(this);
     connect(m_pbTimer, SIGNAL(timeout()), this, SLOT(updateProgress() ));
     m_pbTimer->start(5);
@@ -168,13 +156,8 @@ void PkTransaction::StatusChanged(Status::Value v)
 
 void PkTransaction::ErrorCode(const QString &one, const QString &two)
 {
-    KMessageBox::detailedSorry( this, one, two, i18n("Error PackageKit"), KMessageBox::Notify );
+    KMessageBox::detailedSorry( this, one, two, i18n("Erro PackageKit"), KMessageBox::Notify );
 }
-
-// void PkTransaction::doAction()
-// {
-//     m_pkClient_action->installPackage(m_targetPackage);
-// }
 
 // void PkTransaction::reqFinished(Exit::Value status, uint runtime)
 // {

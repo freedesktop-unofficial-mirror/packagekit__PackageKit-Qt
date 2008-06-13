@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
+    <width>541</width>
     <height>426</height>
    </rect>
   </property>
@@ -88,6 +88,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize" >
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="sizeIncrement" >
        <size>
         <width>0</width>
@@ -126,10 +132,10 @@
       <widget class="QWidget" name="dockWidgetContents" >
        <property name="geometry" >
         <rect>
-         <x>2</x>
+         <x>4</x>
          <y>22</y>
-         <width>690</width>
-         <height>183</height>
+         <width>533</width>
+         <height>191</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2" >
@@ -161,8 +167,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>670</width>
-             <height>135</height>
+             <width>513</width>
+             <height>146</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -183,8 +189,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>670</width>
-             <height>135</height>
+             <width>513</width>
+             <height>146</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -208,8 +214,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>68</height>
+             <width>272</width>
+             <height>140</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -236,8 +242,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>68</height>
+             <width>272</width>
+             <height>140</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -279,31 +285,6 @@
        <number>0</number>
       </property>
       <item row="0" column="0" >
-       <widget class="QPushButton" name="actionPB" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize" >
-         <size>
-          <width>80</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize" >
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text" >
-         <string>Install</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" >
        <widget class="QLabel" name="notifyL" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
@@ -316,6 +297,12 @@
         </property>
         <property name="text" >
          <string>Notify</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>true</bool>
+        </property>
+        <property name="indent" >
+         <number>5</number>
         </property>
        </widget>
       </item>

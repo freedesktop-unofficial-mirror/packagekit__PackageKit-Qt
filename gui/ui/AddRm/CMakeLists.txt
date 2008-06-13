@@ -3,12 +3,14 @@ set(kpk_addrm_SRCS
     PkAddRm.cpp
     PkAddRm_Model.cpp
     PkDelegate.cpp
+    PkReviewChanges.cpp
     PkTransaction.cpp
     PkRequirements.cpp
 )
 
 kde4_add_ui_files(kpk_addrm_SRCS
     PkAddRm.ui
+    PkReviewChanges.ui
     PkTransaction.ui
     PkRequirements.ui
 )

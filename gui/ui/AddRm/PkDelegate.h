@@ -26,7 +26,7 @@
 #include <KIcon>
 
 /**
- * Delegate for displaying the items
+ * Delegate for displaying the packages
  */
 class PkDelegate: public QItemDelegate
 {
@@ -44,8 +44,6 @@ public:
                      const QStyleOptionViewItem &option,
                      const QModelIndex &index);
 
-Q_SIGNALS:
-    void destroyApplets(const QString name);
 private:
     KIcon m_addIcon;
     KIcon m_removeIcon;
@@ -58,4 +56,4 @@ private:
     int calcItemHeight(const QStyleOptionViewItem &option) const;
 };
 
-#endif /*KCATEGORIZEDITEMSVIEWDELEGATE_H_*/
+#endif

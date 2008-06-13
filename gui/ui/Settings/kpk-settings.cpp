@@ -38,9 +38,3 @@ KPackageKit::KPackageKit(QWidget *parent, const QVariantList &args)
     connect(view, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)) );
     m_grid->addWidget(view);
 }
-
-KPackageKit::~KPackageKit()
-{
-    delete view;
-    delete m_grid;
-}
