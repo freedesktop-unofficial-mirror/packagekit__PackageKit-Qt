@@ -25,7 +25,7 @@
 #include <QtCore/QtCore>
 
 #include "PkAddRm_Model.h"
-#include "PkAddRm_Delegate.h"
+#include "PkDelegate.h"
 
 #include "ui_PkAddRm.h"
 
@@ -54,7 +54,7 @@ private:
     PkAddRmModel *m_pkg_model_main;
     PkAddRmModel *m_pkg_model_dep;
     PkAddRmModel *m_pkg_model_req;
-    PkAddRmDelegate *pkg_delegate;
+    PkDelegate *pkg_delegate;
     Transaction *m_pkClient_main;
     Transaction *m_pkClient_desc;
     Transaction *m_pkClient_files;
@@ -69,9 +69,16 @@ private:
     void FilterMenu(const QStringList &filters);
     QString filters();
     Package *m_currPkg;
+    void updateColumnsWidth(bool force = false);
+    int m_viewWidth;
 
 private slots:
     void notifyUpdate();
+
+protected:
+    virtual void resizeEvent ( QResizeEvent * event );
+    virtual bool event ( QEvent * event );
+
 };
 
 #endif

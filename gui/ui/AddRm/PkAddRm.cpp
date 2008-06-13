@@ -23,20 +23,24 @@
 #include <QPalette>
 #include <QColor>
 
-#include "PkAddRm_Transaction.h"
+#include "PkTransaction.h"
 #include "PkAddRm.h"
 
-PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
+#define UNIVERSAL_PADDING 6
+
+PkAddRm::PkAddRm( QWidget *parent )
+ : QWidget( parent ), m_viewWidth(0)
 {
     setupUi( this );
 
     //initialize the model, delegate, client and  connect it's signals
+    packageView->setItemDelegate(pkg_delegate = new PkDelegate(this));
     packageView->setModel(m_pkg_model_main = new PkAddRmModel(this));
-    packageView->setItemDelegate(pkg_delegate = new PkAddRmDelegate(this));
+    updateColumnsWidth(true);
 
     // Create a new daemon
     m_daemon = new Daemon(this);
-
+qDebug() << m_daemon->getActions();
     // create the install transaction
     m_pkClient_install = m_daemon->newTransaction();
     connect( m_pkClient_install, SIGNAL(GotPackage(Package *)), m_pkg_model_main, SLOT(addPackage(Package *)) );
@@ -103,6 +107,39 @@ PkAddRm::PkAddRm( QWidget *parent ) : QWidget( parent )
     infoHide();
 }
 
+void PkAddRm::resizeEvent ( QResizeEvent * event )
+{
+    updateColumnsWidth();
+
+    QWidget::resizeEvent(event);
+}
+
+bool PkAddRm::event ( QEvent * event )
+{
+    switch (event->type()) {
+        case QEvent::PolishRequest:
+        case QEvent::Polish:
+            updateColumnsWidth(true);
+            break;
+        default:
+            break;
+    }
+
+    return QWidget::event(event);
+}
+
+void PkAddRm::updateColumnsWidth(bool force)
+{
+    m_viewWidth = packageView->viewport()->width();
+
+    if (force) {
+        m_viewWidth -= style()->pixelMetric(QStyle::PM_ScrollBarExtent) + UNIVERSAL_PADDING;
+    }
+
+    packageView->setColumnWidth(0, pkg_delegate->columnWidth(0, m_viewWidth));
+    packageView->setColumnWidth(1, pkg_delegate->columnWidth(1, m_viewWidth));
+}
+
 PkAddRm::~PkAddRm()
 {
     delete m_pkg_model_main;
@@ -161,19 +198,27 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
     m_currPkg = m_pkg_model_main->package(index);
     if (m_currPkg) {
        if (m_currPkg->info() == "installed")
-           actionPB->setText(i18n("Remove"));
+           actionPB->setText( i18n("Remove") );
        else
-           actionPB->setText(i18n("Install"));
+           actionPB->setText( i18n("Install") );
     }
     qDebug() << index.model()->data(index, PkAddRmModel::IdRole).toString();
 }
 
 void PkAddRm::on_actionPB_clicked()
 {
-    PkAddRmTransaction *frm = new PkAddRmTransaction(m_currPkg, this);
-    frm->exec();
+packageView->resizeColumnToContents(1);
+//     Transaction *trans = m_daemon->newTransaction();
+//     if (m_daemon->getActions().contains("get-depends") ) {
+//         trans->getDepends("~installed", m_currPkg, true);
+// //     connect( m_pkClient_req, SIGNAL( GotPackage(Package *) ), m_pkg_model_req, SLOT( addPackage(Package *) ) );
+// //     connect( m_pkClient_req, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( reqFinished(Exit::Value, uint) ) );
+//     }
+//         
+//     PkAddRmTransaction *frm = new PkAddRmTransaction(, this);
+//     frm->exec();
 //     delete frm;
-    qDebug() << "mainEXEC()";
+//     qDebug() << "mainEXEC()";
 }
 
 void PkAddRm::Finished(Exit::Value status, uint runtime)

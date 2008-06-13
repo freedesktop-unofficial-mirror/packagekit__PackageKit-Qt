@@ -18,45 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PKADDRM_TRANSACTION_H
-#define PKADDRM_TRANSACTION_H
+#ifndef PKTRANSACTION_H
+#define PKTRANSACTION_H
 
 #include <KDialog>
-// #include <QtCore/QtCore>
 
-#include "PkAddRm_Model.h"
-#include "ui_PkAddRm_Transaction.h"
+// #include "PkAddRm_Model.h"
+#include "ui_PkTransaction.h"
 #include "../../../lib/QPackageKit.h"
 
 using namespace PackageKit;
 
-class PkAddRmTransaction : public KDialog, Ui::PkAddRmTransaction
+class PkTransaction : public KDialog, Ui::PkTransaction
 {
     Q_OBJECT
 public:
-    PkAddRmTransaction( Package *pkg, QWidget *parent=0);
-    ~PkAddRmTransaction();
+    PkTransaction( Transaction *trans, QString &caption, QWidget *parent=0);
+    ~PkTransaction();
 
 public slots:
-//     void Description(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
-//     void Files(Package *p, QStringList files);
-    void reqFinished(Exit::Value status, uint runtime);
+//     void reqFinished(Exit::Value status, uint runtime);
     void Finished(Exit::Value status, uint runtime);
-    void Message(const QString &one, const QString &two);
+    void ErrorCode(const QString &one, const QString &two);
     void StatusChanged(Status::Value v);
     void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 private:
-    PkAddRmModel *m_pkg_model_req;
-    Transaction *m_pkClient_req, *m_pkClient_action;
+//     PkAddRmModel *m_pkg_model_req;
+    Transaction *m_trans;
     QTimer m_notifyT;
-    Package *m_targetPackage;
+    QTimer *m_pbTimer;
 
 private slots:
-    void doAction();
+//     void doAction();
     void currPackage(Package *);
-
-private:
-    Daemon *m_daemon;
+    void updateProgress();
 
 protected slots:
     virtual void slotButtonClicked(int button);
