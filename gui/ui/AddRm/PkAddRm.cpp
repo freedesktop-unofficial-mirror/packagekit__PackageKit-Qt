@@ -41,12 +41,13 @@ PkAddRm::PkAddRm( QWidget *parent )
     //initialize the model, delegate, client and  connect it's signals
     packageView->setItemDelegate(pkg_delegate = new PkDelegate(this));
     packageView->setModel(m_pkg_model_main = new PkAddRmModel(this));
+    packageView->viewport()->setAttribute(Qt::WA_Hover);
 
     // check to see if the backend support these actions
 //     if ( m_daemon->getActions() & Actions::Install_package || m_daemon->getActions() & Actions::Remove_packages)
         connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
-// qDebug() << "actions" << m_daemon->getActions();
-// qDebug() << "details" << Actions::Get_details;
+qDebug() << "actions" << m_daemon->getActions();
+qDebug() << "details" << Actions::Get_details;
 // if ( m_daemon->getActions() & Actions::Search_group )
 // qDebug() << "ok";
 // else

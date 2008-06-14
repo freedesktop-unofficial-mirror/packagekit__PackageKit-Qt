@@ -21,12 +21,15 @@
 #include "PkRequirements.h"
 
 PkRequirements::PkRequirements( QString msg, PkAddRmModel* model, QWidget *parent )
- : QWidget( parent )
+ : KDialog( parent )
 {
-    setupUi( this );
+    setupUi( mainWidget() );
 
     label->setText(msg);
     packageView->setModel(model);
+    setCaption( "Confirm" );
+    setButtons( KDialog::Ok | KDialog::Cancel );
+    setModal(true);
 }
 
 PkRequirements::~PkRequirements()

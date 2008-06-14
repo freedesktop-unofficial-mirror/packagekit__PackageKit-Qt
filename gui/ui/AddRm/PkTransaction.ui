@@ -2,7 +2,7 @@
  <class>PkTransaction</class>
  <widget class="QWidget" name="PkTransaction" >
   <property name="windowModality" >
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry" >
    <rect>
