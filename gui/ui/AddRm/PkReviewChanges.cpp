@@ -121,7 +121,7 @@ void PkReviewChanges::checkTask()
 	    KMessageBox::error( this, i18n("Sorry, your backend does not support removing packages"), i18n("Erro KPackageKit") );
     }
     else if ( !m_addPackages.isEmpty() ) {
-        if ( m_daemon->getActions() & Actions::Install_package ) {
+        if ( m_daemon->getActions() & Actions::Install_packages ) {
 	    if ( m_daemon->getActions() & Actions::Get_depends ) {
 	        m_reqDepPackages = m_addPackages;
 		// Create the depends transaction and it's model

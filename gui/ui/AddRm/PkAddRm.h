@@ -47,6 +47,8 @@ public slots:
     void Files(Package *p, QStringList files);
     void Finished(Exit::Value status, uint runtime);
     void Message(const QString &one, const QString &two);
+    void ErrorCode(Error::Value v, const QString &details);
+    void StatusChanged(Status::Value v);
     void load();
     void save();
 

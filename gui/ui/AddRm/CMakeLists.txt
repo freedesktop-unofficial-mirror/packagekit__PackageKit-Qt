@@ -6,6 +6,7 @@ set(kpk_addrm_SRCS
     PkReviewChanges.cpp
     PkTransaction.cpp
     PkRequirements.cpp
+    ../Common/PkStrings.cpp
 )
 
 kde4_add_ui_files(kpk_addrm_SRCS

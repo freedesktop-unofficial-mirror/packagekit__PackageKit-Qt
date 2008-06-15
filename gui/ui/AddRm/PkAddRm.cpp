@@ -27,6 +27,7 @@
 
 #include "PkReviewChanges.h"
 #include "PkAddRm.h"
+#include "../Common/PkStrings.h"
 
 #define UNIVERSAL_PADDING 6
 
@@ -44,38 +45,34 @@ PkAddRm::PkAddRm( QWidget *parent )
     packageView->viewport()->setAttribute(Qt::WA_Hover);
 
     // check to see if the backend support these actions
-//     if ( m_daemon->getActions() & Actions::Install_package || m_daemon->getActions() & Actions::Remove_packages)
+    if ( m_daemon->getActions() & Actions::Install_packages || m_daemon->getActions() & Actions::Remove_packages)
         connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
-qDebug() << "actions" << m_daemon->getActions();
-qDebug() << "details" << Actions::Get_details;
-// if ( m_daemon->getActions() & Actions::Search_group )
-// qDebug() << "ok";
-// else
-// qDebug() << "no";
 
-//     if ( !(m_daemon->getActions() & Actions::Get_details) )
-//         tabWidget->setTabEnabled(0, false);
-//
-//     if ( !(m_daemon->getActions() & Actions::Get_requires) )
-//         tabWidget->setTabEnabled(1, false);
-//
-//     if ( !(m_daemon->getActions() & Actions::Get_depends) )
-//         tabWidget->setTabEnabled(2, false);
-//
-//     if ( !(m_daemon->getActions() & Actions::Get_files) )
-//         tabWidget->setTabEnabled(3, false);
-//
-//     if ( !(m_daemon->getActions() & Actions::Search_name) )
-//         searchPB->setEnabled(false);
-//
-//     if ( !(m_daemon->getActions() & Actions::Search_group) )
-//         groupsCB->setEnabled(false);
+    if ( !m_daemon->getActions() & Actions::Get_details )
+        tabWidget->setTabEnabled(0, false);
+
+    if ( !m_daemon->getActions() & Actions::Get_requires )
+        tabWidget->setTabEnabled(1, false);
+
+    if ( !m_daemon->getActions() & Actions::Get_depends )
+        tabWidget->setTabEnabled(2, false);
+
+    if ( !m_daemon->getActions() & Actions::Get_files )
+        tabWidget->setTabEnabled(3, false);
+
+    if ( !m_daemon->getActions() & Actions::Search_name )
+        searchPB->setEnabled(false);
+
+    if ( !m_daemon->getActions() & Actions::Search_group )
+        groupsCB->setEnabled(false);
 
     // create the main transaction
     m_pkClient_main = m_daemon->newTransaction();
     connect( m_pkClient_main, SIGNAL( GotPackage(Package *)), m_pkg_model_main, SLOT( addPackage(Package *)) );
     connect( m_pkClient_main, SIGNAL( Finished(Exit::Value, uint)), this, SLOT( Finished(Exit::Value, uint)) );
+    connect( m_pkClient_main, SIGNAL( ErrorCode(Error::Value, const QString&) ), this, SLOT( ErrorCode(Error::Value, const QString&) ) );
     connect( m_pkClient_main, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    connect( m_pkClient_main, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
 
     //initialize the groups
     //TODO map everything and fix search group.
@@ -130,6 +127,17 @@ qDebug() << "details" << Actions::Get_details;
     lineEdit->setFocus(Qt::OtherFocusReason);
 
     infoHide();
+}
+
+void PkAddRm::StatusChanged(Status::Value v)
+{
+    notifyF->show();
+    notifyL->setText( PkStrings::StatusChanged(v) );
+}
+
+void PkAddRm::ErrorCode(Error::Value v, const QString &details)
+{
+    KMessageBox::detailedSorry( this, PkStrings::ErrorCode(v), details, i18n("Erro PackageKit"), KMessageBox::Notify );
 }
 
 void PkAddRm::resizeEvent ( QResizeEvent * event )
@@ -240,22 +248,9 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 
 void PkAddRm::save()
 {
-// KMessageBox::detailedSorry( this, "oi", "oi", i18n("Error PackageKit"), KMessageBox::Notify );
     PkReviewChanges *frm = new PkReviewChanges( m_pkg_model_main->packagesChanges(), this);
     frm->exec();
     delete frm;
-
-//     Transaction *trans = m_daemon->newTransaction();
-//     if (m_daemon->getActions().contains("get-depends") ) {
-//         trans->getDepends("~installed", m_currPkg, true);
-// //     connect( m_pkClient_req, SIGNAL( GotPackage(Package *) ), m_pkg_model_req, SLOT( addPackage(Package *) ) );
-// //     connect( m_pkClient_req, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( reqFinished(Exit::Value, uint) ) );
-//     }
-//         
-//     PkAddRmTransaction *frm = new PkAddRmTransaction(, this);
-//     frm->exec();
-//     delete frm;
-//     qDebug() << "mainEXEC()";
 }
 
 void PkAddRm::load()

@@ -24,7 +24,7 @@
 
 // #include <QPalette>
 // #include <QColor>
-// #include "PkRequirements.h"
+#include "../Common/PkStrings.h"
 #include "PkTransaction.h"
 
 PkTransaction::PkTransaction( Transaction *trans, QString caption, QWidget *parent )
@@ -93,65 +93,7 @@ PkTransaction::~PkTransaction()
 
 void PkTransaction::StatusChanged(Status::Value v)
 {
-    switch (v) {
-        case Status::Setup : 
-	    currentL->setText( i18n("Waiting for service to start") );
-	    break;
-        case Status::Wait :
-	    currentL->setText( i18n("Waiting for other tasks") );
-	    break;
-        case Status::Query :
-	    currentL->setText( i18n("Querying") );
-	    break;
-        case Status::Info :
-	    currentL->setText( i18n("Getting information") );
-	    break;
-        case Status::Remove :
-	    currentL->setText( i18n("Removing") );
-	    break;
-        case Status::Refresh_cache :
-	    currentL->setText( i18n("Refreshing software list") );
-	    break;
-        case Status::Download :
-	    currentL->setText( i18n("Downloading") );
-	    break;
-        case Status::Install :
-	    currentL->setText( i18n("Installing") );
-	    break;
-        case Status::Update :
-	    currentL->setText( i18n("Updating") );
-	    break;
-        case Status::Cleanup :
-	    currentL->setText( i18n("Cleaning Up") );
-	    break;
-        case Status::Obsolete :
-	    currentL->setText( i18n("Obsoletiong") );
-	    break;
-        case Status::Dep_resolve :
-	    currentL->setText( i18n("Resolving dependencies") );
-	    break;
-        case Status::Rollback :
-	    currentL->setText( i18n("Rolling back") );
-	    break;
-        case Status::Commit :
-	    currentL->setText( i18n("Committing changes") );
-	    break;
-        case Status::Request :
-	    currentL->setText( i18n("Requesting data") );
-	    break;
-        case Status::Finished :
-	    currentL->setText( i18n("Finished") );
-	    break;
-        case Status::Cancel :
-	    currentL->setText( i18n("Cancelling") );
-	    break;
-        case Status::Unknown :
-	    currentL->setText( i18n("Unknown state") );
-	    break;
-	default :
-	    currentL->setText( i18n("Running task") );
-	    break;
-    }
+    currentL->setText( PkStrings::StatusChanged(v) );
 }
 
 void PkTransaction::ErrorCode(const QString &one, const QString &two)
