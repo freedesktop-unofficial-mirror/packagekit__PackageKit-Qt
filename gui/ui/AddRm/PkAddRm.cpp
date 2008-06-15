@@ -32,7 +32,8 @@
 #define UNIVERSAL_PADDING 6
 
 PkAddRm::PkAddRm( QWidget *parent )
- : QWidget( parent ), m_viewWidth(0)
+ : QWidget( parent ),m_mTransRuning(false), m_findIcon("edit-find"),
+   m_cancelIcon("dialog-cancel"), m_viewWidth(0)
 {
     setupUi( this );
 
@@ -45,25 +46,27 @@ PkAddRm::PkAddRm( QWidget *parent )
     packageView->viewport()->setAttribute(Qt::WA_Hover);
 
     // check to see if the backend support these actions
-    if ( m_daemon->getActions() & Actions::Install_packages || m_daemon->getActions() & Actions::Remove_packages)
+    uint actions = m_daemon->getActions();
+    if ( actions & Actions::Install_packages || actions & Actions::Remove_packages)
         connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
 
-    if ( !(m_daemon->getActions() & Actions::Get_details) )
+    
+    if ( !(actions & Actions::Get_details) )
         tabWidget->setTabEnabled(0, false);
 
-    if ( !(m_daemon->getActions() & Actions::Get_requires) )
+    if ( !(actions & Actions::Get_requires) )
         tabWidget->setTabEnabled(1, false);
 
-    if ( !(m_daemon->getActions() & Actions::Get_depends) )
+    if ( !(actions & Actions::Get_depends) )
         tabWidget->setTabEnabled(2, false);
 
-    if ( !(m_daemon->getActions() & Actions::Get_files) )
+    if ( !(actions & Actions::Get_files) )
         tabWidget->setTabEnabled(3, false);
 
-    if ( !(m_daemon->getActions() & Actions::Search_name) )
-        searchPB->setEnabled(false);
+    if ( !(actions & Actions::Search_name) )
+        findPB->setEnabled(false);
 
-    if ( !(m_daemon->getActions() & Actions::Search_group) )
+    if ( !(actions & Actions::Search_group) )
         groupsCB->setEnabled(false);
 
     // create the main transaction
@@ -73,29 +76,38 @@ PkAddRm::PkAddRm( QWidget *parent )
     connect( m_pkClient_main, SIGNAL( ErrorCode(Error::Value, const QString&) ), this, SLOT( ErrorCode(Error::Value, const QString&) ) );
     connect( m_pkClient_main, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
     connect( m_pkClient_main, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
+    connect( m_pkClient_main, SIGNAL( AllowCancel(bool) ), findPB, SLOT( setEnabled(bool) ) );
+    connect( m_pkClient_main, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
 
     //initialize the groups
     //TODO map everything and fix search group.
-    for (int i = 0; i < m_daemon->getGroups().size(); ++i) {
-        if ( m_daemon->getGroups().at(i) == "accessories" )
-	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
-	else if ( m_daemon->getGroups().at(i) == "games" )
-	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
-	else if ( m_daemon->getGroups().at(i) == "graphics" )
-	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
-	else if ( m_daemon->getGroups().at(i) == "internet" )
-	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
-	else if ( m_daemon->getGroups().at(i) == "office" )
-	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
-	else if ( m_daemon->getGroups().at(i) == "other" )
-	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
-	else if ( m_daemon->getGroups().at(i) == "programming" )
-	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
-	else if ( m_daemon->getGroups().at(i) == "multimedia" )
-	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
-	else if ( m_daemon->getGroups().at(i) == "system" )
-	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
-    }
+    qDebug() << m_daemon->getGroups();
+    
+//     QMetaObject const* mo = m_daemon->getGroups()->metaObject();
+//     QMetaEnum me = mo->enumerator(mo->indexOfEnumerator("Groups::Value"));
+//     for (int i = 0; i < me.keyCount(); ++i) {
+//         qDebug() << "Next MyEnum value is" << me.key(i) << me.value(i);
+//     }
+//     for (int i = 0; i < m_daemon->getGroups().size(); ++i) {
+//         if ( m_daemon->getGroups().at(i) == "accessories" )
+// 	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
+// 	else if ( m_daemon->getGroups().at(i) == "games" )
+// 	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
+// 	else if ( m_daemon->getGroups().at(i) == "graphics" )
+// 	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
+// 	else if ( m_daemon->getGroups().at(i) == "internet" )
+// 	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
+// 	else if ( m_daemon->getGroups().at(i) == "office" )
+// 	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
+// 	else if ( m_daemon->getGroups().at(i) == "other" )
+// 	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
+// 	else if ( m_daemon->getGroups().at(i) == "programming" )
+// 	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
+// 	else if ( m_daemon->getGroups().at(i) == "multimedia" )
+// 	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
+// 	else if ( m_daemon->getGroups().at(i) == "system" )
+// 	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
+//     }
     // install the backend filters
     FilterMenu( m_daemon->getFilters() );
 
@@ -120,12 +132,13 @@ PkAddRm::PkAddRm( QWidget *parent )
     requiredByLV->setModel(m_pkg_model_req = new PkAddRmModel(this));
     connect( m_pkClient_req, SIGNAL(GotPackage(Package *)), m_pkg_model_req, SLOT(addPackage(Package *)) );
 
-    // connect the timer...
-    connect(&m_notifyT, SIGNAL(timeout()), this, SLOT(notifyUpdate()));
+    // connect the notify and busy timer...
+    connect( &m_busyT, SIGNAL( timeout() ), this, SLOT( updateProgress() ) );
+    connect( &m_notifyT, SIGNAL( timeout() ), this, SLOT( notifyUpdate() ) );
 
     // set fucus on the search lineEdit
     lineEdit->setFocus(Qt::OtherFocusReason);
-
+    findPB->setIcon(m_findIcon);
     infoHide();
 }
 
@@ -133,11 +146,26 @@ void PkAddRm::StatusChanged(Status::Value v)
 {
     notifyF->show();
     notifyL->setText( PkStrings::StatusChanged(v) );
+    m_busyT.start(10);
+}
+
+void PkAddRm::ProgressChanged(uint percentage, uint /*subpercentage*/, uint /*elapsed*/, uint /*remaining*/)
+{
+    busyPB->setMaximum(100);
+    busyPB->setValue(percentage);
+}
+
+void PkAddRm::updateProgress()
+{    
+    if ( busyPB->maximum() == 0 )
+        busyPB->setValue(busyPB->value() + 1);
+    else
+        m_busyT.stop();
 }
 
 void PkAddRm::ErrorCode(Error::Value v, const QString &details)
 {
-    KMessageBox::detailedSorry( this, PkStrings::ErrorCode(v), details, i18n("Erro PackageKit"), KMessageBox::Notify );
+    KMessageBox::detailedSorry( this, PkStrings::ErrorMessage(v), details, PkStrings::Error(v), KMessageBox::Notify );
 }
 
 void PkAddRm::resizeEvent ( QResizeEvent * event )
@@ -200,26 +228,41 @@ void PkAddRm::infoShow()
     descriptionDW->setVisible(true);
 }
 
-void PkAddRm::on_searchPB_clicked()
+void PkAddRm::on_findPB_clicked()
 {
-    infoHide();
-    updateColumnsWidth();
-//     qDebug() << "Search Name " << filters() ;
-    m_pkClient_main->searchName( filters(), lineEdit->text() );
-}
-
-void PkAddRm::Message(const QString &one, const QString &two)
-{
-    qDebug() << "Error code: " << one << " two: " << two;
+    if ( m_mTransRuning ) {
+        m_pkClient_main->cancel();
+    }
+    else {
+        m_pkClient_main->searchName( filters(), lineEdit->text() );
+        StatusChanged( m_pkClient_main->getStatus() );
+        search();
+    }
 }
 
 void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
 {
     //TODO fix this mapping
     qDebug() << "Search Group " << text.toLower();
+    m_pkClient_main->searchGroup( filters(), Groups::Office );
+    search();
+}
+
+void PkAddRm::search()
+{
     infoHide();
     updateColumnsWidth();
-    m_pkClient_main->searchGroup( filters(), text.toLower() );
+    busyPB->setMaximum(0);
+    busyPB->setValue(0);
+    m_mTransRuning = true;
+    findPB->setText( i18n("&Cancel") );
+    findPB->setIcon(m_cancelIcon);
+    findPB->setEnabled(false);
+}
+
+void PkAddRm::Message(const QString &one, const QString &two)
+{
+    qDebug() << "Error code: " << one << " two: " << two;
 }
 
 void PkAddRm::on_packageView_pressed( const QModelIndex & index )
@@ -242,6 +285,7 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
         //ask files in packages
         if ( m_daemon->getActions() & Actions::Get_files )
             m_pkClient_files->getFiles(p);
+
     }
 }
 
@@ -261,6 +305,12 @@ void PkAddRm::Finished(Exit::Value status, uint runtime)
 {
     notifyF->show();
     QPalette teste;
+    m_busyT.stop();
+    busyPB->setValue(100);
+    m_mTransRuning = false;
+    findPB->setEnabled(true);
+    findPB->setText( i18n("&Find") );
+    findPB->setIcon(m_findIcon);
     switch(status) {
         case Exit::Success :
 	    notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
@@ -270,17 +320,47 @@ void PkAddRm::Finished(Exit::Value status, uint runtime)
             m_notifyT.start(100);
 	    break;
 	case Exit::Failed :
-	    notifyL->setText("Search Failed " + KGlobal::locale()->formatDuration(runtime) );
+	    notifyL->setText("Search failed");
             teste.setColor(QPalette::Normal, QPalette::Window, QColor(255,0,0,150));
             notifyL->setPalette(teste);
             notifyL->setAutoFillBackground(true);
             m_notifyT.start(50);
 	    break;
-	case Exit::Cancelled : break;
-	case Exit::KeyRequired : break;
-	case Exit::EulaRequired : break;
-	case Exit::Kill : break;
-	case Exit::Unknown : break;
+	case Exit::Cancelled :
+            notifyL->setText("Search canceled");
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+            break;
+	case Exit::KeyRequired :
+            notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+            break;
+	case Exit::EulaRequired :
+            notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+            break;
+	case Exit::Kill :
+            notifyL->setText("Search killed");
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+            break;
+	case Exit::Unknown :
+            notifyL->setText("Search finished with unknown status");
+            teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
+            notifyL->setPalette(teste);
+            notifyL->setAutoFillBackground(true);
+            m_notifyT.start(100);
+            break;
     }
 }
 

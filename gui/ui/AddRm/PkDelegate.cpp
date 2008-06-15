@@ -45,8 +45,6 @@ PkDelegate::PkDelegate(QObject * parent)
 void PkDelegate::paint(QPainter *painter,
         const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-//     KCategorizedItemsViewModels::AbstractItem * item =
-//         getItemByProxyIndex(index);
     if (!index.isValid()) return;
 
     QStyleOptionViewItemV4 opt(option);
@@ -279,6 +277,9 @@ bool PkDelegate::editorEvent(QEvent *event,
 {
     if ( event->type() == QEvent::MouseButtonPress && index.column() == 1 )
         return model->setData(index, !model->data(index, Qt::CheckStateRole).toBool(), Qt::CheckStateRole );
+//     else if ( event->type() == QEvent::KeyPress ) {
+//     
+//     }
     else
         return QItemDelegate::editorEvent(event, model, option, index);
 }

@@ -26,7 +26,7 @@ int PkAddRmModel::rowCount(const QModelIndex &) const
 
 int PkAddRmModel::columnCount(const QModelIndex &) const
 {
-    return 2;//for now we have only the name collumn
+    return 2;
 }
 
 QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
@@ -60,11 +60,15 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
             return p->id();
 
 	case Qt::CheckStateRole :
-	    for (int i = 0; i < m_packagesChanges.size(); ++i) {
-                 if ( m_packagesChanges.at(i)->id() == package(index)->id() )
-                     return Qt::Checked;
-            }
-	    return Qt::Unchecked;
+	    if ( index.column() == 1 ) {
+	        for (int i = 0; i < m_packagesChanges.size(); ++i) {
+                    if ( m_packagesChanges.at(i)->id() == package(index)->id() )
+                        return Qt::Checked;
+                }
+	        return Qt::Unchecked;
+	    }
+	    else
+	        return QVariant();
 
         default:
             return QVariant();

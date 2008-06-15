@@ -13,6 +13,7 @@
 #include "constants.h"
 #include "PolkitClient.h"
 #include "Actions.h"
+#include "Groups.h"
 
 using namespace PackageKit;
 
@@ -48,9 +49,13 @@ QStringList Daemon::getFilters() {
 	return filters.split(";");
 }
 
-QStringList Daemon::getGroups() {
-	QString groups = proxy->GetGroups();
-	return groups.split(";");
+Groups::Value Daemon::getGroups() {
+	QStringList groups = QString(proxy->GetGroups()).split(";");
+	unsigned int ret = 0;
+	for(int i = 0 ; i < groups.size() ; ++i) {
+		ret |= EnumFromString<Groups>(groups.at(i));
+	}
+	return (Groups::Value) ret;
 }
 
 QStringList Daemon::getTransactionList() {

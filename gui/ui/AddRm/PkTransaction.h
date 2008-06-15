@@ -38,7 +38,7 @@ public:
 public slots:
 //     void reqFinished(Exit::Value status, uint runtime);
     void Finished(Exit::Value status, uint runtime);
-    void ErrorCode(const QString &one, const QString &two);
+    void ErrorCode(Error::Value v, const QString &details);
     void StatusChanged(Status::Value v);
     void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 private:

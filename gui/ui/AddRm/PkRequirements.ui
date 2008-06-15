@@ -10,7 +10,7 @@
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
+   <item row="1" column="0" >
     <widget class="QLabel" name="label" >
      <property name="font" >
       <font>
@@ -35,34 +35,16 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QTreeView" name="packageView" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-       <horstretch>2</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="2" column="0" >
+    <widget class="QListView" name="packageView" >
+     <property name="editTriggers" >
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="sizeIncrement" >
-      <size>
-       <width>0</width>
-       <height>2</height>
-      </size>
-     </property>
-     <property name="locale" >
-      <locale country="UnitedStates" language="English" />
-     </property>
-     <property name="rootIsDecorated" >
-      <bool>false</bool>
-     </property>
-     <property name="itemsExpandable" >
-      <bool>false</bool>
-     </property>
-     <property name="headerHidden" >
+     <property name="alternatingRowColors" >
       <bool>true</bool>
      </property>
-     <property name="expandsOnDoubleClick" >
-      <bool>false</bool>
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::NoSelection</enum>
      </property>
     </widget>
    </item>

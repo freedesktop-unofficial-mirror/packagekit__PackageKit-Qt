@@ -24,6 +24,8 @@
 #include <QtGui/QtGui>
 #include <QtCore/QtCore>
 
+#include <KIcon>
+
 #include "PkAddRm_Model.h"
 #include "PkDelegate.h"
 
@@ -40,7 +42,7 @@ public:
     ~PkAddRm();
 
 public slots:
-    void on_searchPB_clicked();
+    void on_findPB_clicked();
     void on_groupsCB_currentIndexChanged( const QString &text );
     void on_packageView_pressed( const QModelIndex &index );
     void Description(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
@@ -56,6 +58,7 @@ private:
     void infoHide();
     void infoShow();
 
+    bool m_mTransRuning;//main trans
     PkAddRmModel *m_pkg_model_main;
     PkAddRmModel *m_pkg_model_dep;
     PkAddRmModel *m_pkg_model_req;
@@ -69,7 +72,10 @@ private:
     Transaction *m_pkClient_req;
 
     QTimer m_notifyT;
+    QTimer m_busyT;
     QMenu *m_toolQM;
+    KIcon m_findIcon;
+    KIcon m_cancelIcon;
 
     // We need to keep a list to build the filters string
     QList<QAction*> actions;
@@ -78,9 +84,12 @@ private:
 
     void updateColumnsWidth(bool force = false);
     int m_viewWidth;
+    void search();
 
 private slots:
     void notifyUpdate();
+    void updateProgress();
+    void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
 signals:
     void changed(bool state);

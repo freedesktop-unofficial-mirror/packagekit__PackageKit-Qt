@@ -35,8 +35,10 @@ public:
     ~PkStrings();
 
     static QString Finished(Exit::Value status);
-    static QString ErrorCode(Error::Value v);
+    static QString Error(Error::Value v);
+    static QString ErrorMessage(Error::Value v);
     static QString StatusChanged(Status::Value v);
+    static QString Groups(Groups::Value v);
 };
 
 #endif

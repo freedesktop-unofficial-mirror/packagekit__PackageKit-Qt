@@ -14,5 +14,6 @@
 #include "Role.h"
 #include "SignatureType.h"
 #include "Status.h"
+#include "Groups.h"
 
 #endif

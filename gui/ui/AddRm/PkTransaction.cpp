@@ -96,9 +96,9 @@ void PkTransaction::StatusChanged(Status::Value v)
     currentL->setText( PkStrings::StatusChanged(v) );
 }
 
-void PkTransaction::ErrorCode(const QString &one, const QString &two)
+void PkTransaction::ErrorCode(Error::Value v, const QString &details)
 {
-    KMessageBox::detailedSorry( this, one, two, i18n("Erro PackageKit"), KMessageBox::Notify );
+    KMessageBox::detailedSorry( this, PkStrings::ErrorMessage(v), details, PkStrings::Error(v), KMessageBox::Notify );
 }
 
 // void PkTransaction::reqFinished(Exit::Value status, uint runtime)

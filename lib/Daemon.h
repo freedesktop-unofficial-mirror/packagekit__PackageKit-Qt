@@ -37,7 +37,7 @@ public:
 	unsigned int getActions();
 	void getBackendDetails(QString &name, QString &author);
 	QStringList getFilters();
-	QStringList getGroups();
+	Groups::Value getGroups();
 	QStringList getTransactionList();
 
 	uint getTimeSinceAction(Role::Value role);
