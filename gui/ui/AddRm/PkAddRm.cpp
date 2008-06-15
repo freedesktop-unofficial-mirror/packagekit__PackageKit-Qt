@@ -48,22 +48,22 @@ PkAddRm::PkAddRm( QWidget *parent )
     if ( m_daemon->getActions() & Actions::Install_packages || m_daemon->getActions() & Actions::Remove_packages)
         connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
 
-    if ( !m_daemon->getActions() & Actions::Get_details )
+    if ( !(m_daemon->getActions() & Actions::Get_details) )
         tabWidget->setTabEnabled(0, false);
 
-    if ( !m_daemon->getActions() & Actions::Get_requires )
+    if ( !(m_daemon->getActions() & Actions::Get_requires) )
         tabWidget->setTabEnabled(1, false);
 
-    if ( !m_daemon->getActions() & Actions::Get_depends )
+    if ( !(m_daemon->getActions() & Actions::Get_depends) )
         tabWidget->setTabEnabled(2, false);
 
-    if ( !m_daemon->getActions() & Actions::Get_files )
+    if ( !(m_daemon->getActions() & Actions::Get_files) )
         tabWidget->setTabEnabled(3, false);
 
-    if ( !m_daemon->getActions() & Actions::Search_name )
+    if ( !(m_daemon->getActions() & Actions::Search_name) )
         searchPB->setEnabled(false);
 
-    if ( !m_daemon->getActions() & Actions::Search_group )
+    if ( !(m_daemon->getActions() & Actions::Search_group) )
         groupsCB->setEnabled(false);
 
     // create the main transaction
@@ -242,7 +242,6 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
         //ask files in packages
         if ( m_daemon->getActions() & Actions::Get_files )
             m_pkClient_files->getFiles(p);
-
     }
 }
 
