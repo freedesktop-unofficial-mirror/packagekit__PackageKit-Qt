@@ -21,15 +21,14 @@
 #ifndef PKREQUIREMENTS_H
 #define PKREQUIREMENTS_H
 
-#include <QWidget>
+#include <KDialog>
 
 #include "PkAddRm_Model.h"
 #include "ui_PkRequirements.h"
-// #include "../../../lib/QPackageKit.h"
 
 using namespace PackageKit;
 
-class PkRequirements : public QWidget, public Ui::PkRequirements
+class PkRequirements : public KDialog, Ui::PkRequirements
 {
     Q_OBJECT
 public:

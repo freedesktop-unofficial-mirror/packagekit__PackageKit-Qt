@@ -22,7 +22,9 @@
 #define PKREVIEWCHANGES_H
 
 #include <KDialog>
+#include <KProgressDialog>
 
+#include "PkRequirements.h"
 #include "PkDelegate.h"
 #include "PkAddRm_Model.h"
 #include "ui_PkReviewChanges.h"
@@ -51,6 +53,10 @@ public slots:
 private:
     PkAddRmModel *m_pkgModelMain, *m_pkgModelReq, *m_pkgModelDep;
     PkDelegate *m_pkgDelegate;
+    
+    KProgressDialog *m_waitPD;
+    PkRequirements *m_requimentD;
+    
     Daemon *m_daemon;
     Transaction *m_trans;
     Transaction *m_transactionReq;

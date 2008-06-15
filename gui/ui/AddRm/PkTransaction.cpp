@@ -77,7 +77,7 @@ void PkTransaction::slotButtonClicked(int button)
     switch(button) {
         case KDialog::Cancel :
             m_trans->cancel();
-            break;/*accept();*/
+            break;
         case KDialog::User1 :
             close();
             break;
@@ -190,32 +190,26 @@ void PkTransaction::ErrorCode(const QString &one, const QString &two)
 
 void PkTransaction::Finished(Exit::Value status, uint /*runtime*/)
 {
-    switch(status) {
-        default :
-            close();
-    }
-qDebug() << "trans finished: " << status ;
-//     notifyF->show();
-//     QPalette teste;
 //     switch(status) {
-//         case Exit::Success :
-// 	    notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
-//             teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
-//             notifyL->setPalette(teste);
-//             notifyL->setAutoFillBackground(true);
-//             m_notifyT.start(100);
-// 	    break;
-// 	case Exit::Failed :
-// 	    notifyL->setText("Search Failed " + KGlobal::locale()->formatDuration(runtime) );
-//             teste.setColor(QPalette::Normal, QPalette::Window, QColor(255,0,0,150));
-//             notifyL->setPalette(teste);
-//             notifyL->setAutoFillBackground(true);
-//             m_notifyT.start(50);
-// 	    break; 	
-// 	case Exit::Quit : break;
-// 	case Exit::Kill : break;
-// 	case Exit::Unknown : break;
+//         default :
+//             close();
 //     }
+qDebug() << "trans finished: " << status ;
+    switch(status) {
+        case Exit::Success :
+	    qDebug() << "trans succes: ";
+	    break;
+	case Exit::Failed :
+	    qDebug() << "trans failed: ";
+            m_notifyT.start(50);
+	    break;
+	case Exit::Kill :
+            qDebug() << "trans quit: ";
+            break;
+	case Exit::Unknown :
+            qDebug() << "trans quit: ";
+            break;
+    }
 }
 
 #include "PkTransaction.moc"
