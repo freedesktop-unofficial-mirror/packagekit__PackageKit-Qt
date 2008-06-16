@@ -22,6 +22,7 @@
 #define PKSTRINGS_H
 
 #include <QObject>
+#include <KIcon>
 
 #include "../../../lib/QPackageKit.h"
 
@@ -39,6 +40,7 @@ public:
     static QString ErrorMessage(Error::Value v);
     static QString StatusChanged(Status::Value v);
     static QString Groups(Groups::Value v);
+    static KIcon GroupsIcon(Groups::Value v);
 };
 
 #endif

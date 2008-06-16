@@ -347,6 +347,72 @@ QString PkStrings::Groups(Groups::Value v)
     }
 }
 
+KIcon PkStrings::GroupsIcon(Groups::Value v)
+{
+    switch (v) {
+        case Groups::Accessibility :
+	    return KIcon("preferences-desktop-accessibility");
+        case Groups::Accessories :
+	    return KIcon("applications-accessories");
+        case Groups::Admin_tools :
+	    return KIcon("dialog-password");
+        case Groups::Communication :
+	    return KIcon("network-workgroup");//FIXME
+        case Groups::Desktop_gnome :
+	    return KIcon("user-desktop");//FIXME
+        case Groups::Desktop_kde :
+	    return KIcon("start-here-kde");//CHECK
+        case Groups::Desktop_other :
+	    return KIcon("user-desktop");
+        case Groups::Desktop_xfce :
+	    return KIcon("user-desktop");//FIXME
+        case Groups::Education :
+	    return KIcon("applications-education");
+        case Groups::Fonts :
+	    return KIcon("preferences-desktop-font");
+        case Groups::Games :
+	    return KIcon("applications-games");
+        case Groups::Graphics :
+	    return KIcon("applications-graphics");
+        case Groups::Internet :
+	    return KIcon("applications-internet");
+        case Groups::Legacy :
+	    return KIcon("media-floppy");
+        case Groups::Localization :
+	    return KIcon("applications-education-language");
+        case Groups::Maps :
+	    return KIcon("Maps");//FIXME
+        case Groups::Multimedia :
+	    return KIcon("applications-multimedia");
+        case Groups::Network :
+	    return KIcon("network-wired");
+        case Groups::Office :
+	    return KIcon("applications-office");
+        case Groups::Other :
+	    return KIcon("applications-other");
+        case Groups::Power_management :
+	    return KIcon("battery");
+        case Groups::Programming :
+	    return KIcon("applications-development");
+        case Groups::Publishing :
+	    return KIcon("accesories-text-editor");
+        case Groups::Repos :
+	    return KIcon("application-x-compressed-tar");
+        case Groups::Security :
+	    return KIcon("security-high");
+        case Groups::Servers :
+	    return KIcon("network-server");
+        case Groups::System :
+	    return KIcon("applications-system");
+        case Groups::Virtualization :
+	    return KIcon("cpu");
+        case Groups::Unknown :
+	    return KIcon("unknown");
+        default :
+	    return KIcon("unknown");
+    }
+}
+
 // void PkTransaction::Finished(Exit::Value status, uint /*runtime*/)
 // {
 //     qDebug() << "trans finished: " << status ;
