@@ -24,7 +24,7 @@
 #include <KDialog>
 
 #include "ui_PkTransaction.h"
-#include "../../lib/QPackageKit.h"
+#include <QPackageKit>
 
 using namespace PackageKit;
 
@@ -35,21 +35,20 @@ public:
     PkTransaction( Transaction  *trans, QString caption, QWidget *parent=0);
     ~PkTransaction();
 
-public slots:
-//     void reqFinished(Exit::Value status, uint runtime);
-    void Finished(Exit::Value status, uint runtime);
-    void ErrorCode(Error::Value v, const QString &details);
-    void StatusChanged(Status::Value v);
-    void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+signals:
+    void Finished(bool error);
+
 private:
     Transaction *m_trans;
-    QTimer m_notifyT;
     QTimer *m_pbTimer;
 
 private slots:
-//     void doAction();
+    void Finished(Exit::Value status, uint runtime);
+    void ErrorCode(Error::Value v, const QString &details);
+    void StatusChanged(Status::Value v);
     void currPackage(Package *);
     void updateProgress();
+    void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
 
 protected slots:
     virtual void slotButtonClicked(int button);

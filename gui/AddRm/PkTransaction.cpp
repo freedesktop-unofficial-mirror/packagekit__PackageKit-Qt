@@ -19,11 +19,8 @@
  ***************************************************************************/
 
 #include <KLocale>
-// #include <KStandardDirs>
 #include <KMessageBox>
 
-// #include <QPalette>
-// #include <QColor>
 #include "../Common/PkStrings.h"
 #include "PkTransaction.h"
 
@@ -49,6 +46,7 @@ PkTransaction::PkTransaction( Transaction *trans, QString caption, QWidget *pare
     m_pbTimer = new QTimer(this);
     connect(m_pbTimer, SIGNAL(timeout()), this, SLOT(updateProgress() ));
     m_pbTimer->start(5);
+    setModal(true);
 
     // set wait msg
     currentL->setText( i18n("Please Wait..." ) );
@@ -79,7 +77,12 @@ void PkTransaction::slotButtonClicked(int button)
             m_trans->cancel();
             break;
         case KDialog::User1 :
-            close();
+	    emit Finished(false);
+	    KDialog::slotButtonClicked(KDialog::Close);
+            break;
+	case KDialog::Close :
+	    emit Finished(true);
+            KDialog::slotButtonClicked(KDialog::Close);
             break;
         default :
             KDialog::slotButtonClicked(button);
@@ -101,52 +104,25 @@ void PkTransaction::ErrorCode(Error::Value v, const QString &details)
     KMessageBox::detailedSorry( this, PkStrings::ErrorMessage(v), details, PkStrings::Error(v), KMessageBox::Notify );
 }
 
-// void PkTransaction::reqFinished(Exit::Value status, uint runtime)
-// {
-//     switch(status) {
-//         case Exit::Success :
-//             if (m_pkg_model_req->rowCount( QModelIndex() ) > 0 ) {
-// 	        KDialog *dialog = new KDialog( this );
-//                 dialog->setCaption( "Confirm" );
-//                 dialog->setButtons( KDialog::Ok | KDialog::Cancel );
-// 
-//                 PkRequirements *widget = new PkRequirements( i18n("The following packages must also be installed"), m_pkg_model_req, this );
-//                 dialog->setMainWidget( widget );
-//                 connect( dialog, SIGNAL( okClicked() ), this, SLOT( doAction() ) );
-// 		connect( dialog, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
-// 		dialog->exec();qDebug() << "exec())) ...";
-// 	    }
-//             else
-//                 doAction();
-// 		// 	case Status::Failed :
-// // 	    currentL->setText( i18n("Failed") );
-// // 	    break;
-// // 	case Status::Quit :
-// // 	    currentL->setText( i18n("Quiting") );
-// // 	    break;
-// // 	case Status::Kill :
-// // 	    currentL->setText( i18n("Killing") );
-// // 	    break;
-//     }
-// }
-
 void PkTransaction::Finished(Exit::Value status, uint /*runtime*/)
 {
-//     switch(status) {
-//         default :
-//             close();
-//     }
-qDebug() << "trans finished: " << status ;
+    qDebug() << "trans finished: " << status ;
     switch(status) {
         case Exit::Success :
 	    qDebug() << "trans succes: ";
+	    emit Finished(false);
+	    KDialog::slotButtonClicked(KDialog::Close);
 	    break;
 	case Exit::Failed :
 	    qDebug() << "trans failed: ";
-            m_notifyT.start(50);
+	    setButtons( KDialog::Close );
 	    break;
 	case Exit::Kill :
             qDebug() << "trans quit: ";
+            break;
+	case Exit::Cancelled :
+            qDebug() << "trans cancelled: ";
+	    setButtons( KDialog::Close );
             break;
 	case Exit::Unknown :
             qDebug() << "trans quit: ";

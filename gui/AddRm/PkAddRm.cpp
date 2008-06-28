@@ -270,7 +270,10 @@ void PkAddRm::on_packageView_pressed( const QModelIndex & index )
 void PkAddRm::save()
 {
     PkReviewChanges *frm = new PkReviewChanges( m_pkg_model_main->packagesChanges(), this);
-    frm->exec();
+    if ( frm->exec() == QDialog::Accepted )
+        m_pkg_model_main->clearPkgChanges();
+//     else
+//         emit( changed(true) );
     delete frm;
 }
 

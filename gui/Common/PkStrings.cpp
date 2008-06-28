@@ -361,7 +361,7 @@ KIcon PkStrings::GroupsIcon(Groups::Value v)
         case Groups::Desktop_gnome :
 	    return KIcon("user-desktop");//FIXME
         case Groups::Desktop_kde :
-	    return KIcon("start-here-kde");//CHECK
+	    return KIcon("kde");
         case Groups::Desktop_other :
 	    return KIcon("user-desktop");
         case Groups::Desktop_xfce :
@@ -395,7 +395,7 @@ KIcon PkStrings::GroupsIcon(Groups::Value v)
         case Groups::Programming :
 	    return KIcon("applications-development");
         case Groups::Publishing :
-	    return KIcon("accesories-text-editor");
+	    return KIcon("accessories-text-editor");
         case Groups::Repos :
 	    return KIcon("application-x-compressed-tar");
         case Groups::Security :

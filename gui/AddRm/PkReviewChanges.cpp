@@ -21,13 +21,14 @@
 #include <KMessageBox>
 #include <KDebug>
 
+#include "PkRequirements.h"
 #include "PkTransaction.h"
 #include "PkReviewChanges.h"
 
 #define UNIVERSAL_PADDING 6
 
 PkReviewChanges::PkReviewChanges( const QList<Package*> &packages, QWidget *parent )
- : KDialog(parent), m_waitPD(0), m_requimentD(0)
+ : KDialog(parent), m_waitPD(0)
 {
     setupUi( mainWidget() );
 
@@ -51,19 +52,6 @@ void PkReviewChanges::updateProgress()
 {
     if (m_waitPD)
         m_waitPD->progressBar()->setValue( m_waitPD->progressBar()->value() + 1 );
-}
-
-void PkReviewChanges::ProgressChanged(uint /*percentage*/, uint /*subpercentage*/, uint /*elapsed*/, uint /*remaining*/)
-{
-//     m_pbTimer->stop();
-//     progressBar->setMaximum(100);
-//     progressBar->setValue(percentage);
-}
-
-void PkReviewChanges::currPackage(Package */*p*/)
-{
-//     packageL->setText( p->name() + " - " + p->version() + " (" + p->arch() + ")" );
-//     descriptionL->setText( p->summary() );
 }
 
 PkReviewChanges::~PkReviewChanges()
@@ -98,6 +86,7 @@ void PkReviewChanges::doAction()
 void PkReviewChanges::checkTask()
 {
     if ( !m_remPackages.isEmpty() ) {
+        qDebug() << "task rm if";
         if ( m_daemon->getActions() & Actions::Remove_packages ) {
 	    if ( m_daemon->getActions() & Actions::Get_requires ) {
 	        m_reqDepPackages = m_remPackages;
@@ -121,6 +110,7 @@ void PkReviewChanges::checkTask()
 	    KMessageBox::error( this, i18n("Sorry, your backend does not support removing packages"), i18n("Erro KPackageKit") );
     }
     else if ( !m_addPackages.isEmpty() ) {
+        qDebug() << "task add else";
         if ( m_daemon->getActions() & Actions::Install_packages ) {
 	    if ( m_daemon->getActions() & Actions::Get_depends ) {
 	        m_reqDepPackages = m_addPackages;
@@ -130,7 +120,7 @@ void PkReviewChanges::checkTask()
                 connect( m_transactionDep, SIGNAL( GotPackage(Package *) ), m_pkgModelDep, SLOT( addUniquePackage(Package *) ) );
                 connect( m_transactionDep, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( depFinished(Exit::Value, uint) ) );
 		// Create a KProgressDialog to don't upset the user
-		m_waitPD = new KProgressDialog(this, i18n("Wait - KPackageKit"), i18n("Checking dependat packages") );
+		m_waitPD = new KProgressDialog(this, i18n("Wait - KPackageKit"), i18n("Checking dependant packages") );
 		m_waitPD->progressBar()->setMinimum(0);
 		m_waitPD->progressBar()->setMaximum(0);
 		m_waitPD->setAutoClose(false);
@@ -143,23 +133,25 @@ void PkReviewChanges::checkTask()
 	else
 	    KMessageBox::error( this, i18n("Sorry, your backend does not support installing packages"), i18n("Erro KPackageKit") );
     }
-    else
-        close();
+    else {
+        qDebug() << "task else";
+        KDialog::slotButtonClicked(KDialog::Ok);
+    }
 }
 
 void PkReviewChanges::reqFinished(Exit::Value status, uint /*runtime*/)
 {
-    kDebug() << "reqFinished";
+    qDebug() << "reqFinished";
     if (status == Exit::Success) {
         if ( m_reqDepPackages.isEmpty() ) {
 	    m_pbTimer->stop();
 	    delete m_waitPD;
 	    m_waitPD = 0;
 	    if ( m_pkgModelReq->rowCount( QModelIndex() ) > 0 ) {
-		m_requimentD = new PkRequirements( i18n("The following packages must also be removed"), m_pkgModelReq, this );
-		connect( m_requimentD, SIGNAL( okClicked() ), this, SLOT( removePackages() ) );
-		connect( m_requimentD, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
-		m_requimentD->show();
+		PkRequirements *requimentD = new PkRequirements( i18n("The following packages must also be removed"), m_pkgModelReq, this );
+		connect( requimentD, SIGNAL( okClicked() ), this, SLOT( removePackages() ) );
+		connect( requimentD, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
+		requimentD->show();
             }
 	    else
 	        removePackages();
@@ -176,33 +168,33 @@ void PkReviewChanges::reqFinished(Exit::Value status, uint /*runtime*/)
 	m_reqDepPackages.clear();
         checkTask();
     }
+    qDebug() << "reqFinished2";
 }
 
 void PkReviewChanges::removePackages()
 {
-    kDebug() << "removePackages";
+    qDebug() << "removePackages";
     m_trans = m_daemon->newTransaction();
     PkTransaction *frm = new PkTransaction(m_trans, i18n("Remove Packages"), this);
-    connect( m_trans, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( remFinished(Exit::Vaue, uint) ) );
+    connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
     m_trans->removePackages(m_remPackages);
-    delete m_requimentD;
-    m_requimentD = 0;
-    frm->exec();
+    frm->show();
+    qDebug() << "finished remove";
 }
 
 void PkReviewChanges::depFinished(Exit::Value status, uint /*runtime*/)
 {
-    kDebug() << "depFinished";
+    qDebug() << "depFinished";
     if (status == Exit::Success) {
         if ( m_reqDepPackages.isEmpty() ) {
 	    m_pbTimer->stop();
 	    delete m_waitPD;
 	    m_waitPD = 0;
 	    if ( m_pkgModelDep->rowCount( QModelIndex() ) > 0 ) {
-		m_requimentD = new PkRequirements( i18n("The following packages must also be installed"), m_pkgModelDep, this );
-		connect( m_requimentD, SIGNAL( okClicked() ), this, SLOT( installPackages() ) );
-		connect( m_requimentD, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
-		m_requimentD->show();
+		PkRequirements *requimentD = new PkRequirements( i18n("The following packages must also be installed"), m_pkgModelDep, this );
+		connect( requimentD, SIGNAL( okClicked() ), this, SLOT( installPackages() ) );
+		connect( requimentD, SIGNAL( cancelClicked() ), this, SLOT( close() ) );
+		requimentD->show();
             }
 	    else
 	        installPackages();
@@ -218,38 +210,42 @@ void PkReviewChanges::depFinished(Exit::Value status, uint /*runtime*/)
 	m_reqDepPackages.clear();
         checkTask();
     }
+    qDebug() << "depFinished2";
 }
 
 void PkReviewChanges::installPackages()
 {
-    kDebug() << "installPackages";
+    qDebug() << "installPackages";
     m_trans = m_daemon->newTransaction();
     PkTransaction *frm = new PkTransaction(m_trans, QString(i18n("Install Packages")), this);
-    connect( m_trans, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( addFinished(Exit::Vaue, uint) ) );
+    connect( frm, SIGNAL( Finished(bool) ), this, SLOT( addFinished(bool) ) );
     m_trans->installPackages(m_addPackages);
-    delete m_requimentD;
-    m_requimentD = 0;
-    frm->exec();
+    frm->show();
+    qDebug() << "finished install";
 }
 
-void PkReviewChanges::remFinished(Exit::Value status, uint /*runtime*/)
+void PkReviewChanges::remFinished(bool error)
 {
-    if (status == Exit::Success) {
+    if (error) {
+        KMessageBox::error( this, i18n("Sorry an error ocoured"), i18n("Erro KPackageKit") );
+	setButtons( KDialog::Close );
+    }
+    else {
         m_remPackages.clear();
-        checkTask();
+	checkTask();
     }
-    else
-        KMessageBox::error( this, i18n("Sorry an error ocoured"), i18n("Erro KPackageKit") );
 }
 
-void PkReviewChanges::addFinished(Exit::Value status, uint /*runtime*/)
+void PkReviewChanges::addFinished(bool error)
 {
-    if (status == Exit::Success) {
-        m_addPackages.clear();
-        checkTask();
-    }
-    else
+    if (error) {
         KMessageBox::error( this, i18n("Sorry an error ocoured"), i18n("Erro KPackageKit") );
+	setButtons( KDialog::Close );
+    }
+    else {
+        m_addPackages.clear();
+	checkTask();
+    }
 }
 
 void PkReviewChanges::slotButtonClicked(int button)

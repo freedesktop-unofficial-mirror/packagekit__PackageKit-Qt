@@ -55,4 +55,6 @@ install(FILES
 	DESTINATION
 	include/packagekit-qt)
 
+add_subdirectory(modules)
+
 #endif

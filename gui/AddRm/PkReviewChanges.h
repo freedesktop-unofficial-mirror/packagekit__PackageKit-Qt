@@ -24,11 +24,10 @@
 #include <KDialog>
 #include <KProgressDialog>
 
-#include "PkRequirements.h"
 #include "PkDelegate.h"
 #include "PkAddRm_Model.h"
 #include "ui_PkReviewChanges.h"
-#include "../../lib/QPackageKit.h"
+#include <QPackageKit>
 
 using namespace PackageKit;
 
@@ -40,22 +39,21 @@ public:
     ~PkReviewChanges();
 
 public slots:
-    void remFinished(Exit::Value status, uint runtime);
-    void addFinished(Exit::Value status, uint runtime);
+    void remFinished(bool);
+    void addFinished(bool);
     void ErrorCode(const QString &one, const QString &two);
-//     void StatusChanged(Status::Value v);
-    void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+
     void reqFinished(Exit::Value status, uint runtime);
     void depFinished(Exit::Value status, uint runtime);
     void installPackages();
     void removePackages();
+    void updateProgress();
 
 private:
     PkAddRmModel *m_pkgModelMain, *m_pkgModelReq, *m_pkgModelDep;
     PkDelegate *m_pkgDelegate;
     
     KProgressDialog *m_waitPD;
-    PkRequirements *m_requimentD;
     
     Daemon *m_daemon;
     Transaction *m_trans;
@@ -72,10 +70,6 @@ private:
     QList<Package*> m_remPackages;
     QList<Package*> m_addPackages;
     QList<Package*> m_reqDepPackages;
-
-private slots:
-    void currPackage(Package *);
-    void updateProgress();
 
 protected slots:
     virtual void slotButtonClicked(int button);

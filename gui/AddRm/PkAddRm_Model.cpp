@@ -81,6 +81,9 @@ bool PkAddRmModel::setData( const QModelIndex &index, const QVariant &value, int
         // now we check if we need to add or remove from the list
         if ( value.toBool() ) {
             // Add
+	    // its good to check if the package isn't already in
+	    // this might happen for example if the user installed
+	    // 
 	    m_packagesChanges.append( package(index) );
 	    emit dataChanged(index, index);
 	    emit changed( !m_packagesChanges.isEmpty() );
@@ -150,6 +153,7 @@ void PkAddRmModel::clearPkg()
 
 void PkAddRmModel::clearPkgChanges()
 {
+    qDebug() << "Changes cleared";
     m_packagesChanges.clear();
     emit changed( !m_packagesChanges.isEmpty() );
 }

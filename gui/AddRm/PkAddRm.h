@@ -29,7 +29,7 @@
 #include "PkAddRm_Model.h"
 #include "PkDelegate.h"
 
-#include "../../lib/QPackageKit.h"
+#include <QPackageKit>
 #include "ui_PkAddRm.h"
 
 using namespace PackageKit;
