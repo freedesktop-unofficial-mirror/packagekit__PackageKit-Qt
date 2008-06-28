@@ -1,5 +1,11 @@
 project(packagekit-qt)
 
+if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+	SET(LIB_SUFFIX "64")
+ELSE(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+	SET(LIB_SUFFIX "")
+ENDIF(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+
 set(CMAKE_MODULE_PATH ${packagekit-qt_SOURCE_DIR}/cmake/modules)
 
 find_package(Qt4 REQUIRED)
@@ -28,3 +34,26 @@ target_link_libraries(packagekit-qt
   ${QT_QTCORE_LIBRARY}
 )
 
+install(TARGETS
+	packagekit-qt
+	DESTINATION
+	lib${LIB_SUFFIX}
+	)
+
+install(FILES
+	Daemon.h
+	Transaction.h
+	Exit.h
+	Actions.h
+	Error.h
+	Exit.h
+	Provides.h
+	Restart.h
+	Role.h
+	SignatureType.h
+	Status.h
+	Groups.h
+	DESTINATION
+	include/packagekit-qt)
+
+#endif
