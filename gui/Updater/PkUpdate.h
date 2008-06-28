@@ -24,7 +24,7 @@
 #include "PkAddRm_Model.h"
 #include "PkAddRm_Delegate.h"
 #include "ui_PkUpdate.h"
-#include "../../../lib/QPackageKit.h"
+#include "../../lib/QPackageKit.h"
 
 using namespace PackageKit;
  

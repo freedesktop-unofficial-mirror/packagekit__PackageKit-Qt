@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti                                *
- *   daniel@whitemoon                                                      *
+ *   mirttex85-pk@yahoo.com.br                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,40 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PACKAGE_ITEM_H
-#define PACKAGE_ITEM_H
 
-#include "../../../lib/QPackageKit.h"
+#include "PkConfigSkell.h"
 
-#include <QList>
-#include <QVariant>
-
-using namespace PackageKit;
-
-/**
-	@author Daniel Nicoletti <daniel@whitemoon>
-*/
-class PackageItem{
-public:
-    PackageItem(Package *pkg, PackageItem *parent = 0);
-    PackageItem();
-
-    ~PackageItem();
-
-    void appendChild(PackageItem *child);
-
-    PackageItem *child(int row);
-    int childCount() const;
-    int columnCount() const;
-    Package *data() const;
-    int row() const;
-    PackageItem *parent();
-    QString name();
-
-private:
-    QList<PackageItem*> childItems;
-    Package *m_pkg;
-    PackageItem *parentItem;
-};
-
-#endif
+PkConfigSkell::PkConfigSkell()
+{
+    setCurrentGroup("SmartIcon");
+    addItemBool("notify", notify, true);
+    addItemBool("longTask", longTask, true);
+}

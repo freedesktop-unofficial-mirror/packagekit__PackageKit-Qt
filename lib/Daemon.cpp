@@ -45,17 +45,11 @@ void Daemon::getBackendDetails(QString &name, QString &author) {
 }
 
 QStringList Daemon::getFilters() {
-	QString filters = proxy->GetFilters();
-	return filters.split(";");
+	return QString(proxy->GetFilters()).split(";");
 }
 
-Groups::Value Daemon::getGroups() {
-	QStringList groups = QString(proxy->GetGroups()).split(";");
-	unsigned int ret = 0;
-	for(int i = 0 ; i < groups.size() ; ++i) {
-		ret |= EnumFromString<Groups>(groups.at(i));
-	}
-	return (Groups::Value) ret;
+QStringList Daemon::getGroups() {
+	return QString(proxy->GetGroups()).split(";");
 }
 
 QStringList Daemon::getTransactionList() {

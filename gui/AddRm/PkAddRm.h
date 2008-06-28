@@ -29,7 +29,7 @@
 #include "PkAddRm_Model.h"
 #include "PkDelegate.h"
 
-#include "../../../lib/QPackageKit.h"
+#include "../../lib/QPackageKit.h"
 #include "ui_PkAddRm.h"
 
 using namespace PackageKit;
@@ -43,14 +43,14 @@ public:
 
 public slots:
     void on_findPB_clicked();
-    void on_groupsCB_currentIndexChanged( const QString &text );
+    void on_groupsCB_currentIndexChanged( int index );
     void on_packageView_pressed( const QModelIndex &index );
-    void Description(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
-    void Files(Package *p, QStringList files);
-    void Finished(Exit::Value status, uint runtime);
-    void Message(const QString &one, const QString &two);
-    void ErrorCode(Error::Value v, const QString &details);
-    void StatusChanged(Status::Value v);
+    void Description( Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size );
+    void Files( Package *p, QStringList files );
+    void Finished( Exit::Value status, uint runtime );
+    void Message( const QString &one, const QString &two );
+    void ErrorCode( Error::Value v, const QString &details );
+    void StatusChanged( Status::Value v );
     void load();
     void save();
 

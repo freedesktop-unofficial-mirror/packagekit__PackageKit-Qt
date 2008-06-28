@@ -83,7 +83,7 @@ public:
 
 signals:
 	void GotPackage(Package *p);
-	void Details(Package *p, const QString& license, Groups::Value group, const QString& detail, const QString& url, qulonglong size);
+	void Details(Package *p, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size);
 	void Files(Package *p, QStringList files);
 	void Finished(Exit::Value status, uint runtime);
 	void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);

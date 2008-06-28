@@ -278,7 +278,7 @@ void Transaction::Package_cb(const QString &info, const QString &package_id, con
 }
 
 void Transaction::Details_cb(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size) {
-	emit Details(new Package(package_id), license, (Groups::Value)EnumFromString<Groups>(group), detail, url, size);
+	emit Details(new Package(package_id), license, group, detail, url, size);
 }
 
 void Transaction::Files_cb(const QString &pid, const QString &file_list) {

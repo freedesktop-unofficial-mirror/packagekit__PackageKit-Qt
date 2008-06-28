@@ -50,7 +50,6 @@ PkAddRm::PkAddRm( QWidget *parent )
     if ( actions & Actions::Install_packages || actions & Actions::Remove_packages)
         connect( m_pkg_model_main, SIGNAL( changed(bool) ), this, SIGNAL( changed(bool) ) );
 
-    
     if ( !(actions & Actions::Get_details) )
         tabWidget->setTabEnabled(0, false);
 
@@ -80,34 +79,12 @@ PkAddRm::PkAddRm( QWidget *parent )
     connect( m_pkClient_main, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
 
     //initialize the groups
-    //TODO map everything and fix search group.
-    qDebug() << m_daemon->getGroups();
-    
-//     QMetaObject const* mo = m_daemon->getGroups()->metaObject();
-//     QMetaEnum me = mo->enumerator(mo->indexOfEnumerator("Groups::Value"));
-//     for (int i = 0; i < me.keyCount(); ++i) {
-//         qDebug() << "Next MyEnum value is" << me.key(i) << me.value(i);
-//     }
-//     for (int i = 0; i < m_daemon->getGroups().size(); ++i) {
-//         if ( m_daemon->getGroups().at(i) == "accessories" )
-// 	    groupsCB->addItem(KIcon("applications-accessories"), i18n("Accessories"));
-// 	else if ( m_daemon->getGroups().at(i) == "games" )
-// 	    groupsCB->addItem(KIcon("applications-games"), i18n("Games"));
-// 	else if ( m_daemon->getGroups().at(i) == "graphics" )
-// 	    groupsCB->addItem(KIcon("applications-graphics"), i18n("Graphics"));
-// 	else if ( m_daemon->getGroups().at(i) == "internet" )
-// 	    groupsCB->addItem(KIcon("applications-internet"), i18n("Internet"));
-// 	else if ( m_daemon->getGroups().at(i) == "office" )
-// 	    groupsCB->addItem(KIcon("applications-office"), i18n("Office"));
-// 	else if ( m_daemon->getGroups().at(i) == "other" )
-// 	    groupsCB->addItem(KIcon("applications-other"), i18n("Other"));
-// 	else if ( m_daemon->getGroups().at(i) == "programming" )
-// 	    groupsCB->addItem(KIcon("applications-development"), i18n("Development"));
-// 	else if ( m_daemon->getGroups().at(i) == "multimedia" )
-// 	    groupsCB->addItem(KIcon("applications-multimedia"), i18n("Multimedia"));
-// 	else if ( m_daemon->getGroups().at(i) == "system" )
-// 	    groupsCB->addItem(KIcon("applications-system"), i18n("System"));
-//     }
+    QStringList groups = m_daemon->getGroups();
+    for (int i = 0; i < groups.size(); ++i) {
+	Groups::Value v = (Groups::Value)EnumFromString<Groups>( groups.at(i) );
+	groupsCB->addItem( PkStrings::GroupsIcon(v), PkStrings::Groups(v), v );
+    }
+
     // install the backend filters
     FilterMenu( m_daemon->getFilters() );
 
@@ -146,6 +123,7 @@ void PkAddRm::StatusChanged(Status::Value v)
 {
     notifyF->show();
     notifyL->setText( PkStrings::StatusChanged(v) );
+    busyPB->setMaximum(0);
     m_busyT.start(10);
 }
 
@@ -156,7 +134,7 @@ void PkAddRm::ProgressChanged(uint percentage, uint /*subpercentage*/, uint /*el
 }
 
 void PkAddRm::updateProgress()
-{    
+{
     if ( busyPB->maximum() == 0 )
         busyPB->setValue(busyPB->value() + 1);
     else
@@ -240,12 +218,12 @@ void PkAddRm::on_findPB_clicked()
     }
 }
 
-void PkAddRm::on_groupsCB_currentIndexChanged( const QString & text )
+void PkAddRm::on_groupsCB_currentIndexChanged( int index )
 {
-    //TODO fix this mapping
-    qDebug() << "Search Group " << text.toLower();
-    m_pkClient_main->searchGroup( filters(), Groups::Office );
-    search();
+    if ( groupsCB->itemData( index, Qt::UserRole ).isValid() ) {
+	m_pkClient_main->searchGroup( filters(), (Groups::Value)groupsCB->itemData( index, Qt::UserRole ).toUInt() );
+	search();
+    }
 }
 
 void PkAddRm::search()
@@ -388,7 +366,8 @@ void PkAddRm::Description(Package *p, const QString& license, const QString& gro
     if ( !license.isEmpty() && license != "unknown" )
         description += "<b>" + i18n("License") + ":</b> " + license + "<br />";
     if ( !group.isEmpty() && group != "unknown" )
-        description += "<b>" + i18n("Group") + ":</b> " + group + "<br />";
+        description += "<b>" + i18n("Group") + ":</b> " +
+	PkStrings::Groups( (Groups::Value)EnumFromString<Groups>(group) ) + "<br />";
     if ( !detail.isEmpty() )
         description += "<b>" + i18n("Details") + ":</b> " + detail + "<br />";
     if ( !url.isEmpty() )

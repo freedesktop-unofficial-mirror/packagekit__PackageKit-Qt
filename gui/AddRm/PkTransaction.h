@@ -18,29 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PKSTRINGS_H
-#define PKSTRINGS_H
+#ifndef PKTRANSACTION_H
+#define PKTRANSACTION_H
 
-#include <QObject>
-#include <KIcon>
+#include <KDialog>
 
-#include "../../../lib/QPackageKit.h"
+#include "ui_PkTransaction.h"
+#include "../../lib/QPackageKit.h"
 
 using namespace PackageKit;
 
-class PkStrings : public QObject
+class PkTransaction : public KDialog, Ui::PkTransaction
 {
     Q_OBJECT
 public:
-    PkStrings( QObject *parent=0);
-    ~PkStrings();
+    PkTransaction( Transaction  *trans, QString caption, QWidget *parent=0);
+    ~PkTransaction();
 
-    static QString Finished(Exit::Value status);
-    static QString Error(Error::Value v);
-    static QString ErrorMessage(Error::Value v);
-    static QString StatusChanged(Status::Value v);
-    static QString Groups(Groups::Value v);
-    static KIcon GroupsIcon(Groups::Value v);
+public slots:
+//     void reqFinished(Exit::Value status, uint runtime);
+    void Finished(Exit::Value status, uint runtime);
+    void ErrorCode(Error::Value v, const QString &details);
+    void StatusChanged(Status::Value v);
+    void ProgressChanged(uint percentage, uint subpercentage, uint elapsed, uint remaining);
+private:
+    Transaction *m_trans;
+    QTimer m_notifyT;
+    QTimer *m_pbTimer;
+
+private slots:
+//     void doAction();
+    void currPackage(Package *);
+    void updateProgress();
+
+protected slots:
+    virtual void slotButtonClicked(int button);
 };
 
 #endif
