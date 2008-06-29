@@ -6,8 +6,6 @@ ELSE(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
 	SET(LIB_SUFFIX "")
 ENDIF(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
 
-set(CMAKE_MODULE_PATH ${packagekit-qt_SOURCE_DIR}/cmake/modules)
-
 find_package(Qt4 REQUIRED)
 
 include(FindPkgConfig)
@@ -53,6 +51,7 @@ install(FILES
 	SignatureType.h
 	Status.h
 	Groups.h
+	QPackageKit
 	DESTINATION
 	include/packagekit-qt)
 
