@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 2.4.8)
+
 project(packagekit-qt)
 
 if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
@@ -7,6 +9,7 @@ ELSE(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
 ENDIF(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
 
 find_package(Qt4 REQUIRED)
+add_definitions(${QT_DEFINITIONS})
 
 include(FindPkgConfig)
 pkg_check_modules(POLICYKIT polkit-dbus)
@@ -39,12 +42,16 @@ install(TARGETS
 	)
 
 install(FILES
+        CentralProxy.h
+	TransactionProxy.h
 	Daemon.h
 	Transaction.h
+	Package.h
 	Exit.h
 	Actions.h
 	Error.h
 	Exit.h
+	Enum.h
 	Provides.h
 	Restart.h
 	Role.h

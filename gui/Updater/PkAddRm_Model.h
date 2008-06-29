@@ -5,7 +5,7 @@
 #include <KIcon>
 
 #include "pkg_item.h"
-#include "../../lib/QPackageKit.h"
+#include <QPackageKit>
 
 using namespace PackageKit;
 

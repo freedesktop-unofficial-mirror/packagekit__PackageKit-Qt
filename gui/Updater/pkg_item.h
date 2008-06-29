@@ -20,7 +20,7 @@
 #ifndef PACKAGE_ITEM_H
 #define PACKAGE_ITEM_H
 
-#include "../../lib/QPackageKit.h"
+#include <QPackageKit>
 
 #include <QList>
 #include <QVariant>
