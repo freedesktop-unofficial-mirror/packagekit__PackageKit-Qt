@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include "kpkckagekitd.moc"
 #include <kgenericfactory.h>
 #include <KStandardDirs>
 #include <KConfigGroup>
@@ -38,7 +37,7 @@ KPackageKit::KPackageKit(QObject *parent, const QList<QVariant>&)
     connect(m_qtimer, SIGNAL(timeout()), this, SLOT(init()));
     // Start after 10 minutes, 600000 msec
     // To keep the startup fast..
-    m_qtimer->start(1000);
+    m_qtimer->start(600000);
 }
 
 KPackageKit::~KPackageKit()
@@ -97,5 +96,5 @@ void KPackageKit::write()
 
 void KPackageKit::checkUpdates()
 {
-    KMessageBox::questionYesNo( 0, tr("Local ") + KStandardDirs::locateLocal("config", "KPackageKit")  , "Restart?");
+//     KMessageBox::questionYesNo( 0, tr("Local ") + KStandardDirs::locateLocal("config", "KPackageKit")  , "Restart?");
 }
