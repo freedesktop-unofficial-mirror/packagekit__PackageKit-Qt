@@ -12,11 +12,11 @@ find_package(Qt4 REQUIRED)
 add_definitions(${QT_DEFINITIONS})
 
 include(FindPkgConfig)
-pkg_check_modules(POLICYKIT polkit-dbus)
+pkg_check_modules(POLKIT polkit-dbus)
 
 include_directories(
   ${QT_INCLUDES}
-  ${POLICYKIT_INCLUDE_DIRS}
+  ${POLKIT_INCLUDE_DIRS}
 )
 
 set( PK_LIB_SRCS
@@ -53,6 +53,7 @@ set_target_properties( packagekit-qt PROPERTIES VERSION 0.1 SOVERSION 0 )
 
 target_link_libraries(packagekit-qt
   ${QT_QTCORE_LIBRARY}
+  polkit-dbus
 )
 
 install(TARGETS
