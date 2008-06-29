@@ -80,10 +80,10 @@ PkAddRm::PkAddRm( QWidget *parent )
 
     //initialize the groups
     QStringList groups = m_daemon->getGroups();
-    for (int i = 0; i < groups.size(); ++i) {
-	Groups::Value v = (Groups::Value)EnumFromString<Groups>( groups.at(i) );
-	groupsCB->addItem( PkStrings::GroupsIcon(v), PkStrings::Groups(v), v );
-    }
+//     for (int i = 0; i < groups.size(); ++i) {
+// 	Groups::Value v = (Groups::Value)EnumFromString<Groups>( groups.at(i) );
+// 	groupsCB->addItem( PkStrings::GroupsIcon(v), PkStrings::Groups(v), v );
+//     }
 
     // install the backend filters
     FilterMenu( m_daemon->getFilters() );

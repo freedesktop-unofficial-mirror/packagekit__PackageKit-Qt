@@ -17,3 +17,4 @@ bool PolkitClient::getAuth(const QString &action) {
     }
     return auth;
 }
+

@@ -96,3 +96,4 @@ void Daemon::sendAuthRefused(const QString &message) {
 void Daemon::NetworkStateChanged_cb(const QString &status) {
 	emit NetworkStateChanged((status == "online"));
 }
+
