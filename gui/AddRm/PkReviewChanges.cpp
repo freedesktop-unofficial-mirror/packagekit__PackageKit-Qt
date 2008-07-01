@@ -105,6 +105,9 @@ void PkReviewChanges::checkTask()
 		m_waitPD->show();
 		m_transactionReq->getRequires("installed", m_reqDepPackages.takeFirst(), true);
 	    }
+	    else {
+	       removePackages();
+	    }
         }
 	else
 	    KMessageBox::error( this, i18n("Sorry, your backend does not support removing packages"), i18n("Erro KPackageKit") );
@@ -128,6 +131,9 @@ void PkReviewChanges::checkTask()
 		m_pbTimer->start(5);
 		m_waitPD->show();
 		m_transactionDep->getDepends("~installed", m_reqDepPackages.takeFirst(), true);
+	    }
+	    else {
+	        installPackages();
 	    }
         }
 	else
