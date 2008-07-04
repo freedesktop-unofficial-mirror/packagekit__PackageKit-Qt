@@ -150,7 +150,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex" >
-           <number>0</number>
+           <number>3</number>
           </property>
           <property name="elideMode" >
            <enum>Qt::ElideNone</enum>
@@ -182,8 +182,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>517</width>
-             <height>141</height>
+             <width>513</width>
+             <height>142</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -207,8 +207,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>517</width>
-             <height>141</height>
+             <width>513</width>
+             <height>142</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -235,8 +235,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>517</width>
-             <height>141</height>
+             <width>513</width>
+             <height>142</height>
             </rect>
            </property>
            <attribute name="title" >
@@ -334,6 +334,18 @@
    <header>ktextbrowser.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>findPB</tabstop>
+  <tabstop>filtersTB</tabstop>
+  <tabstop>groupsCB</tabstop>
+  <tabstop>packageView</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>descriptionKTB</tabstop>
+  <tabstop>filesPTE</tabstop>
+  <tabstop>dependsOnLV</tabstop>
+  <tabstop>requiredByLV</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -57,29 +57,29 @@ public:
 	void whatProvides(const QString &filter, const Provides::Value &type, const QString& search);
 	void resolve(const QString &filter, Package *p);
 
-	void installPackages(const QList<Package*> &packages);
-	void installPackage(Package *p);
-	void installSignature(const SignatureType::Value &type, const QString &key_id, Package *p);
-	void updatePackages(const QList<Package*> &packages);
-	void updatePackage(Package *p);
-	void installFiles(const QStringList& files, bool trusted = false);
-	void removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
-	void removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
+	bool installPackages(const QList<Package*> &packages);
+	bool installPackage(Package *p);
+	bool installSignature(const SignatureType::Value &type, const QString &key_id, Package *p);
+	bool updatePackages(const QList<Package*> &packages);
+	bool updatePackage(Package *p);
+	bool installFiles(const QStringList& files, bool trusted = false);
+	bool removePackages(const QList<Package*> &packages, bool allow_deps = false, bool autoremove = false);
+	bool removePackage(Package *p, bool allow_deps = false, bool autoremove = false);
 
-	void updateSystem();
-	void rollback(const QString &tid);
+	bool updateSystem();
+	bool rollback(const QString &tid);
 
 	void getUpdates(const QString& filter);
 	void getUpdateDetail(const QString& package_id);
 
-	void refreshCache(bool force = false);
+	bool refreshCache(bool force = false);
 	void getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining);
 	void getRepoList(const QString &filter);
-	void repoEnable(const QString &repo_id, bool enabled);
-	void repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
+	bool repoEnable(const QString &repo_id, bool enabled);
+	bool repoSetData(const QString &repo_id, const QString &parameter, const QString &value);
 	bool isCallerActive();
 	void getOldTransactions(uint number);
-	void acceptEula(const QString &id);
+	bool acceptEula(const QString &id);
 
 signals:
 	void GotPackage(Package *p);

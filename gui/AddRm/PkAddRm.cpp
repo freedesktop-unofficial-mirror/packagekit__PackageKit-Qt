@@ -115,6 +115,7 @@ PkAddRm::PkAddRm( QWidget *parent )
 
     // set fucus on the search lineEdit
     lineEdit->setFocus(Qt::OtherFocusReason);
+    findPB->setDefault(true);
     findPB->setIcon(m_findIcon);
     infoHide();
 }
