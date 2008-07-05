@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti                                *
- *   mirttex85-pk@yahoo.com.br                                             *
+ *   dantti85-pk@yahoo.com.br                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <kgenericfactory.h>
+#include <KGenericFactory>
 #include <KStandardDirs>
 #include <KConfigGroup>
 #include <QDateTime>
@@ -34,7 +34,7 @@ KPackageKit::KPackageKit(QObject *parent, const QList<QVariant>&)
     : KDEDModule(parent)
 {
     m_qtimer = new QTimer(this);
-    connect(m_qtimer, SIGNAL(timeout()), this, SLOT(init()));
+    connect( m_qtimer, SIGNAL( timeout() ), this, SLOT( init() ) ) ;
     // Start after 10 minutes, 600000 msec
     // To keep the startup fast..
     m_qtimer->start(600000);
@@ -42,23 +42,21 @@ KPackageKit::KPackageKit(QObject *parent, const QList<QVariant>&)
 
 KPackageKit::~KPackageKit()
 {
-    delete m_qtimer;
-    delete m_confWatch;
 }
 
 void KPackageKit::init()
 {
     m_qtimer->stop();
     m_qtimer->disconnect();
-    connect(m_qtimer, SIGNAL(timeout()), this, SLOT(checkUpdates()));
+    connect( m_qtimer, SIGNAL( timeout() ), this, SLOT( read() ) );
     read();
     //check if any changes to the file occour
     //this also prevents from reading when a checkUpdate happens
     m_confWatch = new KDirWatch(this);
     m_confWatch->addFile( KStandardDirs::locateLocal("config", "KPackageKit") );
-    connect(m_confWatch, SIGNAL( dirty(const QString &) ), this, SLOT( checkUpdates() ));
-    connect(m_confWatch, SIGNAL( created(const QString &) ), this, SLOT( checkUpdates() ));
-    connect(m_confWatch, SIGNAL( deleted(const QString &) ), this, SLOT( checkUpdates() ));
+    connect( m_confWatch, SIGNAL( dirty(const QString &) ), this, SLOT( read() ) );
+    connect( m_confWatch, SIGNAL( created(const QString &) ), this, SLOT( read() ) );
+    connect( m_confWatch, SIGNAL( deleted(const QString &) ), this, SLOT( read() ) );
     m_confWatch->startScan();
 }
 
@@ -66,10 +64,10 @@ void KPackageKit::read()
 {
     KConfig config("KPackageKit");
     KConfigGroup checkUpdateGroup( &config, "CheckUpdate" );
-    if ( checkUpdateGroup.readEntry( "never", false ) )
-        return;
     // default to one day, 86400 sec
     uint interval = checkUpdateGroup.readEntry( "interval", 86400 );
+    if ( interval == 0 )
+        return;
     uint lastCheck = checkUpdateGroup.readEntry( "lastChecked", 0 );
     uint now = QDateTime::currentDateTime().toTime_t();
     if ( interval + lastCheck < now ) {
@@ -96,5 +94,5 @@ void KPackageKit::write()
 
 void KPackageKit::checkUpdates()
 {
-//     KMessageBox::questionYesNo( 0, tr("Local ") + KStandardDirs::locateLocal("config", "KPackageKit")  , "Restart?");
+//     KMessageBox::questionYesNo( 0, tr("Local ") + KStandardDirs::locateLocal("config", "KPackageKit")  , "Rest?");
 }

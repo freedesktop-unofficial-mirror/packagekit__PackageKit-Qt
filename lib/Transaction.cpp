@@ -249,12 +249,12 @@ void Transaction::getUpdateDetail(const QString& package_id) {
 
 bool Transaction::refreshCache(bool force) {
 	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_REFRESHCACHE)) {
+// 	if (polkit->getAuth(AUTH_REFRESHCACHE)) {
 		renewTid();
 		proxy->RefreshCache(force);
-	}
-	else
-	    return false;
+// 	}
+// 	else
+// 	    return false;
 	return true;
 }
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   dantti85-pk@yahoo.com.br   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +22,7 @@
 #include <KDebug>
 
 #include "PkRequirements.h"
-#include "PkTransaction.h"
+#include "../Common/PkTransaction.h"
 #include "PkReviewChanges.h"
 
 #define UNIVERSAL_PADDING 6
@@ -184,7 +184,6 @@ void PkReviewChanges::removePackages()
     if ( m_trans->removePackages(m_remPackages) ) {
         PkTransaction *frm = new PkTransaction(m_trans, i18n("Remove Packages"), this);
         connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
-        m_trans->removePackages(m_remPackages);
         frm->show();
     }
     else

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   dantti85-pk@yahoo.com.br   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "PkUpdate.h"
+#include "../Common/PkTransaction.h"
+
+#include <KMessageBox>
  
 PkUpdate::PkUpdate( QWidget *parent ) : QWidget( parent )
 {
@@ -49,6 +52,15 @@ void PkUpdate::on_updatePB_clicked()
 void PkUpdate::on_refreshPB_clicked()
 {
     qDebug() << "refresh";
+    Transaction *m_trans = m_daemon->newTransaction();
+  /*  if (*/ m_trans->refreshCache(true);/* ) {*/
+        PkTransaction *frm = new PkTransaction(m_trans, i18n("Refresh Cache"), this);
+        connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
+        frm->show();
+//     }
+//     else
+//         KMessageBox::error( this, i18n("Authentication failed"), i18n("KPackageKit") );
+
 }
 
 void PkUpdate::on_historyPB_clicked()

@@ -7,8 +7,9 @@ find_package(QPackageKit REQUIRED)
 include(KDE4Defaults)
 
 add_definitions(${QT_DEFINITIONS} ${KDE_DEFINITIONS})
-include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${KDE4_KIO_INCLUDES} ${QPACKAGEKIT_INCLUDE_DIR} )
+include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${QPACKAGEKIT_INCLUDE_DIR} )
 
+#${KDE4_KIO_INCLUDES} 
 add_subdirectory( AddRm )
 add_subdirectory( Settings )
 add_subdirectory( Updater )

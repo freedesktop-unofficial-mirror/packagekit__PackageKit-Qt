@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti                                *
- *   mirttex85-pk@yahoo.com.br                                             *
+ *   dantti85-pk@yahoo.com.br                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
