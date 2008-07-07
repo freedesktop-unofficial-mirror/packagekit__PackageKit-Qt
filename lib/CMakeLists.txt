@@ -12,7 +12,7 @@ find_package(Qt4 REQUIRED)
 add_definitions(${QT_DEFINITIONS})
 
 include(FindPkgConfig)
-pkg_check_modules(POLKIT polkit-dbus polkit-grant)
+pkg_check_modules(POLKIT polkit-dbus)
 
 include_directories(
   ${QT_INCLUDES}
@@ -54,7 +54,6 @@ set_target_properties( packagekit-qt PROPERTIES VERSION 0.1 SOVERSION 0 )
 target_link_libraries(packagekit-qt
   ${QT_QTCORE_LIBRARY}
   polkit-dbus
-  polkit-grant
 )
 
 install(TARGETS

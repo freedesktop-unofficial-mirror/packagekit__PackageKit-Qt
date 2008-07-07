@@ -67,12 +67,16 @@ bool Daemon::getNetworkState() {
 }
 
 bool Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_SETPROXY))
-	    proxy->SetProxy(http_proxy, ftp_proxy);
-	else
-	    return false;
-	return true;
+	// hopefully do the operation first time
+	if ( proxy->SetProxy(http_proxy, ftp_proxy).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_SETPROXY) )
+			return proxy->SetProxy(http_proxy, ftp_proxy).isValid();
+		else
+			return false;
+	}
 }
 
 void Daemon::suggestQuit() {

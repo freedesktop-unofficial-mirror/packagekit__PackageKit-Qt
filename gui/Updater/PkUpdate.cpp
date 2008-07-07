@@ -36,11 +36,11 @@ PkUpdate::PkUpdate( QWidget *parent ) : QWidget( parent )
     m_daemon = new Daemon(this);
 
     m_pkClient_updates = m_daemon->newTransaction();
-    connect( m_pkClient_updates, SIGNAL(GotPackage(Package *)), m_pkg_model_updates, SLOT(addPackage(Package *)) );
-    connect( m_pkClient_updates, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
-    connect( m_pkClient_updates, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
-    connect( m_pkClient_updates, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
-    connect( m_pkClient_updates, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+    connect( m_pkClient_updates, SIGNAL( GotPackage(Package *) ), m_pkg_model_updates, SLOT( addPackage(Package *) ) );
+//     connect( m_pkClient_updates, SIGNAL(Finished(Exit::Value, uint)), this, SLOT(Finished(Exit::Value, uint)) );
+//     connect( m_pkClient_updates, SIGNAL(Files(Package *, QStringList)), this, SLOT(Files(Package *, QStringList)) );
+//     connect( m_pkClient_updates, SIGNAL( Message(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
+//     connect( m_pkClient_updates, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( Message(const QString&, const QString&) ) );
     m_pkClient_updates->getUpdates("none");
 }
 
@@ -51,16 +51,23 @@ void PkUpdate::on_updatePB_clicked()
 
 void PkUpdate::on_refreshPB_clicked()
 {
-    qDebug() << "refresh";
     Transaction *m_trans = m_daemon->newTransaction();
-  /*  if (*/ m_trans->refreshCache(true);/* ) {*/
+    if ( m_trans->refreshCache(true) ) {
         PkTransaction *frm = new PkTransaction(m_trans, i18n("Refresh Cache"), this);
-        connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
+        connect( frm, SIGNAL( Finished(bool) ), this, SLOT( refreshCacheFinished(bool) ) );
         frm->show();
-//     }
-//     else
-//         KMessageBox::error( this, i18n("Authentication failed"), i18n("KPackageKit") );
+    }
+    else
+        KMessageBox::error( this, i18n("Authentication failed"), i18n("KPackageKit") );
+}
 
+void PkUpdate::refreshCacheFinished(bool error)
+{
+    if (!error) {
+        KConfig config("KPackageKit");
+        KConfigGroup checkUpdateGroup( &config, "CheckUpdate" );
+        checkUpdateGroup.writeEntry( "lastChecked", QDateTime::currentDateTime().toTime_t() );
+    }
 }
 
 void PkUpdate::on_historyPB_clicked()

@@ -21,9 +21,12 @@
 #ifndef PKSETTINGS_H
 #define PKSETTINGS_H
 
-#include <kconfigdialogmanager.h>
-// #include "PkConfigSkell.h"
+#include <KConfigDialogManager>
+#include <QPackageKit>
+
 #include "ui_PkSettings.h"
+
+using namespace PackageKit;
  
 class PkSettings : public QWidget, public Ui::PkSettings
 {
@@ -31,17 +34,18 @@ Q_OBJECT
 
 public:
     PkSettings( QWidget *parent=0 );
+
 public slots:
     void load();
     void save();
     void defaults();
     void checkChanges(int state);
+
 signals:
     void changed(bool state);
 
-// public:
-//     KConfigDialogManager *m_kcfDM;
-//     PkConfigSkell *m_pk_cfgSkell;
+private:
+    Daemon *m_daemon;
 };
 
 #endif

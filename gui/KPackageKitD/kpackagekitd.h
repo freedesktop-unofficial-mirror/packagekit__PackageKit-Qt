@@ -18,28 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KPACKAGEKIT_H
-#define KPACKAGEKIT_H
+#ifndef KPACKAGEKITD_H
+#define KPACKAGEKITD_H
 
 #include <KDEDModule>
 #include <KDirWatch>
 #include <QTimer>
+#include <QPackageKit>
 
-class KPackageKit : public KDEDModule
+using namespace PackageKit;
+
+class KPackageKitD : public KDEDModule
 {
 Q_OBJECT
 
 public:
-    KPackageKit(QObject *parent, const QList<QVariant>&);
-    ~KPackageKit();
+    KPackageKitD(QObject *parent, const QList<QVariant>&);
+    ~KPackageKitD();
+
 private:
     QTimer *m_qtimer;
     KDirWatch *m_confWatch;
+    Daemon *m_daemon;
+    Transaction *m_pkClient_updates;
+
 private slots:
     void init();
     void read();
     void write();
     void checkUpdates();
+    void Finished(Exit::Value, uint);
 };
 
 #endif

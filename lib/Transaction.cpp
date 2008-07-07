@@ -130,16 +130,19 @@ void Transaction::resolve(const QString &filter, Package *p) {
 }
 
 bool Transaction::installPackages(const QList<Package*> &packages) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_INSTALL)) {
-		renewTid();
-		QStringList pids;
-		for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-		proxy->InstallPackages(pids);
+	renewTid();
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	// hopefully do the operation first time
+	if ( proxy->InstallPackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_INSTALL) )
+			return proxy->InstallPackages(pids).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::installPackage(Package *p) {
@@ -149,64 +152,79 @@ bool Transaction::installPackage(Package *p) {
 }
 
 bool Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_INSTALLSIGNATURE)) {
-		renewTid();
-		proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id());
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_INSTALLSIGNATURE) )
+			return proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::updatePackages(const QList<Package*> &packages) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_UPDATEPACKAGE)) {
-		renewTid();
-		QStringList pids;
-		for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-		proxy->UpdatePackages(pids);
+	renewTid();
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	// hopefully do the operation first time
+	if ( proxy->UpdatePackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+			return proxy->UpdatePackages(pids).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::updatePackage(Package *p) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_UPDATEPACKAGE)) {
-		renewTid();
-		QStringList pids;
-		pids << p->id();
-		proxy->UpdatePackages(pids);
+	renewTid();
+	QStringList pids;
+	pids << p->id();
+	// hopefully do the operation first time
+	if ( proxy->UpdatePackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+			return proxy->UpdatePackages(pids).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::installFiles(const QStringList& files, bool trusted) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED))) {
-		renewTid();
-		proxy->InstallFiles(trusted, files);
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->InstallFiles(trusted, files).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED)) )
+			return proxy->InstallFiles(trusted, files).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_REMOVE)) {
-		renewTid();
-		QStringList pids;
-		for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-		proxy->RemovePackages(pids, allow_deps, autoremove);
+	renewTid();
+	QStringList pids;
+	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
+	// hopefully do the operation first time
+	if ( proxy->RemovePackages(pids, allow_deps, autoremove).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REMOVE) )
+			return proxy->RemovePackages(pids, allow_deps, autoremove).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
@@ -216,25 +234,31 @@ bool Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 }
 
 bool Transaction::updateSystem() {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_UPDATESYSTEM)) {
-		renewTid();
-		proxy->UpdateSystem();
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->UpdateSystem().isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATESYSTEM) )
+			return proxy->UpdateSystem().isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::rollback(const QString &tid) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_ROLLBACK)) {
-		renewTid();
-		proxy->Rollback(tid);
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->Rollback(tid).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_ROLLBACK) )
+			return proxy->Rollback(tid).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 void Transaction::getUpdates(const QString& filter) {
@@ -248,14 +272,17 @@ void Transaction::getUpdateDetail(const QString& package_id) {
 }
 
 bool Transaction::refreshCache(bool force) {
-	qDebug() << "Trying to get authorization...";
-// 	if (polkit->getAuth(AUTH_REFRESHCACHE)) {
-		renewTid();
-		proxy->RefreshCache(force);
-// 	}
-// 	else
-// 	    return false;
-	return true;
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->RefreshCache(force).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REFRESHCACHE) )
+			return proxy->RefreshCache(force).isValid();
+		else
+			return false;
+	}
 }
 
 void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
@@ -268,25 +295,31 @@ void Transaction::getRepoList(const QString &filter) {
 }
 
 bool Transaction::repoEnable(const QString &repo_id, bool enabled) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_REPOCHANGE)) {
-		renewTid();
-		proxy->RepoEnable(repo_id, enabled);
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->RepoEnable(repo_id, enabled).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+			return proxy->RepoEnable(repo_id, enabled).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_REPOCHANGE)) {
-		renewTid();
-		proxy->RepoSetData(repo_id, parameter, value);
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->RepoSetData(repo_id, parameter, value).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+			return proxy->RepoSetData(repo_id, parameter, value).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 bool Transaction::isCallerActive() {
@@ -300,14 +333,17 @@ void Transaction::getOldTransactions(uint number) {
 }
 
 bool Transaction::acceptEula(const QString &id) {
-	qDebug() << "Trying to get authorization...";
-	if (polkit->getAuth(AUTH_ACCEPTEULA)) {
-		renewTid();
-		proxy->AcceptEula(id);
+	renewTid();
+	// hopefully do the operation first time
+	if ( proxy->AcceptEula(id).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_ACCEPTEULA) )
+			return proxy->AcceptEula(id).isValid();
+		else
+			return false;
 	}
-	else
-	    return false;
-	return true;
 }
 
 // Signal callbacks
