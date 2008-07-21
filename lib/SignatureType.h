@@ -24,10 +24,11 @@ class SignatureType : public QObject {
 	Q_ENUMS(Value)
 
 public:
-	enum Value {
-		Gpg,
-		Unknown
-	};
+typedef enum {
+	Gpg,
+	Unknown
+} Value;
+
 };
 
 } // End namespace PackageKit

@@ -2,7 +2,6 @@
 ## install the cmake files
 
 file( GLOB cmakeFiles FindQPackageKit.cmake )
-# FIXME remove safely /usr/share
 set(module_install_dir ${CMAKE_ROOT}/Modules )
 
 install( FILES ${cmakeFiles} 

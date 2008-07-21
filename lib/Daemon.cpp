@@ -66,11 +66,17 @@ bool Daemon::getNetworkState() {
    return (state == "online");
 }
 
-void Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
-    qDebug() << "Trying to get authorization...";
-    if(!polkit->getAuth(AUTH_SETPROXY)) emit AuthRefused("Cannot get authorization to set proxy");;
-    qDebug() << "We're authentificated";
-	proxy->SetProxy(http_proxy, ftp_proxy);
+bool Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
+	// hopefully do the operation first time
+	if ( proxy->SetProxy(http_proxy, ftp_proxy).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_SETPROXY) )
+			return proxy->SetProxy(http_proxy, ftp_proxy).isValid();
+		else
+			return false;
+	}
 }
 
 void Daemon::suggestQuit() {
@@ -89,10 +95,7 @@ QString Daemon::getTid() {
 	return proxy->GetTid();
 }
 
-void Daemon::sendAuthRefused(const QString &message) {
-	emit AuthRefused(message);
-}
-
 void Daemon::NetworkStateChanged_cb(const QString &status) {
 	emit NetworkStateChanged((status == "online"));
 }
+

@@ -26,53 +26,34 @@
      </property>
      <layout class="QGridLayout" name="gridLayout" >
       <item row="0" column="0" >
-       <widget class="QLabel" name="label_2" >
+       <widget class="QLabel" name="intervalL" >
         <property name="text" >
          <string>Check for Updates:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2" >
-       <widget class="QComboBox" name="comboBox" >
+      <item row="0" column="1" colspan="2" >
+       <widget class="QComboBox" name="intervalCB" >
         <property name="currentIndex" >
-         <number>1</number>
+         <number>-1</number>
         </property>
-        <item>
-         <property name="text" >
-          <string>Hourly</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Daily</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Weekly</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Monthly</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>Never</string>
-         </property>
-        </item>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2" >
+      <item row="1" column="0" >
        <widget class="QLabel" name="label_3" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string>Automatically Install:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2" >
-       <widget class="QComboBox" name="comboBox_2" >
+      <item row="1" column="1" colspan="2" >
+       <widget class="QComboBox" name="autoCB" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <item>
          <property name="text" >
           <string>Security Only</string>
@@ -101,6 +82,9 @@
      <layout class="QGridLayout" name="gridLayout_2" >
       <item row="0" column="0" >
        <widget class="QCheckBox" name="notifyUpdatesCB" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string>Notify when updates are avaliable</string>
         </property>
@@ -114,6 +98,9 @@
       </item>
       <item row="1" column="0" >
        <widget class="QCheckBox" name="notifyLongTasksCB" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string>Notify when long tasks have been completed</string>
         </property>
@@ -127,6 +114,9 @@
    </item>
    <item row="2" column="0" >
     <widget class="KEditListBox" name="keditlistbox" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
      <property name="title" >
       <string>Packages Sources</string>
      </property>

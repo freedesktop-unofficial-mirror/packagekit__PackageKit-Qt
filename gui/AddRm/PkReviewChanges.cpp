@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   dantti85-pk@yahoo.com.br   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +22,7 @@
 #include <KDebug>
 
 #include "PkRequirements.h"
-#include "PkTransaction.h"
+#include "../Common/PkTransaction.h"
 #include "PkReviewChanges.h"
 
 #define UNIVERSAL_PADDING 6
@@ -105,6 +105,9 @@ void PkReviewChanges::checkTask()
 		m_waitPD->show();
 		m_transactionReq->getRequires("installed", m_reqDepPackages.takeFirst(), true);
 	    }
+	    else {
+	       removePackages();
+	    }
         }
 	else
 	    KMessageBox::error( this, i18n("Sorry, your backend does not support removing packages"), i18n("Erro KPackageKit") );
@@ -128,6 +131,9 @@ void PkReviewChanges::checkTask()
 		m_pbTimer->start(5);
 		m_waitPD->show();
 		m_transactionDep->getDepends("~installed", m_reqDepPackages.takeFirst(), true);
+	    }
+	    else {
+	        installPackages();
 	    }
         }
 	else
@@ -175,10 +181,13 @@ void PkReviewChanges::removePackages()
 {
     qDebug() << "removePackages";
     m_trans = m_daemon->newTransaction();
-    PkTransaction *frm = new PkTransaction(m_trans, i18n("Remove Packages"), this);
-    connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
-    m_trans->removePackages(m_remPackages);
-    frm->show();
+    if ( m_trans->removePackages(m_remPackages) ) {
+        PkTransaction *frm = new PkTransaction(m_trans, i18n("Remove Packages"), this);
+        connect( frm, SIGNAL( Finished(bool) ), this, SLOT( remFinished(bool) ) );
+        frm->show();
+    }
+    else
+        KMessageBox::error( this, i18n("Authentication failed"), i18n("KPackageKit") );
     qDebug() << "finished remove";
 }
 
@@ -217,10 +226,13 @@ void PkReviewChanges::installPackages()
 {
     qDebug() << "installPackages";
     m_trans = m_daemon->newTransaction();
-    PkTransaction *frm = new PkTransaction(m_trans, QString(i18n("Install Packages")), this);
-    connect( frm, SIGNAL( Finished(bool) ), this, SLOT( addFinished(bool) ) );
-    m_trans->installPackages(m_addPackages);
-    frm->show();
+    if ( m_trans->installPackages(m_addPackages) ) {
+        PkTransaction *frm = new PkTransaction(m_trans, QString(i18n("Install Packages")), this);
+        connect( frm, SIGNAL( Finished(bool) ), this, SLOT( addFinished(bool) ) );
+        frm->show();
+    }
+    else
+        KMessageBox::error( this, i18n("Authentication failed"), i18n("KPackageKit") );
     qDebug() << "finished install";
 }
 

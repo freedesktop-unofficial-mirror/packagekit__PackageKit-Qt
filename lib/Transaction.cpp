@@ -129,85 +129,136 @@ void Transaction::resolve(const QString &filter, Package *p) {
 	proxy->Resolve(filter, p->id());
 }
 
-void Transaction::installPackages(const QList<Package*> &packages) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_INSTALL)) parent->sendAuthRefused("Cannot get authorization to install packages");
-	qDebug() << "We're authentificated";
+bool Transaction::installPackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-	proxy->InstallPackages(pids);
+	// hopefully do the operation first time
+	if ( proxy->InstallPackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_INSTALL) )
+			return proxy->InstallPackages(pids).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::installPackage(Package *p) {
+bool Transaction::installPackage(Package *p) {
 	QList<Package*> packages;
 	packages << p;
-	installPackages(packages);
+	return installPackages(packages);
 }
 
-void Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_INSTALLSIGNATURE)) parent->sendAuthRefused("Cannot get authorization to install signature");
-	qDebug() << "We're authentificated";
+bool Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
 	renewTid();
-	proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id());
+	// hopefully do the operation first time
+	if ( proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_INSTALLSIGNATURE) )
+			return proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::updatePackages(const QList<Package*> &packages) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_UPDATEPACKAGE)) parent->sendAuthRefused("Cannot get authorization to update packages");
-	qDebug() << "We're authentificated";
+bool Transaction::updatePackages(const QList<Package*> &packages) {
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-	proxy->UpdatePackages(pids);
+	// hopefully do the operation first time
+	if ( proxy->UpdatePackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+			return proxy->UpdatePackages(pids).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::updatePackage(Package *p) {
+bool Transaction::updatePackage(Package *p) {
 	renewTid();
 	QStringList pids;
 	pids << p->id();
-	proxy->UpdatePackages(pids);
+	// hopefully do the operation first time
+	if ( proxy->UpdatePackages(pids).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+			return proxy->UpdatePackages(pids).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::installFiles(const QStringList& files, bool trusted) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED))) parent->sendAuthRefused("Cannot get authorization to install files");
-	qDebug() << "We're authentificated";
+bool Transaction::installFiles(const QStringList& files, bool trusted) {
 	renewTid();
-	proxy->InstallFiles(trusted, files);
+	// hopefully do the operation first time
+	if ( proxy->InstallFiles(trusted, files).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED)) )
+			return proxy->InstallFiles(trusted, files).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_REMOVE)) parent->sendAuthRefused("Cannot get authorization to remove packages");
-	qDebug() << "We're authentificated";
+bool Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
 	renewTid();
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
-	proxy->RemovePackages(pids, allow_deps, autoremove);
+	// hopefully do the operation first time
+	if ( proxy->RemovePackages(pids, allow_deps, autoremove).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REMOVE) )
+			return proxy->RemovePackages(pids, allow_deps, autoremove).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
+bool Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 	QList<Package*> packages;
 	packages << p;
-	removePackages(packages, allow_deps, autoremove);
+	return removePackages(packages, allow_deps, autoremove);
 }
 
-void Transaction::updateSystem() {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_UPDATESYSTEM)) parent->sendAuthRefused("Cannot get authorization to update system");
-	qDebug() << "We're authentificated";
+bool Transaction::updateSystem() {
 	renewTid();
-	proxy->UpdateSystem();
+	// hopefully do the operation first time
+	if ( proxy->UpdateSystem().isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_UPDATESYSTEM) )
+			return proxy->UpdateSystem().isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::rollback(const QString &tid) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_ROLLBACK)) parent->sendAuthRefused("Cannot get authorization to rollback a transaction");
-	qDebug() << "We're authentificated";
+bool Transaction::rollback(const QString &tid) {
 	renewTid();
-	proxy->Rollback(tid);
+	// hopefully do the operation first time
+	if ( proxy->Rollback(tid).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_ROLLBACK) )
+			return proxy->Rollback(tid).isValid();
+		else
+			return false;
+	}
 }
 
 void Transaction::getUpdates(const QString& filter) {
@@ -220,12 +271,18 @@ void Transaction::getUpdateDetail(const QString& package_id) {
 	proxy->GetUpdateDetail(package_id);
 }
 
-void Transaction::refreshCache(bool force) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_REFRESHCACHE)) parent->sendAuthRefused("Cannot get authorization to refresh cache");
-	qDebug() << "We're authentificated";
+bool Transaction::refreshCache(bool force) {
 	renewTid();
-	proxy->RefreshCache(force);
+	// hopefully do the operation first time
+	if ( proxy->RefreshCache(force).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REFRESHCACHE) )
+			return proxy->RefreshCache(force).isValid();
+		else
+			return false;
+	}
 }
 
 void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elapsed, uint &remaining) {
@@ -237,20 +294,32 @@ void Transaction::getRepoList(const QString &filter) {
 	proxy->GetRepoList(filter);
 }
 
-void Transaction::repoEnable(const QString &repo_id, bool enabled) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_REPOCHANGE)) parent->sendAuthRefused("Cannot get authorization to change a repository");
-	qDebug() << "We're authentificated";
+bool Transaction::repoEnable(const QString &repo_id, bool enabled) {
 	renewTid();
-	proxy->RepoEnable(repo_id, enabled);
+	// hopefully do the operation first time
+	if ( proxy->RepoEnable(repo_id, enabled).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+			return proxy->RepoEnable(repo_id, enabled).isValid();
+		else
+			return false;
+	}
 }
 
-void Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_REPOCHANGE)) parent->sendAuthRefused("Cannot get authorization to change a repository");
-	qDebug() << "We're authentificated";
+bool Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
 	renewTid();
-	proxy->RepoSetData(repo_id, parameter, value);
+	// hopefully do the operation first time
+	if ( proxy->RepoSetData(repo_id, parameter, value).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+			return proxy->RepoSetData(repo_id, parameter, value).isValid();
+		else
+			return false;
+	}
 }
 
 bool Transaction::isCallerActive() {
@@ -263,12 +332,18 @@ void Transaction::getOldTransactions(uint number) {
 	proxy->GetOldTransactions(number);
 }
 
-void Transaction::acceptEula(const QString &id) {
-	qDebug() << "Trying to get authorization...";
-	if(!polkit->getAuth(AUTH_ACCEPTEULA)) parent->sendAuthRefused("Cannot get authorization to accept an EULA");
-	qDebug() << "We're authentificated";
+bool Transaction::acceptEula(const QString &id) {
 	renewTid();
-	proxy->AcceptEula(id);
+	// hopefully do the operation first time
+	if ( proxy->AcceptEula(id).isValid() )
+		return true;
+	else {
+		// ok no lucky...
+		if ( polkit->getAuth(AUTH_ACCEPTEULA) )
+			return proxy->AcceptEula(id).isValid();
+		else
+			return false;
+	}
 }
 
 // Signal callbacks

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Daniel Nicoletti   *
- *   mirttex85-pk@yahoo.com.br   *
+ *   dantti85-pk@yahoo.com.br   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,7 +33,7 @@ PkTransaction::PkTransaction( Transaction *trans, QString caption, QWidget *pare
     connect( m_trans, SIGNAL( GotPackage(Package *) ), this, SLOT( currPackage(Package *) ) );
     connect( m_trans, SIGNAL( Finished(Exit::Value, uint) ), this, SLOT( Finished(Exit::Value, uint) ) );
     connect( m_trans, SIGNAL( AllowCancel(bool) ), this, SLOT( enableButtonCancel(bool) ) );
-    connect( m_trans, SIGNAL( ErrorCode(const QString&, const QString&) ), this, SLOT( ErrorCode(const QString&, const QString&) ) );
+    connect( m_trans, SIGNAL( ErrorCode(Error::Value, const QString&) ), this, SLOT( ErrorCode(Error::Value, const QString&) ) );
     connect( m_trans, SIGNAL( ProgressChanged(uint, uint, uint, uint) ), this, SLOT( ProgressChanged(uint, uint, uint, uint) ) );
     connect( m_trans, SIGNAL( StatusChanged(Status::Value) ), this, SLOT( StatusChanged(Status::Value) ) );
     
