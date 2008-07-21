@@ -53,7 +53,9 @@ set_target_properties( packagekit-qt PROPERTIES VERSION 0.1 SOVERSION 0 )
 
 target_link_libraries(packagekit-qt
   ${QT_QTCORE_LIBRARY}
+  ${QT_QTDBUS_LIBRARY}
   polkit-dbus
+  dbus-1
 )
 
 install(TARGETS
