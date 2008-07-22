@@ -1,0 +1,11 @@
+[Global]
+IconName=applications-other
+Comment=KPackageKit
+
+[Event/ShowUpdates]
+Name=New updates avaliable
+Action=Sound|Popup
+
+[Event/AutoInstallingUpdates]
+Name=Updates are being installed
+Action=Sound|Popup

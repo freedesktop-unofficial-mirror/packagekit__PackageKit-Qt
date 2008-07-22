@@ -60,10 +60,10 @@ void PkSettings::checkChanges(int)
     KConfigGroup smartIconGroup( &config, "SmartIcon" );
     KConfigGroup checkUpdateGroup( &config, "CheckUpdate" );
     if ( notifyUpdatesCB->checkState() !=
-         (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdatesCB", (int) Qt::Checked)
+         (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdates", (int) Qt::Checked)
         ||
          notifyLongTasksCB->checkState() !=
-         (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasksCB", (int) Qt::Checked)
+         (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasks", (int) Qt::Checked)
 	||
 	 intervalCB->itemData( intervalCB->currentIndex() ).toUInt() !=
 	 (uint) checkUpdateGroup.readEntry( "interval", DAILY ) )
@@ -76,9 +76,9 @@ void PkSettings::load()
 {
     KConfig config("KPackageKit");
     KConfigGroup smartIconGroup( &config, "SmartIcon" );
-    notifyUpdatesCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdatesCB",
+    notifyUpdatesCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyUpdates",
         (int) Qt::Checked) );
-    notifyLongTasksCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasksCB",
+    notifyLongTasksCB->setCheckState( (Qt::CheckState) smartIconGroup.readEntry( "notifyLongTasks",
         (int) Qt::Checked) );
     KConfigGroup checkUpdateGroup( &config, "CheckUpdate" );
     uint interval = checkUpdateGroup.readEntry( "interval", DAILY );
@@ -96,8 +96,8 @@ void PkSettings::save()
 {
     KConfig config("KPackageKit");
     KConfigGroup smartIconGroup( &config, "SmartIcon" );
-    smartIconGroup.writeEntry( "notifyUpdatesCB", (int) notifyUpdatesCB->checkState() );
-    smartIconGroup.writeEntry( "notifyLongTasksCB", (int) notifyLongTasksCB->checkState() );
+    smartIconGroup.writeEntry( "notifyUpdates", (int) notifyUpdatesCB->checkState() );
+    smartIconGroup.writeEntry( "notifyLongTasks", (int) notifyLongTasksCB->checkState() );
     KConfigGroup checkUpdateGroup( &config, "CheckUpdate" );
     checkUpdateGroup.writeEntry( "interval", intervalCB->itemData( intervalCB->currentIndex() ).toUInt() );
 }
