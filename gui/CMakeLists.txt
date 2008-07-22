@@ -13,5 +13,6 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${
 add_subdirectory( AddRm )
 add_subdirectory( Settings )
 add_subdirectory( Updater )
+add_subdirectory( KPackageKit )
 add_subdirectory( KPackageKitD )
 add_subdirectory( Desktop )
