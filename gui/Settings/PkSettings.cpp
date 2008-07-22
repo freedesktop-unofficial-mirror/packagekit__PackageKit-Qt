@@ -32,17 +32,17 @@
 PkSettings::PkSettings( QWidget *parent ) : QWidget( parent )
 {
     setupUi( this );
-    
+
     // Create a new daemon
     m_daemon = new Daemon(this);
-    
+
     uint actions = m_daemon->getActions();
 
     if ( !(actions & Actions::Refresh_cache) ) {
         intervalL->setEnabled(false);
 	intervalCB->setEnabled(false);
     }
-    
+
     intervalCB->addItem(i18n("Hourly"), HOURLY );
     intervalCB->addItem(i18n("Daily"), DAILY );
     intervalCB->addItem(i18n("Weekly"), WEEKLY );

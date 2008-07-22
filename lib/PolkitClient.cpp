@@ -16,7 +16,7 @@ bool PolkitClient::getAuth(const QString &action) {
 	if(!auth) {
 		qDebug() << "Authentification error :" << e.name << ":" << e.message;
 	}
-    
+
 	return auth;
 }
 

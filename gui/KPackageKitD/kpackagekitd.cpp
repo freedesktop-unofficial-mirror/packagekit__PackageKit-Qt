@@ -64,9 +64,9 @@ void KPackageKitD::init()
     m_pkClient_updates = m_daemon->newTransaction();
 //     connect( m_pkClient_updates, SIGNAL(GotPackage(Package *)), m_pkg_model_updates, SLOT(addPackage(Package *)) );
     connect( m_pkClient_updates, SIGNAL( Finished(Exit::Value, uint)), this, SLOT( Finished(Exit::Value, uint) ) );
-    
+
     read();
-    
+
     //check if any changes to the file occour
     //this also prevents from reading when a checkUpdate happens
     m_confWatch = new KDirWatch(this);
