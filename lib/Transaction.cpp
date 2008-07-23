@@ -349,7 +349,7 @@ bool Transaction::acceptEula(const QString &id) {
 // Signal callbacks
 
 void Transaction::Package_cb(const QString &info, const QString &package_id, const QString &summary) {
-	emit GotPackage(new Package(package_id, info, summary, this));
+	emit GotPackage(new Package(package_id, (Info::Value)EnumFromString<Info>(info), summary, this));
 }
 
 void Transaction::Details_cb(const QString &package_id, const QString &license, const QString &group, const QString &detail, const QString &url, qulonglong size) {

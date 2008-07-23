@@ -28,8 +28,8 @@ typedef enum {
 	Success,
 	Failed,
 	Cancelled,
-	KeyRequired,
-	EulaRequired,
+	Key_required,
+	Eula_required,
 	Kill,
 	Unknown
 } Value;

@@ -50,24 +50,24 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             return item->name();
         case Qt::DecorationRole:
-	    if ( p->info() == "available" || p->info() == "installed" )
+	    if ( p->info() == Info::Available || p->info() == Info::Installed )
 	        if ( p->data() == "debian" )
 	            return m_iconDeb;
 	        else if ( p->data() == "fedora" )
 	            return m_iconRpm;
 	        else
 	            return m_iconGeneric;
-            else if ( p->info() == "bugfix" )
+            else if ( p->info() == Info::Bugfix )
 	        return m_iconBugFix;
-	    else if ( p->info() == "security-important" )
+	    else if ( p->info() == Info::Important )
 	        return m_iconImportant;
-	    else if ( p->info() == "security-low" )
+	    else if ( p->info() == Info::Low )
 	        return m_iconLow;
-	    else if ( p->info() == "enhancement" )
+	    else if ( p->info() == Info::Enhancement )
 	        return m_iconEnhancement;
-	    else if ( p->info() == "security" )
+	    else if ( p->info() == Info::Security )
 	        return m_iconSecurity;
-	    else if ( p->info() == "normal" )
+	    else if ( p->info() == Info::Normal )
 	        return m_iconNormal;
 	    else
 	        return m_iconGeneric;
@@ -76,7 +76,7 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
             return p->summary();
 
         case InstalledRole:
-	    if ( p->info() == "available" )
+	    if ( p->info() == Info::Available )
 	        return false;
             else
 	        return true;

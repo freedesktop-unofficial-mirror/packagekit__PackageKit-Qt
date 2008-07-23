@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "pkg_item.h"
+#include "../Common/PkStrings.h"
 
 #include <QStringList>
 
 PackageItem::PackageItem(Package *pkg, PackageItem *parent)
- : parentItem(parent), m_pkg(pkg)
+ : m_pkg(pkg), parentItem(parent)
 {
 }
 
@@ -35,7 +36,7 @@ QString PackageItem::name()
 {
     if (parentItem)
         if ( m_pkg->name().isEmpty() )
-            return QString::number( childCount() ) + " " + m_pkg->info();
+            return PkStrings::InfoUpdate( m_pkg->info(), m_pkg->info() );
         else
             return m_pkg->name() + " - " + m_pkg->version() + " (" + m_pkg->arch() + ")";
     else

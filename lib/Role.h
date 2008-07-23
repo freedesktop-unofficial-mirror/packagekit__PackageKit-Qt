@@ -48,6 +48,9 @@ typedef enum {
 	Repo_enable,
 	Repo_set_data,
 	Service_pack,
+	What_provides,
+	Accept_eula,
+	Download_packages,
 	Unknown
 } Value;
 

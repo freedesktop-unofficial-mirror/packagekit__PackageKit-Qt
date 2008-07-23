@@ -22,7 +22,7 @@ Package::Package(const QString& packageId, QObject *parent) : QObject(parent) {
 	_data = tokens.at(3);
 }
 
-Package::Package(const QString& packageId, const QString& info, const QString& summary, QObject *parent)
+Package::Package(const QString& packageId, const Info::Value& info, const QString& summary, QObject *parent)
 															: QObject(parent), _info(info), _summary(summary) {
 	QStringList tokens = packageId.split(';');
 	if(tokens.size() != 4) qWarning("Package : bad package id");
@@ -52,7 +52,7 @@ const QString& Package::data() {
 	return _data;
 }
 
-const QString& Package::info() {
+const Info::Value& Package::info() {
 	return _info;
 }
 

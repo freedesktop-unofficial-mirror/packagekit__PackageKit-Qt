@@ -35,7 +35,7 @@ public:
         };
 
 private:
-    QHash<QString, PackageItem*> packages;
+    QHash<Info::Value, PackageItem*> packages;
     PackageItem *rootItem;
     KIcon m_iconDeb; 
     KIcon m_iconRpm;

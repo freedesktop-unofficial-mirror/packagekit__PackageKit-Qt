@@ -41,6 +41,8 @@ public:
     static QString StatusChanged(Status::Value v);
     static QString Groups(Groups::Value v);
     static KIcon GroupsIcon(Groups::Value v);
+    static QString Info(Info::Value v);
+    static QString InfoUpdate(Info::Value v, int number);
 };
 
 #endif

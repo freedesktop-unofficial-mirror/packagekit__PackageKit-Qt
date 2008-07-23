@@ -14,6 +14,8 @@
 
 #include <QtCore>
 
+#include "Info.h"
+
 namespace PackageKit {
 
 class Package : public QObject {
@@ -22,19 +24,20 @@ class Package : public QObject {
 
 public:
 	Package(const QString& packageId, QObject *parent = 0);
-	Package(const QString& packageId, const QString& info, const QString& summary, QObject *parent = 0);
+	Package(const QString& packageId, const Info::Value& info, const QString& summary, QObject *parent = 0);
 	const QString id();
 	const QString& name();
 	const QString& version();
 	const QString& arch();
 	const QString& data();
-	const QString& info();
+	const Info::Value& info();
 	const QString& summary();
 
 	bool operator==(const Package &other) const;
 
 private:
-	QString _name, _version, _arch, _data, _info, _summary;
+	QString _name, _version, _arch, _data, _summary;
+	Info::Value _info;
 };
 
 }

@@ -20,7 +20,7 @@
 
 #include <KLocale>
 
-#include <KMessageBox>
+#include <KDebug>
 
 #include "PkStrings.h"
 
@@ -413,24 +413,54 @@ KIcon PkStrings::GroupsIcon(Groups::Value v)
     }
 }
 
-// void PkTransaction::Finished(Exit::Value status, uint /*runtime*/)
-// {
-//     qDebug() << "trans finished: " << status ;
-//     switch(status) {
-//         case Exit::Success :
-// 	    qDebug() << "trans succes: ";
-// 	    break;
-// 	case Exit::Failed :
-// 	    qDebug() << "trans failed: ";
-//             m_notifyT.start(50);
-// 	    break;
-// 	case Exit::Kill :
-//             qDebug() << "trans quit: ";
-//             break;
-// 	case Exit::Unknown :
-//             qDebug() << "trans quit: ";
-//             break;
-//     }
-// }
+QString PkStrings::Info(Info::Value v)
+{
+    switch (v) {
+        case Info::Low :
+	    return i18n("Trivial update");
+        case Info::Normal :
+	    return i18n("Update");
+        case Info::Important :
+	    return i18n("Important update");
+        case Info::Security :
+	    return i18n("Security update");
+        case Info::Bugfix :
+	    return i18n("Bug fix update");
+        case Info::Enhancement :
+	    return i18n("Enhancement update");
+        case Info::Blocked :
+	    return i18n("Blocked update");
+        case Info::Installed :
+	    return i18n("Installed");
+        case Info::Available :
+	    return i18n("Available");
+        case Info::Unknown :
+	    return i18n("Unknown update");
+        default :
+	    kDebug() << "info unrecognised: " << v;
+	    return QString();
+    }
+}
+
+QString PkStrings::InfoUpdate(Info::Value v, int number)
+{
+    switch (v) {
+        case Info::Low :
+	    return i18np("1 trivial update", "%1 trivial updates", number);
+        case Info::Normal :
+	    return i18np("1 update", "%1 updates", number);
+        case Info::Important :
+	    return i18np("1 important update", "%1 important updates", number);
+        case Info::Security :
+	    return i18np("1 security update", "%1 security updates", number);
+        case Info::Bugfix :
+	    return i18np("1 bug fix update", "%1 bug fix updates", number);
+        case Info::Enhancement :
+	    return i18np("1 enhancement update", "%1 enhancement updates", number);
+        default :
+	    kDebug() << "update info unrecognised: " << v;
+	    return i18np("1 unknown update", "%1 unknown updates", number);
+    }
+}
 
 #include "PkStrings.moc"

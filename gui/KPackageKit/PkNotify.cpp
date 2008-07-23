@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "PkNotify.h"
+#include "../Common/PkStrings.h" 
+
 #include <KMessageBox>
 #include <KLocale>
 #include <KIcon>
@@ -83,69 +85,35 @@ void PkNotify::UpdatesFinished(Exit::Value status, uint /*runtime*/)
 	    updatesNotification = new KNotification( "ShowUpdates" );
 	    // here we check if they are too many
 	    // i think 5 is the maximun number to show them detailed
-// 	    if ( packages.size() <= 5 ) {
-// 	        QString text;
-// 		text.append( i18np("<b>You have one update:", "<br>You have %1 updates:</b>", packages.size() ) );
-// 		for ( int i = 0; i < packages.size(); i++) {
-// 		    text.append( "<br><b>" + packages.at(i)->name() + "</b> - " + packages.at(i)->summary() );
-// 		}
-// 		updatesNotification->setText(text);
-// 	    }
-// 	    else {
+	    if ( packages.size() <= 5 ) {
+	        QString text;
+		text.append( i18np("<b>You have one update:", "<br>You have %1 updates:</b>", packages.size() ) );
+		for ( int i = 0; i < packages.size(); i++) {
+		    text.append( "<br><b>" + packages.at(i)->name() + "</b> - " + packages.at(i)->summary() );
+		}
+		updatesNotification->setText(text);
+	    }
+	    else {
 	        QString text;
 		text.append( i18n("<b>You have %1 updates:</b>", packages.size() ) );
-		
-		QHash<QString, int> info;
-		
-// 		
-    
-		/*for ( int i = 0; i < packages.size(); i++) {
-		    if ( p->info() == "available" || p->info() == "installed" )
-			if ( p->data() == "debian" )
-			    return m_iconDeb;
-			else if ( p->data() == "fedora" )
-			    return m_iconRpm;
-			else
-			    return m_iconGeneric;
-		    else if ( p->info() == "bugfix" )
-			return m_iconBugFix;
-		    else if ( p->info() == "security-important" )
-			return m_iconImportant;
-		    else if ( p->info() == "security-low" )
-			return m_iconLow;
-		    else if ( p->info() == "enhancement" )
-			return m_iconEnhancement;
-		    else if ( p->info() == "security" )
-			return m_iconSecurity;
-		    else if ( p->info() == "normal" )
-			return m_iconNormal;
-		    else
-			 return m_iconGeneric;
-			 
-		*/    
-		
-		
+
+		QHash<Info::Value, int> info;
 		for ( int i = 0; i < packages.size(); i++) {
 		    info[ packages.at(i)->info() ] = ++info[ packages.at(i)->info() ];
 		}
-		// if we have only one kind of update don't show total of updates
-		if ( info ) {
-		    text.append( i18n("<b>You have %1 %1 updates:</b>", packages.size() ) );
+
+		QHashIterator<Info::Value, int> i(info);
+		while (i.hasNext()) {
+		    i.next();
+		    text.append( "<br>" + PkStrings::InfoUpdate( i.key(), i.value() ) );
 		}
-		else {
-		    QHashIterator<QString, int> i(hash);
-		    while (i.hasNext()) {
-			i.next();
-			cout << i.key() << ": " << i.value() << endl;
-		    }
-		}
+
 		updatesNotification->setText(text);
-		kDebug() << info;
-// 	    }
+	    }
 	    KIcon icon("security-high");
 	    updatesNotification->setPixmap( icon.pixmap( QSize(128,128) ) );
-	    QStringList actions( i18n("Update Now") );
-	    actions << i18n("Not Now");
+	    QStringList actions( i18n("Update") );
+	    actions << i18n("Not now");
 	    actions << i18n("Don't ask anymore");
 	    updatesNotification->setActions(actions);
 	    //TODO close the notifications !! memoryleak

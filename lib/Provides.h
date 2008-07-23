@@ -29,6 +29,7 @@ public:
 		Modalias,
 		Codec,
 		Mimetype,
+		Font,
 		Unknown
 	};
 };

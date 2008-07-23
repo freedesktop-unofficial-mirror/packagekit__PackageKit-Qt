@@ -30,11 +30,11 @@ set( PK_LIB_SRCS
 
 set( PK_SRCS
 	CentralProxy.h
+	TransactionProxy.h
 	Daemon.h
+	Transaction.h
 	Package.h
 	PolkitClient.h
-	Transaction.h
-	TransactionProxy.h
 	Error.h
 	Exit.h
 	Actions.h
@@ -44,6 +44,7 @@ set( PK_SRCS
 	SignatureType.h
 	Status.h
 	Groups.h
+	Info.h
 )
 
 QT4_WRAP_CPP( Pk_MOC_SRCS ${PK_SRCS} )
@@ -80,6 +81,7 @@ install(FILES
 	SignatureType.h
 	Status.h
 	Groups.h
+	Info.h
 	QPackageKit
 	DESTINATION
 	include/packagekit-qt)

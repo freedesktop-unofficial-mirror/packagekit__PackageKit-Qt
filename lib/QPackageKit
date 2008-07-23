@@ -15,5 +15,6 @@
 #include "SignatureType.h"
 #include "Status.h"
 #include "Groups.h"
+#include "Info.h"
 
 #endif

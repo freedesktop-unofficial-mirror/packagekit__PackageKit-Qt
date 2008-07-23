@@ -70,13 +70,13 @@ void PkReviewChanges::doAction()
 
     // check what packages are installed and marked to be removed
     for (int i = 0; i < m_pkgModelMain->packagesChanges().size(); ++i) {
-        if ( m_pkgModelMain->packagesChanges().at(i)->info() == "installed" )
+        if ( m_pkgModelMain->packagesChanges().at(i)->info() == Info::Installed )
             m_remPackages << m_pkgModelMain->packagesChanges().takeAt(i);
     }
 
     // check what packages are avaliable and marked to be installed
     for (int i = 0; i < m_pkgModelMain->packagesChanges().size(); ++i) {
-        if ( m_pkgModelMain->packagesChanges().at(i)->info() == "available" )
+        if ( m_pkgModelMain->packagesChanges().at(i)->info() == Info::Available )
             m_addPackages << m_pkgModelMain->packagesChanges().takeAt(i);
     }
 

@@ -51,7 +51,7 @@ QVariant PkAddRmModel::data(const QModelIndex &index, int role) const
             return p->summary();
 
         case InstalledRole:
-	    if ( p->info() == "available" )
+	    if ( p->info() == Info::Available )
 	        return false;
             else
 	        return true;

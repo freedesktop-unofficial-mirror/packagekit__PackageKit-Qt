@@ -4,6 +4,7 @@ set(kpackagekit_SRCS
     main.cpp
     kpk.cpp
     PkNotify.cpp
+    ../Common/PkStrings.cpp
 )
 
 kde4_add_executable(kpackagekit ${kpackagekit_SRCS})

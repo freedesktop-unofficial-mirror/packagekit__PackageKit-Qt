@@ -42,6 +42,13 @@ public:
 		Request,
 		Finished,
 		Cancel,
+		Download_repository,
+		Download_package,
+		Download_filelist,
+		Download_changelog,
+		Download_group,
+		Download_updateinfo,
+		Repackaging,
 		Unknown
 	};
 };

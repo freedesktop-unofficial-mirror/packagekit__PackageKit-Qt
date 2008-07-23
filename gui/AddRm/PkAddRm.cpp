@@ -315,14 +315,14 @@ void PkAddRm::Finished(Exit::Value status, uint runtime)
             notifyL->setAutoFillBackground(true);
             m_notifyT.start(100);
             break;
-	case Exit::KeyRequired :
+	case Exit::Key_required :
             notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
             teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
             notifyL->setPalette(teste);
             notifyL->setAutoFillBackground(true);
             m_notifyT.start(100);
             break;
-	case Exit::EulaRequired :
+	case Exit::Eula_required :
             notifyL->setText("Search finished in " + KGlobal::locale()->formatDuration(runtime) );
             teste.setColor( QPalette::Normal, QPalette::Window, QColor(0,255,0,150));
             notifyL->setPalette(teste);
