@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 	KCmdLineArgs::init(argc, argv, &about);
 
 	KCmdLineOptions options;
-	options.add( "+[Url]", ki18n("Document to open") );
-	options.add( "silent", ki18n("Silently open torrent given on URL") );
+	options.add( "find-file <file>", ki18n("Finds the Package Containing the file") );
+	options.add( "smart-icon", ki18n("Shows the Smart Icon Transactions") );
 	options.add( "show-updates", ki18n("Displays Updates") );
 	KCmdLineArgs::addCmdLineOptions(options);
 	

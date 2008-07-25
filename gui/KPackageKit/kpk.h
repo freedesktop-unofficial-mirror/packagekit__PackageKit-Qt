@@ -22,6 +22,8 @@
 #include <KUniqueApplication>
 #include <ksystemtrayicon.h>
 
+#include "PkNotify.h"
+
 namespace kpackagekit {
 
 class Kpk : public KUniqueApplication
@@ -35,6 +37,7 @@ public:
     virtual int newInstance();
 private:
     KSystemTrayIcon *m_smartSTI;
+    PkNotify *m_pkNotify;
 };
 
 }

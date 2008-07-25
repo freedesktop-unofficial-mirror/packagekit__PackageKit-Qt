@@ -26,14 +26,14 @@
 #include <QStringList>
 
 #include "kpk.h"
-#include "PkNotify.h"
 
 namespace kpackagekit {
 
-Kpk::Kpk() : KUniqueApplication()
+Kpk::Kpk()
+ : KUniqueApplication(), m_pkNotify(0)
 {
-kDebug() << "abriu";
-m_smartSTI = new KSystemTrayIcon("applications-other");
+    kDebug() << "abriu";
+    m_smartSTI = new KSystemTrayIcon("applications-other");
 }
 
 Kpk::~Kpk()
@@ -42,44 +42,22 @@ Kpk::~Kpk()
 
 int Kpk::newInstance()
 {
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();		
-//     kt::GUI *widget = 0; 
-//     if (!main_widget)
-//     {
-//         bt::InitLog(kt::DataDir() + "log",true);
-// 	setQuitOnLastWindowClosed(false);
-// 	widget = new kt::GUI();
-// 	setTopWidget(widget);
-// 	main_widget = widget;
-//     }
-//     else
-//     {
-// 	widget = main_widget;
-// 	widget->show();
-//     }
-// 
-//     if (widget)
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-//     {
-
-// KNotify no;
-// QStringList a;
-// a << "one" << "two";
-	for (int i = 0; i < args->count(); i++)
-	{
-		if ( args->isSet("silent") )
-			kDebug() << "Hello";
-		else if ( args->isSet("show-updates") ) {
-		    kDebug() << "Hi mostra!";
-		    PkNotify *a = new PkNotify(this);
-		    a->displayUpdates();
-		}
-		else {
-// 		    kDebug() << "Hi something!";
-		}
-		
-	}
-//     }
+    if ( args->isSet("smart-icon") ) {
+	kDebug() << "smart-icon";
+	m_smartSTI->show();
+    }
+    if ( args->isSet("show-updates") ) {
+	kDebug() << "Show Updates!";
+	if (!m_pkNotify)
+	    m_pkNotify = new PkNotify(this);
+	m_pkNotify->displayUpdates();
+    }
+    if ( args->isSet("find-file") ) {
+	kDebug() << "Hello";
+	kDebug() << args->getOption("find-file");
+    }
     args->clear();
     return 0;
 }
