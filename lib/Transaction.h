@@ -115,7 +115,7 @@ private:
 	Daemon *parent;
 	QString _tid;
 	// Get a new TID if needed
-	void renewTid();
+	bool renewTid();
 
 	PolkitClient *polkit;
 

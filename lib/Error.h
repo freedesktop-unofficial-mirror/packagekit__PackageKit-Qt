@@ -46,7 +46,7 @@ typedef enum {
 	Repo_not_found,
 	Cannot_remove_system_package,
 	Process_kill,
-	Failed_initialization,
+	Failed_initialization, // Emitted when renewTid fails
 	Failed_finalise,
 	Failed_config_parsing,
 	Cannot_cancel,

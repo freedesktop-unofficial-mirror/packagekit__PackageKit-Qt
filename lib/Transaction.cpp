@@ -26,12 +26,15 @@ Transaction::Transaction(Daemon *parent) : QObject(parent), parent(parent) {
 Transaction::~Transaction() {
 }
 
-void Transaction::renewTid() {
-	if(_tid != QString()) return;
+bool Transaction::renewTid() {
+	if(_tid != QString()) return true;
 	_tid = parent->getTid() ;
 	proxy = new TransactionProxy(PK_NAME, (_tid).toAscii().data() , QDBusConnection::systemBus(), this);
 	qDebug() << "trying to create new transaction with path" << (_tid).toAscii().data();
-	if(!proxy->isValid()) qFatal("Error, cannot create transaction");
+	if(!proxy->isValid()) {
+		emit ErrorCode(Error::Failed_initialization, QString("Failed to get a tid"));
+		return false;
+	}
 
 	connect(proxy, SIGNAL(Package(const QString&, const QString&, const QString&)), this, SLOT(Package_cb(const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(Details(const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)), this, SLOT(Details_cb(const QString&, const QString&, const QString&, const QString&, const QString&, qulonglong)));
@@ -49,10 +52,11 @@ void Transaction::renewTid() {
 	connect(proxy, SIGNAL(EulaRequired(const QString&, const QString&, const QString&, const QString&)), SLOT(EulaRequired_cb(const QString&, const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(RepoSignatureRequired(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)), this, SLOT(RepoSignatureRequired_cb(const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&, const QString&)));
 	connect(proxy, SIGNAL(CallerActiveChanged(bool)), this, SIGNAL(CallerActiveChanged(bool)));
+	return true;
 }
 
 bool Transaction::allowCancel() {
-	renewTid();
+	if(!renewTid()) return false;
 	return proxy->GetAllowCancel();
 }
 
@@ -62,7 +66,7 @@ void Transaction::cancel() {
 }
 
 Role::Value Transaction::getRole(Package *p) {
-	renewTid();
+	if(!renewTid()) return Role::Unknown;
 	QString pid;
 	Role::Value role = (Role::Value)EnumFromString<Role>(proxy->GetRole(pid));
 	if(p != NULL) p = new Package(pid);
@@ -70,67 +74,67 @@ Role::Value Transaction::getRole(Package *p) {
 }
 
 Status::Value Transaction::getStatus() {
-	renewTid();
+	if(!renewTid()) return Status::Unknown;
 	return (Status::Value)EnumFromString<Status>(proxy->GetStatus());
 }
 
 void Transaction::searchName(const QString& filter, const QString& name) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->SearchName(filter, name);
 }
 
 void Transaction::searchDetails(const QString &filter, const QString& search) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->SearchDetails(filter, search);
 }
 
 void Transaction::searchGroup(const QString &filter, const Groups::Value &group) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->SearchGroup(filter, EnumToString<Groups>(group));
 }
 
 void Transaction::searchFile(const QString &filter, const QString& file) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->SearchFile(filter, file);
 }
 
 void Transaction::getPackages(const QString& filter) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetPackages(filter);
 }
 
 void Transaction::getDetails(Package *p) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetDetails(p->id());
 }
 
 void Transaction::getFiles(Package *p) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetFiles(p->id());
 }
 
 void Transaction::getDepends (const QString& filter, Package *p, bool recursive) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetDepends(filter, p->id(), recursive);
 }
 
 void Transaction::getRequires ( const QString& filter, Package *p, bool recursive) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetRequires(filter, p->id(), recursive);
 }
 
 void Transaction::whatProvides(const QString &filter, const Provides::Value &type, const QString& search) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->WhatProvides(filter, EnumToString<Provides>(type), search);
 }
 
 void Transaction::resolve(const QString &filter, Package *p) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->Resolve(filter, p->id());
 }
 
 bool Transaction::installPackages(const QList<Package*> &packages) {
-	renewTid();
+	if(!renewTid()) return false;
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
 	// hopefully do the operation first time
@@ -152,7 +156,7 @@ bool Transaction::installPackage(Package *p) {
 }
 
 bool Transaction::installSignature(const SignatureType::Value &type, const QString &key_id, Package *p) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid() )
 		return true;
@@ -166,7 +170,7 @@ bool Transaction::installSignature(const SignatureType::Value &type, const QStri
 }
 
 bool Transaction::updatePackages(const QList<Package*> &packages) {
-	renewTid();
+	if(!renewTid()) return false;
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
 	// hopefully do the operation first time
@@ -182,7 +186,7 @@ bool Transaction::updatePackages(const QList<Package*> &packages) {
 }
 
 bool Transaction::updatePackage(Package *p) {
-	renewTid();
+	if(!renewTid()) return false;
 	QStringList pids;
 	pids << p->id();
 	// hopefully do the operation first time
@@ -198,7 +202,7 @@ bool Transaction::updatePackage(Package *p) {
 }
 
 bool Transaction::installFiles(const QStringList& files, bool trusted) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->InstallFiles(trusted, files).isValid() )
 		return true;
@@ -212,7 +216,7 @@ bool Transaction::installFiles(const QStringList& files, bool trusted) {
 }
 
 bool Transaction::removePackages(const QList<Package*> &packages, bool allow_deps, bool autoremove) {
-	renewTid();
+	if(!renewTid()) return false;
 	QStringList pids;
 	for(int i = 0 ; i < packages.size() ; ++i) pids << packages.at(i)->id();
 	// hopefully do the operation first time
@@ -234,7 +238,7 @@ bool Transaction::removePackage(Package *p, bool allow_deps, bool autoremove) {
 }
 
 bool Transaction::updateSystem() {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->UpdateSystem().isValid() )
 		return true;
@@ -248,7 +252,7 @@ bool Transaction::updateSystem() {
 }
 
 bool Transaction::rollback(const QString &tid) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->Rollback(tid).isValid() )
 		return true;
@@ -262,17 +266,17 @@ bool Transaction::rollback(const QString &tid) {
 }
 
 void Transaction::getUpdates(const QString& filter) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetUpdates(filter);
 }
 
 void Transaction::getUpdateDetail(const QString& package_id) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetUpdateDetail(package_id);
 }
 
 bool Transaction::refreshCache(bool force) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->RefreshCache(force).isValid() )
 		return true;
@@ -290,12 +294,12 @@ void Transaction::getProgress(uint &percentage, uint &subpercentage, uint &elaps
 }
 
 void Transaction::getRepoList(const QString &filter) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetRepoList(filter);
 }
 
 bool Transaction::repoEnable(const QString &repo_id, bool enabled) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->RepoEnable(repo_id, enabled).isValid() )
 		return true;
@@ -309,7 +313,7 @@ bool Transaction::repoEnable(const QString &repo_id, bool enabled) {
 }
 
 bool Transaction::repoSetData(const QString &repo_id, const QString &parameter, const QString &value) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->RepoSetData(repo_id, parameter, value).isValid() )
 		return true;
@@ -328,12 +332,12 @@ bool Transaction::isCallerActive() {
 }
 
 void Transaction::getOldTransactions(uint number) {
-	renewTid();
+	if(!renewTid()) return;
 	proxy->GetOldTransactions(number);
 }
 
 bool Transaction::acceptEula(const QString &id) {
-	renewTid();
+	if(!renewTid()) return false;
 	// hopefully do the operation first time
 	if ( proxy->AcceptEula(id).isValid() )
 		return true;
