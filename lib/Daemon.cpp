@@ -72,7 +72,7 @@ bool Daemon::setProxy(const QString &http_proxy, const QString &ftp_proxy) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_SETPROXY) )
+		if ( polkit->getAuth(AUTH_SYSTEM_NETWORK_PROXY_CONFIGURE) )
 			return proxy->SetProxy(http_proxy, ftp_proxy).isValid();
 		else
 			return false;

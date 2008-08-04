@@ -142,7 +142,7 @@ bool Transaction::installPackages(const QList<Package*> &packages) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_INSTALL) )
+		if ( polkit->getAuth(AUTH_PACKAGE_INSTALL) )
 			return proxy->InstallPackages(pids).isValid();
 		else
 			return false;
@@ -162,7 +162,7 @@ bool Transaction::installSignature(const SignatureType::Value &type, const QStri
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_INSTALLSIGNATURE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_TRUST_SIGNING_KEY) )
 			return proxy->InstallSignature(EnumToString<SignatureType>(type), key_id, p->id()).isValid();
 		else
 			return false;
@@ -178,7 +178,7 @@ bool Transaction::updatePackages(const QList<Package*> &packages) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_UPDATE) )
 			return proxy->UpdatePackages(pids).isValid();
 		else
 			return false;
@@ -194,7 +194,7 @@ bool Transaction::updatePackage(Package *p) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_UPDATEPACKAGE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_UPDATE) )
 			return proxy->UpdatePackages(pids).isValid();
 		else
 			return false;
@@ -208,7 +208,7 @@ bool Transaction::installFiles(const QStringList& files, bool trusted) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth((trusted ? AUTH_LOCALINSTALLTRUSTED : AUTH_LOCALINSTALLUNTRUSTED)) )
+		if ( polkit->getAuth((trusted ? AUTH_PACKAGE_INSTALL : AUTH_PACKAGE_INSTALL_UNTRUSTED)) )
 			return proxy->InstallFiles(trusted, files).isValid();
 		else
 			return false;
@@ -224,7 +224,7 @@ bool Transaction::removePackages(const QList<Package*> &packages, bool allow_dep
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_REMOVE) )
+		if ( polkit->getAuth(AUTH_PACKAGE_REMOVE) )
 			return proxy->RemovePackages(pids, allow_deps, autoremove).isValid();
 		else
 			return false;
@@ -244,7 +244,7 @@ bool Transaction::updateSystem() {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_UPDATESYSTEM) )
+		if ( polkit->getAuth(AUTH_SYSTEM_UPDATE) )
 			return proxy->UpdateSystem().isValid();
 		else
 			return false;
@@ -258,7 +258,7 @@ bool Transaction::rollback(const QString &tid) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_ROLLBACK) )
+		if ( polkit->getAuth(AUTH_SYSTEM_ROLLBACK) )
 			return proxy->Rollback(tid).isValid();
 		else
 			return false;
@@ -282,7 +282,7 @@ bool Transaction::refreshCache(bool force) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_REFRESHCACHE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_SOURCES_REFRESH) )
 			return proxy->RefreshCache(force).isValid();
 		else
 			return false;
@@ -305,7 +305,7 @@ bool Transaction::repoEnable(const QString &repo_id, bool enabled) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_SOURCES_CONFIGURE) )
 			return proxy->RepoEnable(repo_id, enabled).isValid();
 		else
 			return false;
@@ -319,7 +319,7 @@ bool Transaction::repoSetData(const QString &repo_id, const QString &parameter, 
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_REPOCHANGE) )
+		if ( polkit->getAuth(AUTH_SYSTEM_SOURCES_CONFIGURE) )
 			return proxy->RepoSetData(repo_id, parameter, value).isValid();
 		else
 			return false;
@@ -343,7 +343,7 @@ bool Transaction::acceptEula(const QString &id) {
 		return true;
 	else {
 		// ok no lucky...
-		if ( polkit->getAuth(AUTH_ACCEPTEULA) )
+		if ( polkit->getAuth(AUTH_PACKAGE_EULA_ACCEPT) )
 			return proxy->AcceptEula(id).isValid();
 		else
 			return false;
