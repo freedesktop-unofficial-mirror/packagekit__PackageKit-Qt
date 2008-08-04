@@ -19,6 +19,6 @@
 #define AUTH_PACKAGE_REMOVE			"org.freedesktop.packagekit.package-remove"
 #define AUTH_SYSTEM_UPDATE			"org.freedesktop.packagekit.system-update"
 #define AUTH_SYSTEM_ROLLBACK			"org.freedesktop.packagekit.system-rollback"
-#define AUTH_SYSTEM_SOURCES_CONFIGURE		"org.freedesktop.packagekit.systems-sources-configure"
+#define AUTH_SYSTEM_SOURCES_CONFIGURE		"org.freedesktop.packagekit.system-sources-configure"
 #define AUTH_SYSTEM_SOURCES_REFRESH		"org.freedesktop.packagekit.system-sources-refresh"
 #define AUTH_SYSTEM_NETWORK_PROXY_CONFIGURE	"org.freedesktop.packagekit.system-network-proxy-configure"
